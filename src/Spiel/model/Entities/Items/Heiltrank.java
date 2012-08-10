@@ -1,0 +1,31 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Spiel.model.Entities.Items;
+
+import Spiel.model.Entities.Player;
+
+
+
+/**
+ *
+ * @author Lukas
+ */
+public class Heiltrank extends Trank {
+
+
+      public Heiltrank(Size s) {
+            super("Heiltrank",s);
+
+      }
+
+      
+
+    @Override
+    public void potionAuswirkung(Player p, int i) {
+        p.setHp(p.getHp()+i);
+    }
+
+
+}
