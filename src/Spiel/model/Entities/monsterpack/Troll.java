@@ -22,7 +22,6 @@ public class Troll extends Monster{
         super(0, 0, 30, 2, "Troll", 'T', main);
         this.setstartposition(x1, y1, w, h);
         setFilename("troll.png");
-        imageConstructor();
         
     }
 

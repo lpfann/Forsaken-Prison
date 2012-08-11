@@ -1,4 +1,4 @@
-package Spiel.model;
+package Spiel.View;
 
 /*
  * To change this template, choose Tools | Templates and open the template in

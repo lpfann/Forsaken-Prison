@@ -19,7 +19,6 @@ public class Door extends NPC {
         super(x, y, 'D', main);
         this.open=false;
         setFilename("door.png");
-        imageConstructor();
       
     }
 
@@ -40,12 +39,5 @@ public class Door extends NPC {
         }
     }
     
-    @Override
-    public void drawEntitie(Graphics g,int fieldsize) {
-        if (open) {
-        g.drawImage(getImage()[1], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
-        } else {
-        g.drawImage(getImage()[0], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);
-    }
-    }
+
 }

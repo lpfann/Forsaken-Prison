@@ -46,8 +46,6 @@ public class Main implements Subject, Serializable,Cloneable {
     }
 
     public Main() {
-        //Bilder einlesen
-        //getPictures();
 
         //Dungeonerstellung
         dungeon = new DungeonGenerator(breite, hoehe, this);
@@ -110,6 +108,7 @@ public class Main implements Subject, Serializable,Cloneable {
         for (NPC e : entities) {
             map[e.getY()][e.getX()] = e.getIcon();
         }
+        notifyObserver(map);
     }
 
     @Override
@@ -167,46 +166,12 @@ public class Main implements Subject, Serializable,Cloneable {
         return player;
     }
 
-    public BufferedImage[] getImageforNPC(String s) {
-        BufferedImage[] img = loadPic("/resources/" + s);
 
-        return img;
-
-
-
-    }
 
   
 
 
-    public void updatePics() {
-        for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
-            NPC e = it.next();
-            e.imageConstructor();
-        }
-    }
 
-    private BufferedImage[] loadPic(String path) {
-
-        BufferedImage pic = null;
-
-        URL pathtopic = getClass().getResource(path);
-
-        try {
-            pic = ImageIO.read(pathtopic);
-
-        } catch (IOException e) {
-        }
-        int anzahl = pic.getWidth() / 20;
-        BufferedImage[] pics = new BufferedImage[anzahl];
-        for (int i = 0; i < anzahl; i++) {
-            pics[i] = pic.getSubimage(i * pic.getWidth() / anzahl, 0, pic.getWidth() / anzahl, pic.getHeight());
-        }
-        return pics;
-
-
-
-    }
 
         public void computeDelta() {
         delta=System.nanoTime()-last;

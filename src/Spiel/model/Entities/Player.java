@@ -22,27 +22,26 @@ public final class Player extends NPC {
         setstartposition(1, 1, main.getBreite()-2, main.getHoehe()-2);
         findRoomLocation();
         setFilename("player.png");
-        imageConstructor();
     }
     
-    @Override
-    public void drawEntitie(Graphics g,int fieldsize) {
-        switch (getOrientierung())    {
-            case DOWN:
-                    g.drawImage(getImage()[0], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
-                    break;
-            case LEFT:
-                    g.drawImage(getImage()[1], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
-                    break;
-            case UP:
-                    g.drawImage(getImage()[2], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
-                    break;
-            case RIGHT:
-                    g.drawImage(getImage()[3], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
-                    break;
-            
-        }
-    }
+//    @Override
+//    public void drawEntitie(Graphics g,int fieldsize) {
+//        switch (getOrientierung())    {
+//            case DOWN:
+//                    g.drawImage(getImage()[0], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
+//                    break;
+//            case LEFT:
+//                    g.drawImage(getImage()[1], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
+//                    break;
+//            case UP:
+//                    g.drawImage(getImage()[2], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
+//                    break;
+//            case RIGHT:
+//                    g.drawImage(getImage()[3], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
+//                    break;
+//            
+//        }
+//    }
     public void attackmonster() {
         if (objectinFront() instanceof Monster) {
             NPC monster = objectinFront();
@@ -163,5 +162,7 @@ public final class Player extends NPC {
     public void setInventar(LinkedList inventar) {
         this.inventar = inventar;
     }
+
+   
     
 }

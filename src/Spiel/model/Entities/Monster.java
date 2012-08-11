@@ -26,26 +26,35 @@ public abstract class Monster extends NPC {
 
     }
 
-    @Override
-    public void drawEntitie(Graphics g, int fieldsize) {
-        if (hit) {
-            setCounter(getCounter()+1);
-            g.drawImage(getImage()[1], getX() * fieldsize, getY() * fieldsize, fieldsize, fieldsize, null);
-            if (getCounter() > 20) {
-                hit = false;
-                setCounter(0);
-            }
-        } else {
-            g.drawImage(getImage()[0], getX() * fieldsize, getY() * fieldsize, fieldsize, fieldsize, null);
-
-        }
-
-
-    }
+//    @Override
+//    public void drawEntitie(Graphics g, int fieldsize) {
+//        if (hit) {
+//            setCounter(getCounter()+1);
+//            g.drawImage(getImage()[1], getX() * fieldsize, getY() * fieldsize, fieldsize, fieldsize, null);
+//            if (getCounter() > 20) {
+//                hit = false;
+//                setCounter(0);
+//            }
+//        } else {
+//            g.drawImage(getImage()[0], getX() * fieldsize, getY() * fieldsize, fieldsize, fieldsize, null);
+//
+//        }
+//
+//
+//    }
+    
         @Override
     public void doLogic(long delta) {
             super.doLogic(delta);
             this.abstand += getAnimation();
+            
+            
+            
+             if (abstand>10000) {
+                if (hit) {
+                    setHit(false);
+                }
+            }
             if (abstand >100000) {
                 if (Spiel.model.Utilites.inthesameRoom(this, getMain().player)) {
                     Player pl = getMain().player;
@@ -93,10 +102,14 @@ public abstract class Monster extends NPC {
                 
             }
             
-            
+
             
 
             }
+            
+            
+
+            
     }
            
       

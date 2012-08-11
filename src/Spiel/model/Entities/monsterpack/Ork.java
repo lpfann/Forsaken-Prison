@@ -23,7 +23,6 @@ public class Ork extends Monster{
         super(0, 0, 20, 1, "Ork", 'O',main);
         this.setstartposition(x1, y1, w, h);
         setFilename("ork.png");
-        imageConstructor();
     }
 
    

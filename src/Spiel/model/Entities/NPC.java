@@ -4,6 +4,7 @@
  */
 package Spiel.model.Entities;
 
+import Spiel.View.Observer;
 import Spiel.model.Main;
 import Spiel.model.Main.Richtung;
 import Spiel.model.Room;
@@ -21,7 +22,6 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     private int y;
     private char icon;
     private String name;
-    transient private BufferedImage[] image;
     private Main main;
     private Room room;
     private int counter;
@@ -43,6 +43,43 @@ public abstract class NPC implements Drawable,Movable,Serializable{
           this.icon=icon;
           this.main=main;
     }
+        @Override
+    public void doLogic(long delta) {
+    //TODO ANimation variable funktioniert noch nicht so wie ich das will
+          animation += (delta/1e6);
+            
+ 
+    }
+            
+    @Override
+    public void move() {
+        main.entities.remove(this);
+        if (movex != 0) {
+            if (movex>0) {
+                moveRight();
+            } else {
+                moveLeft();
+            }
+            this.movex -= movex;
+            
+        }
+        if (movey != 0) {
+            if (movey>0) {
+                moveDown();
+            } else {
+                moveUp();
+            }
+            this.movey -= movey;
+        }
+        main.entities.add(this);
+        main.npcmap();
+      }
+    
+    
+    //TODO computeAnimation funktion ausbauen
+    private void computeAnimation() {
+
+    }    
     
     //Platzieren einer NPC im Bereich von x bis y
     /**
@@ -72,6 +109,9 @@ public abstract class NPC implements Drawable,Movable,Serializable{
                 
           
     }
+    
+    
+    
 //      public void movechar(Main.Richtung d) {
 //        main.entities.remove(this);
 //        switch (d) {
@@ -160,63 +200,14 @@ public abstract class NPC implements Drawable,Movable,Serializable{
      main.entities.remove(ent);
      main.map[ent.y][ent.x]=' ';
      ent=null;
+     main.notifyObserver(Observer.transEnum.entities);
  }
     
-    @Override
-    public void drawEntitie(Graphics g,int fieldsize) {
-        g.drawImage(image[0], x*fieldsize, y*fieldsize,fieldsize,fieldsize, null);
-        
-        
-    }
 
-  public void imageConstructor(){
-      image= main.getImageforNPC(filename);
-  }
 
-      @Override
-    public void doLogic(long delta) {
-    //TODO ANimation variable funktioniert noch nicht so wie ich das will
-          animation += (delta/1e6);
-            
- 
-    }
-            
-    @Override
-    public void move() {
-        main.entities.remove(this);
-        if (movex != 0) {
-            if (movex>0) {
-                moveRight();
-            } else {
-                moveLeft();
-            }
-            this.movex -= movex;
-            
-        }
-        if (movey != 0) {
-            if (movey>0) {
-                moveDown();
-            } else {
-                moveUp();
-            }
-            this.movey -= movey;
-        }
-        main.entities.add(this);
-        main.npcmap();
-      }
-    
-    
-    //TODO computeAnimation funktion ausbauen
-    private void computeAnimation() {
+
+
    
-        currentimg++;
-        if (image!=null) {
-            if (currentimg > image.length) {
-                currentimg = 0;
-                }
-            
-        }
-    }     
     
     
     
@@ -276,13 +267,6 @@ public abstract class NPC implements Drawable,Movable,Serializable{
         this.icon = icon;
     }
 
-    public BufferedImage[] getImage() {
-        return image;
-    }
-
-    public void setImage(BufferedImage[] image) {
-        this.image = image;
-    }
 
     public Main getMain() {
         return main;

@@ -21,7 +21,6 @@ private boolean opened;
             super(x,y,icon,main);
             this.items=generatecontent();
             setFilename("chest.png");
-            imageConstructor();
             this.opened=false;
      }
       
@@ -44,16 +43,6 @@ private boolean opened;
     }
 
     
-        @Override
-    public void drawEntitie(Graphics g,int fieldsize) {
-       if (opened) {
-            g.drawImage(getImage()[1], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null); 
-       } else {
-            g.drawImage(getImage()[0], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
-           
-       }
-      
-   }
 
     public void setOpened(boolean opened) {
         this.opened = opened;

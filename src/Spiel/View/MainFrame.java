@@ -5,7 +5,6 @@ package Spiel.View;
  * the editor.
  */
 import Spiel.Controller.Game;
-import Spiel.model.Keys;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -48,9 +47,8 @@ public class MainFrame extends JFrame {
         this.add(lpanel,BorderLayout.CENTER);
         lpanel.setBounds(0,0,this.getPreferredSize().width,this.getPreferredSize().height);
         gamepanel.setBounds(0,0,this.getPreferredSize().width,this.getPreferredSize().height);
-        //panel.setBounds(0,0,600,400);
         gamepanel.setLayout(new BorderLayout(5,5));
-        
+        gamepanel.setDoubleBuffered(true);
         menu.setBounds(this.getPreferredSize().width/2-menu.getPreferredSize().width/2,0,menu.getPreferredSize().width,menu.getPreferredSize().height);
        
         menu.setOpaque(true);

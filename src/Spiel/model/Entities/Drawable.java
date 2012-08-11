@@ -9,7 +9,4 @@ import java.awt.Graphics;
  * @author Gamer
  */
 public interface Drawable {
-    
-    
-    public void drawEntitie(Graphics g,int i);
 }
