@@ -24,17 +24,21 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     private String name;
     private Main main;
     private Room room;
-    private int counter;
+    private int animationCounter=0;
+    private int internalCounter=0;
+    
     private long delay;
-    private long animation=0;
+    private long gametick=0;
     private int currentimg;
     private int dmg;
     private int hp;
     private int armor;
     private int movex=0;
     private int movey=0;
+    private boolean hit=false;
     private String filename;
     private Richtung orientierung=Richtung.DOWN;
+    private boolean removethis=false;
 
 
     public NPC(int x, int y, char icon,Main main) {
@@ -45,37 +49,50 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     }
         @Override
     public void doLogic(long delta) {
-    //TODO ANimation variable funktioniert noch nicht so wie ich das will
-          animation += (delta/1e6);
-            
- 
+            if    (hit) {
+                    if (internalCounter>9) {
+                     internalCounter=0;
+                     animationCounter=0;      
+                     hit=false;       
+                    }
+                    if (animationCounter<2) {
+                       animationCounter++;     
+                    }
+            internalCounter++;        
+      
+            }
     }
             
     @Override
     public void move() {
-        main.entities.remove(this);
+
         if (movex != 0) {
             if (movex>0) {
                 moveRight();
+                this.movex--;
             } else {
                 moveLeft();
+                this.movex++;
             }
-            this.movex -= movex;
             
         }
         if (movey != 0) {
             if (movey>0) {
                 moveDown();
+                this.movey--;
             } else {
                 moveUp();
+                this.movey++;
             }
-            this.movey -= movey;
         }
-        main.entities.add(this);
-        main.npcmap();
+        changeMapforObject(this);
       }
     
-    
+        public void changeMapforObject(NPC e) {
+        main.map[e.getY()][e.getX()] = e.getIcon();
+
+    }
+        
     //TODO computeAnimation funktion ausbauen
     private void computeAnimation() {
 
@@ -112,28 +129,7 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     
     
     
-//      public void movechar(Main.Richtung d) {
-//        main.entities.remove(this);
-//        switch (d) {
-////            case LEFT:
-////                moveLeft();
-////                break;
-////            case RIGHT:
-////                moveRight();
-////                break;
-//            case UP:
-//                moveUp();
-//                break;
-//            case DOWN:
-//                moveDown();
-//                break;
-//            default:
-//                break;
-//        }
-//        main.entities.add(this);
-//        main.npcmap();
-//        main.notifyobs();
-//    }
+
 
     public void moveLeft() {
         if (main.map[y][x - 1] == ' ') {
@@ -194,14 +190,9 @@ public abstract class NPC implements Drawable,Movable,Serializable{
         }
      return room;   
     }
-
     
- public void removeEntitie(NPC ent){
-     main.entities.remove(ent);
-     main.map[ent.y][ent.x]=' ';
-     ent=null;
-     main.notifyObserver(Observer.transEnum.entities);
- }
+
+   
     
 
 
@@ -236,11 +227,11 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     }
 
     public int getCounter() {
-        return counter;
+        return animationCounter;
     }
 
     public void setCounter(int counter) {
-        this.counter = counter;
+        this.animationCounter = counter;
     }
 
     public int getDmg() {
@@ -341,11 +332,11 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     }
 
     public long getAnimation() {
-        return animation;
+        return gametick;
     }
 
     public void setAnimation(long animation) {
-        this.animation = animation;
+        this.gametick = animation;
     }
 
     public long getDelay() {
@@ -354,6 +345,23 @@ public abstract class NPC implements Drawable,Movable,Serializable{
 
     public void setDelay(long delay) {
         this.delay = delay;
+    }
+
+    public boolean isHit() {
+        return hit;
+    }
+
+    public void setHit(boolean hit) {
+        this.hit = hit;
+        this.animationCounter=0;
+    }
+
+    public boolean isRemovethis() {
+        return removethis;
+    }
+
+    public void setRemovethis(boolean removethis) {
+        this.removethis = removethis;
     }
 
 

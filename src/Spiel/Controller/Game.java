@@ -26,6 +26,7 @@ private static Main main;
 private MainFrame mainFr;
 Thread thread;
 boolean wait=false;
+public static final int GAME_TICK = 1000 / 25;
 
 
 
@@ -80,7 +81,6 @@ public Game (){
             fileIn = new FileInputStream("save.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             try {
-                //TODO Load Funktion fixen: es kommt noch eine Optional Data Exception manchmal
                 main = (Main) in.readObject();
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,12 +124,17 @@ public Game (){
             }
 
             
-        
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
+                if (main.getDelta() / 1e6 < GAME_TICK) {
+
+                    try {
+                        Thread.sleep((long) (GAME_TICK - (main.getDelta() / 1e6)));
+                        
+                    } catch (InterruptedException e) {
+                    }
+                } else {
+                    Thread.yield();
+                }
             }
-        }
     }
     }
 

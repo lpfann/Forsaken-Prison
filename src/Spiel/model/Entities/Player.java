@@ -48,7 +48,7 @@ public final class Player extends NPC {
 
             Spiel.model.Kampf.attack(this, monster);
             if (monster.getHp() <= 0) {
-                monster.removeEntitie(monster);
+                monster.setRemovethis(true);
                 setXp(getXp() + 10);
 
             }
@@ -109,7 +109,7 @@ public final class Player extends NPC {
         if (objectinFront() instanceof Door) {
           Door door = (Door)objectinFront();
           door.opencloseDoorSwitch();
-          getMain().changeMapforObject(door);
+          changeMapforObject(door);
         }
         
        

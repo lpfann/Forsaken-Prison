@@ -81,19 +81,26 @@ public class Main implements Subject, Serializable,Cloneable {
     }
     
     public void doLogic() {
-         
-        for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
-            NPC e = it.next();
-            e.doLogic(delta);
-        }
-        
+            LinkedList<NPC> temp = new LinkedList<>();
+            for (NPC e : entities) {
+                    e.doLogic(delta);
+                    if (e.isRemovethis()) {
+                            temp.add(e);
+                    }
+           }
+            for (NPC e : temp) {
+                    entities.remove(e);
+                    map[e.getY()][e.getX()]=' ';
+            }
+            notifyObserver(transEnum.entities);
+            notifyObserver(map);
     }
 
     public void moveNPCs() {
-        for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
-            NPC e = it.next();
-            e.move();
-        }
+            for (NPC e : entities) {
+                    e.move();
+                    
+            }
         
     }
 
@@ -174,7 +181,7 @@ public class Main implements Subject, Serializable,Cloneable {
 
 
         public void computeDelta() {
-        delta=System.nanoTime()-last;
+        delta=(System.nanoTime()-last);
         last= System.nanoTime();
         fps= ((long) 1e9/delta);
         this.notifyObserver(transEnum.fps);
@@ -190,10 +197,7 @@ public class Main implements Subject, Serializable,Cloneable {
         observer.clear();
     }
 
-    public void changeMapforObject(NPC e) {
-        map[e.getY()][e.getX()] = e.getIcon();
 
-    }
 
     public int getBreite() {
         return breite;

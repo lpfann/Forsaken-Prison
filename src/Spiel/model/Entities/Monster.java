@@ -6,6 +6,7 @@ package Spiel.model.Entities;
 
 import Spiel.model.Main;
 import java.awt.Graphics;
+import java.util.Timer;
 
 /**
  *
@@ -13,16 +14,17 @@ import java.awt.Graphics;
  */
 public abstract class Monster extends NPC {
 
-    private boolean hit;
-    private long abstand=0;
-
+    
+    private int abstand=0;
+    private int counter1=0;
+    private int counter2=0;
+    
     public Monster(int x, int y, int hp, int dmg, String name, char icon, Main main) {
         super(x, y, icon, main);
         setHp(hp);
         setDmg(dmg);
         setName(name);
-        setCounter(0);
-        this.hit = false;
+        
 
     }
 
@@ -46,79 +48,62 @@ public abstract class Monster extends NPC {
         @Override
     public void doLogic(long delta) {
             super.doLogic(delta);
-            this.abstand += getAnimation();
             
+          
             
-            
-             if (abstand>10000) {
-                if (hit) {
-                    setHit(false);
-                }
-            }
-            if (abstand >100000) {
-                if (Spiel.model.Utilites.inthesameRoom(this, getMain().player)) {
-                    Player pl = getMain().player;
-                    if (Spiel.model.Utilites.distance(this, pl)<6) {
+        counter1++;
+        if (Spiel.model.Utilites.inthesameRoom(this, getMain().player)) {
+            if (counter1 >=50) {
+                Player pl = getMain().player;
+                if (Spiel.model.Utilites.distance(this, pl) < 6) {
 
-                            if (pl.getX()<this.getX()) {
-                                setMovex(-1);
-                            } else if (pl.getX()>this.getX())
-                                setMovex(+1); 
-                            else {
-                            }
-                            if (pl.getY()<this.getY()) {
-                                setMovey(-1);
-                            } else if (pl.getY()>this.getY())
-                                setMovey(+1); 
-                            else {
-                            }
-
+                    if (pl.getX() < this.getX()) {
+                        setMovex(-1);
+                    } else if (pl.getX() > this.getX()) {
+                        setMovex(+1);
+                    } else {
                     }
-                    abstand=0;
-                    setAnimation(0);
-                
-            } else {
-                    
+                    if (pl.getY() < this.getY()) {
+                        setMovey(-1);
+                    } else if (pl.getY() > this.getY()) {
+                        setMovey(+1);
+                    } else {
+                    }
+
                 }
-            
-                int rand=Spiel.model.Utilites.randomizer(700, 1500);
-                if (getAnimation() > rand) {
-                    int rand2= Spiel.model.Utilites.randomizer(0, 3);
-                        switch (rand2) {
-                            case 0:
-                                    setMovex(1);
-                                    break;
-                            case 1:
-                                    setMovex(-1);
-                                    break;
-                            case 2:
-                                    setMovey(1);
-                                    break;
-                            case 3:
-                                    setMovey(-1);
-                                    break;
-                        }
-                    setAnimation(0);
-                
+                counter1=0;
             }
-            
 
-            
-
+        } else {
+        
+        if (counter1>=100) {
+            int rand2 = Spiel.model.Utilites.randomizer(0, 3);
+            switch (rand2) {
+                case 0:
+                    setMovex(1);
+                    break;
+                case 1:
+                    setMovex(-1);
+                    break;
+                case 2:
+                    setMovey(1);
+                    break;
+                case 3:
+                    setMovey(-1);
+                    break;
             }
-            
-            
+            counter1=0;
 
-            
+        }
+
+
+
     }
+        
+        
+
+        
+}
            
       
-
-    public boolean isHit() {
-        return hit;
-    }
-
-    public void setHit(boolean hit) {
-        this.hit = hit;
-    }
 }

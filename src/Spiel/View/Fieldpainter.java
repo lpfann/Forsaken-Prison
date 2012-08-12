@@ -28,6 +28,8 @@ public class Fieldpainter extends JPanel implements Observer {
     private BufferedImage[] trollimage;
     private BufferedImage[] chestimage;
     private BufferedImage[] doorimage;
+    private BufferedImage[] bloodimage;
+    
     private BufferedImage groundimage;
     private BufferedImage wallimage;
     
@@ -44,6 +46,7 @@ public class Fieldpainter extends JPanel implements Observer {
     private int viewportwidth=2*radiusx;
     private int viewportheight=2*radiusy;
     private int fps;
+    private int animationCounter=0;
     private Player player;
     private char[][] map;
     private LinkedList<NPC> entities= new LinkedList();
@@ -68,6 +71,7 @@ public class Fieldpainter extends JPanel implements Observer {
             trollimage= loadPic("/resources/troll.png");
             doorimage= loadPic("/resources/door.png");
             chestimage= loadPic("/resources/chest.png");
+            bloodimage= loadPic("/resources/bloodsplatter.png");
 
         } catch (IllegalArgumentException | IOException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 0);
@@ -99,12 +103,7 @@ public class Fieldpainter extends JPanel implements Observer {
         }
         
 
-        
-        //FPS
-        g.setColor(Color.white);
-        g.setFont(new Font("Monospaced", Font.BOLD, 20));
-        g.drawString("FPS: " + fps, 20, 15);
-        
+
     }
     
     private void paintDungeon(Graphics g) {
@@ -194,12 +193,19 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
                     }
+                    
+                    
+                    if (e.isHit()) {
+                        
+                        compoImage.getGraphics().drawImage(bloodimage[e.getCounter()], e.getX() * FIELDSIZE, e.getY() * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                        
+                    }
 
 
 
                 }
                 } catch ( Exception ex) {
-                    System.out.println(e.getName());
+                        ex.printStackTrace();
                 }
             }
         }

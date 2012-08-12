@@ -25,6 +25,7 @@ public class DungeonTest {
         boolean pass=true;
         int counter=0;
         Game game = new Game();
+        game.pauseThread();
         
         //mehrmaliger Testlauf
         for (int i = 0; i < 10000; i++) {
@@ -39,7 +40,7 @@ public class DungeonTest {
         
         //eigentlicher Test
         assertTrue(pass);           
-
+        
 
         
     }
