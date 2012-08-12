@@ -18,6 +18,7 @@ public class Room implements Serializable {
     private Room lchild;
     private Room rchild;
     private Room parent;
+    private DungeonGenerator dg;
 
 
     public Room(Room lc, Room rc) {
@@ -34,12 +35,12 @@ public class Room implements Serializable {
         if (vert) {
             //Verschiebung der Wand um +1 damit Türen nicht verdeckt werden
             if (x1 + nbreite == doorx) {
-                lchild = new Room(x1, y1, nbreite, hoehe);
-                rchild = new Room(x1 + nbreite + 1, y1, breite - nbreite - 1, hoehe);
+                lchild = new Room(x1, y1, nbreite, hoehe,dg);
+                rchild = new Room(x1 + nbreite + 1, y1, breite - nbreite - 1, hoehe,dg);
 
             } else {
-                lchild = new Room(x1, y1, nbreite, hoehe);
-                rchild = new Room(x1 + nbreite, y1, breite - nbreite, hoehe);
+                lchild = new Room(x1, y1, nbreite, hoehe,dg);
+                rchild = new Room(x1 + nbreite, y1, breite - nbreite, hoehe,dg);
             }
             
             int randomdoor= Spiel.model.Utilites.randomizer(1, lchild.hoehe - 1);
@@ -54,12 +55,12 @@ public class Room implements Serializable {
         } else {
             //Verschiebung der Wand um +1 damit Türen nicht verdeckt werden
             if (y1 + nhoehe == doory) {
-                lchild = new Room(x1, y1, breite, nhoehe);
-                rchild = new Room(x1, y1 + nhoehe + 1, breite, hoehe - nhoehe - 1);
+                lchild = new Room(x1, y1, breite, nhoehe,dg);
+                rchild = new Room(x1, y1 + nhoehe + 1, breite, hoehe - nhoehe - 1,dg);
 
             } else {
-                lchild = new Room(x1, y1, breite, nhoehe);
-                rchild = new Room(x1, y1 + nhoehe, breite, hoehe - nhoehe);
+                lchild = new Room(x1, y1, breite, nhoehe,dg);
+                rchild = new Room(x1, y1 + nhoehe, breite, hoehe - nhoehe,dg);
             }
             int randomdoor= Spiel.model.Utilites.randomizer(1, lchild.breite - 1);
             lchild.doorx = lchild.x1 + randomdoor;
@@ -72,11 +73,12 @@ public class Room implements Serializable {
 
     }
 
-    public Room(int x1, int y1, int breite, int hoehe) {
+    public Room(int x1, int y1, int breite, int hoehe,DungeonGenerator dg) {
         this.x1 = x1;
         this.y1 = y1;
         this.breite = breite;
         this.hoehe = hoehe;
+        this.dg=dg;
 
 
         if (breite > 8 && hoehe > 8) {
@@ -89,7 +91,7 @@ public class Room implements Serializable {
 
         } else {
 
-            DungeonGenerator.tree.add(this);
+            dg.getTree().add(this);
         }
         
     }
