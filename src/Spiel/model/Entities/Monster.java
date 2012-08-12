@@ -5,9 +5,8 @@
 package Spiel.model.Entities;
 
 import Spiel.model.Main;
-import java.awt.Graphics;
-import java.util.Timer;
-
+import Spiel.model.Kampf;
+import com.sun.xml.internal.ws.message.saaj.SAAJHeader;
 /**
  *
  * @author lpfannschmidt
@@ -55,24 +54,27 @@ public abstract class Monster extends NPC {
         if (Spiel.model.Utilites.inthesameRoom(this, getMain().player)) {
             if (counter1 >=50) {
                 Player pl = getMain().player;
-                if (Spiel.model.Utilites.distance(this, pl) < 6) {
+                    if (Spiel.model.Utilites.distance(this, pl)==1 && objectinFront() instanceof Player) {
+                            attack(objectinFront());
+                    } else
+                                if (Spiel.model.Utilites.distance(this, pl) < 6) {
 
-                    if (pl.getX() < this.getX()) {
-                        setMovex(-1);
-                    } else if (pl.getX() > this.getX()) {
-                        setMovex(+1);
-                    } else {
-                    }
-                    if (pl.getY() < this.getY()) {
-                        setMovey(-1);
-                    } else if (pl.getY() > this.getY()) {
-                        setMovey(+1);
-                    } else {
-                    }
+                                if (pl.getX() < this.getX()) {
+                                        setMovex(-1);
+                                } else if (pl.getX() > this.getX()) {
+                                        setMovex(+1);
+                                } else {
+                                }
+                                if (pl.getY() < this.getY()) {
+                                        setMovey(-1);
+                                } else if (pl.getY() > this.getY()) {
+                                        setMovey(+1);
+                                } else {
+                                }
 
+                                }
+                                counter1=0;
                 }
-                counter1=0;
-            }
 
         } else {
         

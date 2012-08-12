@@ -9,242 +9,228 @@ import Spiel.View.Observer.transEnum;
 import Spiel.model.Entities.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.URL;
-import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 /**
  *
  * @author Lukas
  */
-public class Main implements Subject, Serializable,Cloneable {
+public class Main implements Subject, Serializable, Cloneable {
 
-    int breite = 40;
-    int hoehe = 20;
-    long delta = 0;
-    long last = 0;
-    long fps = 0;
-    public char[][] map;
-    public Player player;
-    private LinkedList monsters;
-    transient private MonsterFactory monstergenerator;
-    private LinkedList chests;
-    transient private ChestFactory chestgenerator;
-    private DungeonGenerator dungeon;
-    public LinkedList<NPC> entities;
-    public LinkedList<NPC> entcopy;
-    private static ArrayList<Observer> observer = new ArrayList<>();
+        int breite = 40;
+        int hoehe = 20;
+        long delta = 0;
+        long last = 0;
+        long fps = 0;
+        public char[][] map;
+        public Player player;
+        private LinkedList monsters;
+        transient private MonsterFactory monstergenerator;
+        private LinkedList chests;
+        transient private ChestFactory chestgenerator;
+        private DungeonGenerator dungeon;
+        public LinkedList<NPC> entities;
+        public LinkedList<NPC> entcopy;
+        private static ArrayList<Observer> observer = new ArrayList<>();
+        private boolean gameover;
 
-    public enum Richtung {
+        public enum Richtung {
 
-        LEFT, RIGHT, UP, DOWN;
-    }
-
-    public Main() {
-
-        //Dungeonerstellung
-        dungeon = new DungeonGenerator(breite, hoehe, this);
-        map = dungeon.getMap();
-
-        //Player Erstellung
-        entities = new LinkedList<>();
-        player = new Player(this);
-        entities.add(player);
-        //Türen Erstellung
-        entities.addAll(dungeon.getDoors());
-        //Monster Erstellung
-        monstergenerator = new MonsterFactory(this);
-        monsters = monstergenerator.populateDungeon(dungeon.getRooms());
-        entities.addAll(monsters);
-
-        //Truhen Erstellung
-        chestgenerator = new ChestFactory(this);
-        chests = chestgenerator.populateDungeon(dungeon.getRooms());
-        entities.addAll(chests);
-
-
-        //Objekte auf Map verteilen
-        npcmap();
-
-
-
-    }
-    
-    public void copyEntitie(){
-        entcopy = (LinkedList<NPC>) entities.clone();
-        
-    }
-    
-    public void doLogic() {
-            LinkedList<NPC> temp = new LinkedList<>();
-            for (NPC e : entities) {
-                    e.doLogic(delta);
-                    if (e.isRemovethis()) {
-                            temp.add(e);
-                    }
-           }
-            for (NPC e : temp) {
-                    entities.remove(e);
-                    map[e.getY()][e.getX()]=' ';
-            }
-            notifyObserver(transEnum.entities);
-            notifyObserver(map);
-    }
-
-    public void moveNPCs() {
-            for (NPC e : entities) {
-                    e.move();
-                    
-            }
-        
-    }
-
-    public void notifyobs() {
-        notifyObserver(map);
-        notifyObserver(transEnum.entities);
-        notifyObserver(transEnum.playerstats);
-
-    }
-
-    public void npcmap() {
-        for (NPC e : entities) {
-            map[e.getY()][e.getX()] = e.getIcon();
+                LEFT, RIGHT, UP, DOWN;
         }
-        notifyObserver(map);
-    }
 
-    @Override
-    public void addObserver(Observer o) {
-        observer.add(o);
-    }
+        public Main() {
 
-    @Override
-    public void removeObserver(Observer o) {
-        observer.remove(o);
-    }
+                //Dungeonerstellung
+                dungeon = new DungeonGenerator(breite, hoehe, this);
+                map = dungeon.getMap();
 
-    @Override
-    public void notifyObserver(transEnum enu) {
-        
-        Main maincopy=null;
-        try {
-            maincopy = (Main) this.clone();
-        } catch (CloneNotSupportedException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        
-        for (Observer ob : observer) {
-            ob.update(enu, maincopy);
-        }
-    }
+                //Player Erstellung
+                entities = new LinkedList<>();
+                player = new Player(this);
+                entities.add(player);
+                //Türen Erstellung
+                entities.addAll(dungeon.getDoors());
+                //Monster Erstellung
+                monstergenerator = new MonsterFactory(this);
+                monsters = monstergenerator.populateDungeon(dungeon.getRooms());
+                entities.addAll(monsters);
 
-    @Override
-    public void notifyObserver(char[][] map) {
+                //Truhen Erstellung
+                chestgenerator = new ChestFactory(this);
+                chests = chestgenerator.populateDungeon(dungeon.getRooms());
+                entities.addAll(chests);
 
-        char[][] mapcopy = new char[map.length][map[0].length];
-        for (int x = 0; x < map.length; x++) {
-            System.arraycopy(map[x], 0, mapcopy[x], 0, map[0].length);
-        }
-        for (Observer ob : observer) {
-            ob.update(mapcopy);
+
+                //Objekte auf Map verteilen
+                npcmap();
+
+
 
         }
 
-    }
+        public void copyEntitie() {
+                entcopy = (LinkedList<NPC>) entities.clone();
 
-    public LinkedList<NPC> getEntities() {
-        return entities;
-    }
+        }
 
-    public void setEntities(LinkedList<NPC> entities) {
-        this.entities = entities;
-    }
+        public void doLogic() {
+                LinkedList<NPC> temp = new LinkedList<>();
+                for (NPC e : entities) {
+                        e.doLogic(delta);
+                        if (e.isRemovethis()) {
+                                temp.add(e);
+                        }
+                }
+                for (NPC e : temp) {
+                        if (e instanceof Player) {
+                                this.gameover = true;
+                        }
+                        entities.remove(e);
+                        map[e.getY()][e.getX()] = ' ';
+                }
+                notifyObserver(transEnum.entities);
+                notifyObserver(map);
+                notifyObserver(transEnum.playerstats);
+        }
+
+        public void moveNPCs() {
+                for (NPC e : entities) {
+                        e.move();
+
+                }
+
+        }
+
+        public void notifyobs() {
+                notifyObserver(map);
+                notifyObserver(transEnum.entities);
+                notifyObserver(transEnum.playerstats);
+
+        }
+
+        public void npcmap() {
+                for (NPC e : entities) {
+                        map[e.getY()][e.getX()] = e.getIcon();
+                }
+                notifyObserver(map);
+        }
+
+        @Override
+        public void addObserver(Observer o) {
+                observer.add(o);
+        }
+
+        @Override
+        public void removeObserver(Observer o) {
+                observer.remove(o);
+        }
+
+        @Override
+        public void notifyObserver(transEnum enu) {
+
+                Main maincopy = null;
+                try {
+                        maincopy = (Main) this.clone();
+                } catch (CloneNotSupportedException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
 
 
-    public Player getPlayer() {
-        return player;
-    }
+                for (Observer ob : observer) {
+                        ob.update(enu, maincopy);
+                }
+        }
 
+        @Override
+        public void notifyObserver(char[][] map) {
 
+                char[][] mapcopy = new char[map.length][map[0].length];
+                for (int x = 0; x < map.length; x++) {
+                        System.arraycopy(map[x], 0, mapcopy[x], 0, map[0].length);
+                }
+                for (Observer ob : observer) {
+                        ob.update(mapcopy);
 
-  
+                }
 
+        }
 
+        public LinkedList<NPC> getEntities() {
+                return entities;
+        }
 
+        public void setEntities(LinkedList<NPC> entities) {
+                this.entities = entities;
+        }
+
+        public Player getPlayer() {
+                return player;
+        }
 
         public void computeDelta() {
-        delta=(System.nanoTime()-last);
-        last= System.nanoTime();
-        fps= ((long) 1e9/delta);
-        this.notifyObserver(transEnum.fps);
-    }
+                delta = (System.nanoTime() - last);
+                last = System.nanoTime();
+                fps = ((long) 1e9 / delta);
+                this.notifyObserver(transEnum.fps);
+        }
 
-    
-    
-    public DungeonGenerator getDungeon() {
-        return dungeon;
-    }
+        public DungeonGenerator getDungeon() {
+                return dungeon;
+        }
 
-    public void clearObservers() {
-        observer.clear();
-    }
+        public void clearObservers() {
+                observer.clear();
+        }
 
+        public int getBreite() {
+                return breite;
+        }
 
+        public void setBreite(int breite) {
+                this.breite = breite;
+        }
 
-    public int getBreite() {
-        return breite;
-    }
+        public int getHoehe() {
+                return hoehe;
+        }
 
-    public void setBreite(int breite) {
-        this.breite = breite;
-    }
+        public void setHoehe(int hoehe) {
+                this.hoehe = hoehe;
+        }
 
-    public int getHoehe() {
-        return hoehe;
-    }
+        public long getDelta() {
+                return delta;
+        }
 
-    public void setHoehe(int hoehe) {
-        this.hoehe = hoehe;
-    }
+        public void setDelta(long delta) {
+                this.delta = delta;
+        }
 
-    public long getDelta() {
-        return delta;
-    }
+        public long getFps() {
+                return fps;
+        }
 
-    public void setDelta(long delta) {
-        this.delta = delta;
-    }
+        public void setFps(long fps) {
+                this.fps = fps;
+        }
 
-    public long getFps() {
-        return fps;
-    }
+        public long getLast() {
+                return last;
+        }
 
-    public void setFps(long fps) {
-        this.fps = fps;
-    }
+        public void setLast(long last) {
+                this.last = last;
+        }
 
-    public long getLast() {
-        return last;
-    }
+        public LinkedList<NPC> getEntcopy() {
+                return entcopy;
+        }
 
-    public void setLast(long last) {
-        this.last = last;
-    }
-
-    public LinkedList<NPC> getEntcopy() {
-        return entcopy;
-    }
-
-    public void setEntcopy(LinkedList<NPC> entcopy) {
-        this.entcopy = entcopy;
-    }
-    
+        public void setEntcopy(LinkedList<NPC> entcopy) {
+                this.entcopy = entcopy;
+        }
 }

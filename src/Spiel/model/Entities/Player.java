@@ -2,7 +2,6 @@ package Spiel.model.Entities;
 
 import Spiel.model.Entities.Items.Item;
 import Spiel.model.Main;
-import java.awt.Graphics;
 import java.util.LinkedList;
 
 public final class Player extends NPC {
@@ -46,9 +45,8 @@ public final class Player extends NPC {
         if (objectinFront() instanceof Monster) {
             NPC monster = objectinFront();
 
-            Spiel.model.Kampf.attack(this, monster);
+            attack(monster);
             if (monster.getHp() <= 0) {
-                monster.setRemovethis(true);
                 setXp(getXp() + 10);
 
             }
@@ -63,23 +61,7 @@ public final class Player extends NPC {
 
     }
 
-    public NPC objectinFront() {
-        switch (getOrientierung()) {
-            case RIGHT:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()+1, getY());
-            case LEFT:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()-1, getY());
-            case UP:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX(), getY()-1);
-            case DOWN:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX(), getY()+1);
-            default:
-                return null;
-            
-        }
-        
-        
-    }
+    
 
     public void openChest() {
         if (objectinFront() instanceof Truhe) {

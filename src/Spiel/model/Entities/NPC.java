@@ -193,12 +193,54 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     
 
    
-    
+    public NPC objectinFront() {
+        switch (getOrientierung()) {
+            case RIGHT:
+                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()+1, getY());
+            case LEFT:
+                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()-1, getY());
+            case UP:
+                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX(), getY()-1);
+            case DOWN:
+                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX(), getY()+1);
+            default:
+                return null;
+            
+        }
+        
+        
+    }
 
 
 
 
-   
+    public void attack(NPC d) {
+       NPC a = this;
+       int dmg = a.getDmg();
+       int def = d.getArmor();
+       int schaden = dmg - def;
+       
+            if (Spiel.model.Utilites.distance(a, d) > 3) {
+                System.out.println("Ausser Reichweite");
+            } else {
+
+
+                if (schaden < 0) {
+                    System.out.println("Kein Schaden");
+                } else {
+                    d.setHp(d.getHp() - schaden);
+                    System.out.println(a.getName()+" hat dem "+d.getName()+ " "+ schaden + " Schaden zugefügt");
+                    d.setHit(true);
+                }
+            }
+           
+       
+       
+       
+       
+       
+       
+   } 
     
     
     
@@ -248,6 +290,9 @@ public abstract class NPC implements Drawable,Movable,Serializable{
 
     public void setHp(int hp) {
         this.hp = hp;
+            if (hp <1) {
+                    this.removethis=true;
+            }
     }
 
     public char getIcon() {
