@@ -4,7 +4,7 @@
  */
 package Spiel.View;
 
-import Spiel.model.Main;
+import Spiel.model.MainModel;
 
 
 public interface Observer {
@@ -13,7 +13,7 @@ public interface Observer {
         entities,playerstats,fps,fogofwar
     }
 
-    void update (transEnum enu,Main mm);
+    void update (transEnum enu,MainModel mm);
 
 
     void update (char[][] map);

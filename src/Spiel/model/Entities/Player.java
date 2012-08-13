@@ -1,7 +1,7 @@
 package Spiel.model.Entities;
 
 import Spiel.model.Entities.Items.Item;
-import Spiel.model.Main;
+import Spiel.model.MainModel;
 import java.util.LinkedList;
 
 public final class Player extends NPC {
@@ -10,7 +10,7 @@ public final class Player extends NPC {
     private LinkedList inventar = new LinkedList<>();
 
 
-    public Player(Main main) {
+    public Player(MainModel main) {
         super(0, 0, 'P', main);
         setName("Held");
         setDmg(5);

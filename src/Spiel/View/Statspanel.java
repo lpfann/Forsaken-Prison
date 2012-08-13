@@ -5,7 +5,7 @@
 package Spiel.View;
 
 import Spiel.model.Entities.Player;
-import Spiel.model.Main;
+import Spiel.model.MainModel;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JPanel;
@@ -21,7 +21,7 @@ private String health;
     private String xp;
     private String level;
     private String playername;
-    private Main main;
+    private MainModel main;
     private Statsfield healthlabel;
     private Statsfield namelabel;
     private Statsfield manalabel;
@@ -56,7 +56,7 @@ private String health;
     }
 
     @Override
-    public void update(transEnum enu, Main mm) {
+    public void update(transEnum enu, MainModel mm) {
         if (enu == transEnum.playerstats) {
             main = mm;
             health = "HP: " + String.valueOf(main.player.getHp());

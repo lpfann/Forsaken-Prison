@@ -6,7 +6,7 @@ package Spiel.model.Entities;
 
 import Spiel.model.Entities.monsterpack.Ork;
 import Spiel.model.Entities.monsterpack.Troll;
-import Spiel.model.Main;
+import Spiel.model.MainModel;
 import Spiel.model.Room;
 import java.util.LinkedList;
 
@@ -16,9 +16,9 @@ import java.util.LinkedList;
  */
 public class MonsterFactory {
       private LinkedList monsterlist;
-      private Main main;
+      private MainModel main;
       private Monster monster;
-      public MonsterFactory(Main main) {
+      public MonsterFactory(MainModel main) {
            this.main=main;
       
       }

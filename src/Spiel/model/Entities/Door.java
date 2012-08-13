@@ -4,7 +4,7 @@
  */
 package Spiel.model.Entities;
 
-import Spiel.model.Main;
+import Spiel.model.MainModel;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 public class Door extends NPC {
     
     private boolean open;
-    public Door(int x, int y,Main main){
+    public Door(int x, int y,MainModel main){
         super(x, y, 'D', main);
         this.open=false;
         setFilename("door.png");

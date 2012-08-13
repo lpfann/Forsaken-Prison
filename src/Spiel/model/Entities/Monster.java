@@ -4,7 +4,7 @@
  */
 package Spiel.model.Entities;
 
-import Spiel.model.Main;
+import Spiel.model.MainModel;
 /**
  *
  * @author lpfannschmidt
@@ -16,7 +16,7 @@ public abstract class Monster extends NPC {
     private int counter1=0;
     private int counter2=0;
     
-    public Monster(int x, int y, int hp, int dmg, String name, char icon, Main main) {
+    public Monster(int x, int y, int hp, int dmg, String name, char icon, MainModel main) {
         super(x, y, icon, main);
         setHp(hp);
         setDmg(dmg);

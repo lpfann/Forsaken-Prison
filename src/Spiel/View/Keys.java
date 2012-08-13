@@ -6,7 +6,7 @@ package Spiel.View;
  */
 import Spiel.Controller.Game;
 import Spiel.View.MainFrame;
-import Spiel.model.Main.Richtung;
+import Spiel.model.MainModel.Richtung;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

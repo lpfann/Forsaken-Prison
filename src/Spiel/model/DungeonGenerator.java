@@ -22,9 +22,9 @@ public class DungeonGenerator implements Serializable {
         final static char WAND = '*';
         final static char TÜR = ' ';
         private Room level;
-        private Main main;
+        private MainModel main;
 
-        public DungeonGenerator(int w, int h, Main main) {
+        public DungeonGenerator(int w, int h, MainModel main) {
                 this.main = main;
                 map = generate(w, h);
                 rooms = dungeonTree;

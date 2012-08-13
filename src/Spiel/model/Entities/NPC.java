@@ -5,8 +5,8 @@
 package Spiel.model.Entities;
 
 import Spiel.View.Observer;
-import Spiel.model.Main;
-import Spiel.model.Main.Richtung;
+import Spiel.model.MainModel;
+import Spiel.model.MainModel.Richtung;
 import Spiel.model.Room;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -22,7 +22,7 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     private int y;
     private char icon;
     private String name;
-    private Main main;
+    private MainModel main;
     private Room room;
     private int animationCounter=0;
     private int internalCounter=0;
@@ -46,9 +46,9 @@ public abstract class NPC implements Drawable,Movable,Serializable{
      * @param x X-Koord
      * @param y Y-Koord
      * @param icon Char Icon zur Identifizierung auf Map
-     * @param main Main-Methode wird übergeben
+     * @param main MainModel-Methode wird übergeben
      */
-    public NPC(int x, int y, char icon,Main main) {
+    public NPC(int x, int y, char icon,MainModel main) {
           this.x=x;
           this.y=y;
           this.icon=icon;
@@ -350,11 +350,11 @@ public int[] fieldinFront(int n){
     }
 
 
-    public Main getMain() {
+    public MainModel getMain() {
         return main;
     }
 
-    public void setMain(Main main) {
+    public void setMain(MainModel main) {
         this.main = main;
     }
 

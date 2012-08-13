@@ -7,7 +7,7 @@ package Spiel.model.Entities;
 import Spiel.model.Entities.Items.Heiltrank;
 import Spiel.model.Entities.Items.Schwert;
 import Spiel.model.Entities.Items.Trank;
-import Spiel.model.Main;
+import Spiel.model.MainModel;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
@@ -17,7 +17,7 @@ public class Truhe extends NPC {
 private LinkedList items;
 private boolean opened;
       
-      public Truhe(int x, int y,char icon,Main main) {
+      public Truhe(int x, int y,char icon,MainModel main) {
             super(x,y,icon,main);
             this.items=generatecontent();
             setFilename("chest.png");

@@ -30,7 +30,7 @@ public class Utilites {
         }
     }
         
-        public static Monster nearestEnemy(Player a,Main main) {
+        public static Monster nearestEnemy(Player a,MainModel main) {
         int d = 50;
         Monster dmin=null;
         for (NPC e : main.getEntities()) {
@@ -53,7 +53,7 @@ public class Utilites {
         
         
         
-        static Truhe nearestChest(Player a,Main main) {
+        static Truhe nearestChest(Player a,MainModel main) {
         int d = 50;
         Truhe dmin=null;
         for (NPC e : main.getEntities()) {
@@ -83,10 +83,10 @@ public class Utilites {
        
        
    } 
-    public static NPC findEntitieonMap(Main main,int x,int y) {
+    public static NPC findEntitieonMap(MainModel main,int x,int y) {
         if (main.getEntities()!=null) {
             
-            for (ListIterator<NPC> it = main.getEntcopy().listIterator(); it.hasNext();) {
+            for (ListIterator<NPC> it = main.getEntities().listIterator(); it.hasNext();) {
                 NPC e = it.next();
                 if (e.getX()==x && e.getY()==y) {
                     return e;

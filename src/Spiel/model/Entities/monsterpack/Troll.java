@@ -5,7 +5,7 @@
 package Spiel.model.Entities.monsterpack;
 
 import Spiel.model.Entities.Monster;
-import Spiel.model.Main;
+import Spiel.model.MainModel;
 import java.awt.image.BufferedImage;
 
 /**
@@ -18,7 +18,7 @@ import java.awt.image.BufferedImage;
 public class Troll extends Monster{
    
     
-    public Troll(int x1,int y1,int w, int h,Main main){
+    public Troll(int x1,int y1,int w, int h,MainModel main){
         super(0, 0, 30, 2, "Troll", 'T', main);
         this.setstartposition(x1, y1, w, h);
         setFilename("troll.png");

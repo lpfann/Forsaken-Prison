@@ -2,7 +2,7 @@ package Spiel.Controller;
 
 import Spiel.View.Fieldpainter;
 import Spiel.View.MainFrame;
-import Spiel.model.Main;
+import Spiel.model.MainModel;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class Game implements Runnable {
     
 private Fieldpainter painter;
-private static Main main;
+private static MainModel main;
 private MainFrame mainFr;
 Thread thread;
 boolean wait=true;
@@ -31,12 +31,12 @@ public static final int GAME_TICK = 1000 / 25;
 
 
 public Game (){
-        main=new Main();
+        main=new MainModel();
         init();
         painter = new Fieldpainter(main.getBreite(),main.getHoehe(),main.getPlayer());
         main.addObserver(painter);
         mainFr = new MainFrame(this);
-        main.notifyobs();
+        main.notifyAllObservers();
         thread = new Thread(this);
         thread.start();
 }
@@ -54,7 +54,7 @@ public Game (){
 
    
 
-    public Main getMain() {
+    public MainModel getMain() {
         return main;
     }
     
@@ -80,7 +80,7 @@ public Game (){
             fileIn = new FileInputStream("save.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             try {
-                main = (Main) in.readObject();
+                main = (MainModel) in.readObject();
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -89,7 +89,7 @@ public Game (){
             main.addObserver(painter);
             main.addObserver(mainFr.getStatusbar());
             painter.setFlag(true);
-            main.notifyobs();
+            main.notifyAllObservers();
             resumeThread();
         } catch (IOException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
@@ -106,8 +106,8 @@ public Game (){
 
             
                 main.computeDelta();
-                main.copyEntitie();
-                main.doLogic();
+                
+                main.doSpiellogik();
                 main.moveNPCs();
 
                 painter.repaint();

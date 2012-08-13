@@ -4,7 +4,7 @@ package Spiel.View;
 
 import Spiel.View.Observer.transEnum;
 import Spiel.model.Entities.*;
-import Spiel.model.Main;
+import Spiel.model.MainModel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -248,7 +248,7 @@ public class Fieldpainter extends JPanel implements Observer {
     }
 
     @Override
-    public void update(transEnum enu, Main mm) {
+    public void update(transEnum enu, MainModel mm) {
           if (enu==transEnum.entities) {
                entities=mm.getEntities();
                entcopy=(LinkedList<NPC>) entities.clone();

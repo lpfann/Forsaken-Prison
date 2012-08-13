@@ -4,7 +4,7 @@
  */
 package Spiel.model.Entities;
 
-import Spiel.model.Main;
+import Spiel.model.MainModel;
 import Spiel.model.Room;
 import java.util.LinkedList;
 
@@ -14,9 +14,9 @@ import java.util.LinkedList;
  */
 public class ChestFactory {
        private LinkedList chestlist;
-       private Main main;
+       private MainModel main;
        
-      public ChestFactory(Main main) {
+      public ChestFactory(MainModel main) {
         this.main = main;
            
       
