@@ -87,17 +87,18 @@ public class MainModel implements Subject, Serializable, Cloneable {
         //Dungeonerstellung
                 dungeon = new DungeonGenerator(breite, hoehe, this);
                 map = dungeon.getMap();
+                entities = new LinkedList<>();
+                //Türen Erstellung
+                entities.addAll(dungeon.getDoors());
+                placeAllNPConMap();        
 
                 //Player Erstellung
-                entities = new LinkedList<>();
                 player = new Player(this);
                 entities.add(player);
                 
                 //Fog of War
                 initFogofwar();
                 
-                //Türen Erstellung
-                entities.addAll(dungeon.getDoors());
                 //Monster Erstellung
                 monstergenerator = new MonsterFactory(this);
                 monsters = monstergenerator.populateDungeon(dungeon.getRooms());
@@ -110,7 +111,6 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
 
                 //Objekte auf Map verteilen
-                placeAllNPConMap();        
                 
                 
         }

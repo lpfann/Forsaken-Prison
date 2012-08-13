@@ -6,6 +6,7 @@ package Spiel.View;
  */
 import Spiel.Controller.Game;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -45,7 +46,7 @@ public class MainFrame extends JFrame {
         this.setLocation(screensize.width / 4, screensize.height / 4);
         this.setPreferredSize(new Dimension(game.getPainter().getPreferredSize().width,game.getPainter().getPreferredSize().height+statusbar.getPreferredSize().height));
         this.setLayout(new BorderLayout(5, 5));
-        
+        gamepanel.setBackground(menu.getBackground());
         
         this.add(lpanel,BorderLayout.CENTER);
         lpanel.setBounds(0,0,this.getPreferredSize().width,this.getPreferredSize().height);

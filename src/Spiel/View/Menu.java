@@ -38,13 +38,17 @@ MainFrame mainfr;
         saveGameButton = new javax.swing.JButton();
         exitButton = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(51, 51, 51));
         setForeground(new java.awt.Color(255, 255, 255));
         setNextFocusableComponent(newGameButton);
 
-        newGameButton.setText("New Game");
-        newGameButton.setBorder(null);
-        newGameButton.setBorderPainted(false);
+        newGameButton.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        newGameButton.setForeground(new java.awt.Color(255, 255, 255));
+        newGameButton.setText("Neues Spiel");
+        newGameButton.setAutoscrolls(true);
+        newGameButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         buttonGroup1.add(newGameButton);
+        newGameButton.setContentAreaFilled(false);
         newGameButton.setSelected(true);
         newGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -57,19 +61,31 @@ MainFrame mainfr;
             }
         });
 
-        loadButton.setText("Load Game");
+        loadButton.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        loadButton.setForeground(new java.awt.Color(255, 255, 255));
+        loadButton.setText("Laden");
+        loadButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         buttonGroup1.add(loadButton);
+        loadButton.setContentAreaFilled(false);
         loadButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadButtonActionPerformed(evt);
             }
         });
 
-        helpButton.setText("Help");
+        helpButton.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        helpButton.setForeground(new java.awt.Color(255, 255, 255));
+        helpButton.setText("Hilfe");
+        helpButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         buttonGroup1.add(helpButton);
+        helpButton.setContentAreaFilled(false);
 
-        saveGameButton.setText("Save Game");
+        saveGameButton.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        saveGameButton.setForeground(new java.awt.Color(255, 255, 255));
+        saveGameButton.setText("Speichern");
+        saveGameButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         buttonGroup1.add(saveGameButton);
+        saveGameButton.setContentAreaFilled(false);
         saveGameButton.setEnabled(false);
         saveGameButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,8 +93,12 @@ MainFrame mainfr;
             }
         });
 
+        exitButton.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        exitButton.setForeground(new java.awt.Color(255, 255, 255));
         exitButton.setText("Exit");
+        exitButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         buttonGroup1.add(exitButton);
+        exitButton.setContentAreaFilled(false);
         exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitButtonActionPerformed(evt);
@@ -90,33 +110,29 @@ MainFrame mainfr;
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(72, 72, 72)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(loadButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(helpButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(saveGameButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(newGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addGap(72, 72, 72)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(newGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(loadButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(saveGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(helpButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exitButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(8, 8, 8)
+                .addContainerGap()
                 .addComponent(newGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(loadButton)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(saveGameButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(helpButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(exitButton)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
