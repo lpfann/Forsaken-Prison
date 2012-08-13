@@ -63,6 +63,9 @@ public class Keys implements KeyListener {
             case KeyEvent.VK_ESCAPE:
                 game.getMainFr().openGameMenu();
                 break;
+                case KeyEvent.VK_I:
+                        game.getMainFr().openItemWindow();
+                        break;
         }
     }
 

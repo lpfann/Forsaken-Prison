@@ -26,6 +26,11 @@ public abstract class Trank extends Item {
       //Methode die jeder Trank brauch. Die Auswirkung wenn der Player den Trank nimmt.
       public abstract void potionAuswirkung(Player p, int i);
       
+              @Override
+        public void useItem() {
+                    usepotion(getPlayer());  
+                      
+        }
       
       public  void usepotion(Player p) {
           switch (getSize()) {

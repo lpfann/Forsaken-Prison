@@ -45,7 +45,7 @@ public class ChestFactory {
 
         for (Room room : rooms) {
             int size = room.getBreite() * room.getHoehe();
-            int anzahl = (int) (size * 0.015);
+            int anzahl = (int) (size * 0.03);
 
             for (int i = 0; i < anzahl; i++) {
                 //  Chance das Truhe gespawnt wird.

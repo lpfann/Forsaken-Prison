@@ -27,6 +27,7 @@ public class MainFrame extends JFrame {
     private Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
     private JLayeredPane lpanel = new JLayeredPane();
     private JPanel gamepanel = new JPanel();
+    private Itemwindow itemwindow;
     private boolean open = false;
 
     
@@ -36,6 +37,8 @@ public class MainFrame extends JFrame {
         this.game = game;
         statusbar = new Statspanel();
         menu = new Menu(this);
+        itemwindow= new Itemwindow(game);
+        game.getMain().addObserver(itemwindow);
         
         //this.setResizable(false);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -50,11 +53,13 @@ public class MainFrame extends JFrame {
         gamepanel.setLayout(new BorderLayout(5,5));
         gamepanel.setDoubleBuffered(true);
         menu.setBounds(this.getPreferredSize().width/2-menu.getPreferredSize().width/2,0,menu.getPreferredSize().width,menu.getPreferredSize().height);
-       
+        itemwindow.setBounds(this.getPreferredSize().width/2-itemwindow.getPreferredSize().width/2,0,itemwindow.getPreferredSize().width,itemwindow.getPreferredSize().height);
+        
+        itemwindow.setOpaque(true);
         menu.setOpaque(true);
         lpanel.add(gamepanel,new Integer(0));
         lpanel.add(menu, new Integer(10));
-        
+        lpanel.add(itemwindow, new Integer(10));
         pack();
         menu.requestFocus();
         setVisible(true);
@@ -87,9 +92,9 @@ public class MainFrame extends JFrame {
     public void openGameMenu() {
         
         if (!open) {
-            //this.menu.setNewGameButtonText("Continue");
+            this.menu.setNewGameButtonText("Continue");
             
-            //menu.getSaveGameButton().setEnabled(true);
+            menu.getSaveGameButton().setEnabled(true);
             menu.setVisible(true);
             game.pauseThread();
             menu.requestFocus();
@@ -118,8 +123,26 @@ public class MainFrame extends JFrame {
     public Game getGame() {
         return game;
     }
+
+void openItemWindow() {
+        if (!open) {
+            itemwindow.setVisible(true);
+            game.pauseThread();
+            itemwindow.focustoItemList();
+            open=true;
+        } else {
+                itemwindow.setVisible(false);
+                game.resumeThread();
+                gamepanel.requestFocus();
+                open=false;
+        }
     
     
     
     
+}
+
+
+
+
 }

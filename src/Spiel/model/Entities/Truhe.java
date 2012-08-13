@@ -30,6 +30,10 @@ private boolean opened;
             LinkedList items = new LinkedList();
             items.add(new Heiltrank(Trank.Size.GROß));
             items.add(new Schwert());
+            items.add(new Schwert());
+            items.add(new Schwert());
+            items.add(new Schwert());
+            items.add(new Schwert());
             
          return items;  
       }

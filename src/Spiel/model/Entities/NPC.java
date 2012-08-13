@@ -32,7 +32,7 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     private int currentimg;
     private int dmg;
     private int hp;
-    private int armor;
+    private int defence;
     private int movex=0;
     private int movey=0;
     private boolean hit=false;
@@ -263,7 +263,7 @@ public int[] fieldinFront(int n){
     public void attack(NPC d) {
        NPC a = this;
        int dmg = a.getDmg();
-       int def = d.getArmor();
+       int def = d.getDefence();
        int schaden = dmg - def;
        
             if (Spiel.model.Utilites.distance(a, d) > 3) {
@@ -306,12 +306,12 @@ public int[] fieldinFront(int n){
         this.filename = filename;
     }
     
-    public int getArmor() {
-        return armor;
+    public int getDefence() {
+        return defence;
     }
 
-    public void setArmor(int armor) {
-        this.armor = armor;
+    public void setDefence(int defence) {
+        this.defence = defence;
     }
 
     public int getCounter() {

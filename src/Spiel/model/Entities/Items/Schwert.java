@@ -11,8 +11,8 @@ package Spiel.model.Entities.Items;
 public class Schwert extends Waffe {
 
        public Schwert() {
-       super("Schwert");
-       setDamage(5);
+       super("Schwert",5);
+       
 
        }
       

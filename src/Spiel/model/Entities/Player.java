@@ -1,13 +1,16 @@
 package Spiel.model.Entities;
 
-import Spiel.model.Entities.Items.Item;
+import Spiel.View.Observer;
+import Spiel.model.Entities.Items.*;
 import Spiel.model.MainModel;
 import java.util.LinkedList;
 
 public final class Player extends NPC {
 
     private int xp, lvl, mana;
-    private LinkedList inventar = new LinkedList<>();
+    private Item armor;
+    private Waffe weapon;
+    private LinkedList<Item> inventar = new LinkedList<>();
 
 
     public Player(MainModel main) {
@@ -21,27 +24,13 @@ public final class Player extends NPC {
         setstartposition(1, 1, main.getBreite()-2, main.getHoehe()-2);
         findRoomLocation();
         getMain().getVisitedRooms().add(getRoom());
+        setWeapon(new Schwert());
+        setArmor(new Armor("Kettenhemd", 10));
         setFilename("player.png");
     }
+
     
-//    @Override
-//    public void drawEntitie(Graphics g,int fieldsize) {
-//        switch (getOrientierung())    {
-//            case DOWN:
-//                    g.drawImage(getImage()[0], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
-//                    break;
-//            case LEFT:
-//                    g.drawImage(getImage()[1], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
-//                    break;
-//            case UP:
-//                    g.drawImage(getImage()[2], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
-//                    break;
-//            case RIGHT:
-//                    g.drawImage(getImage()[3], getX()*fieldsize, getY()*fieldsize,fieldsize,fieldsize, null);    
-//                    break;
-//            
-//        }
-//    }
+    
     public void attackmonster() {
         if (objectinFront() instanceof Monster) {
             NPC monster = objectinFront();
@@ -73,6 +62,9 @@ public final class Player extends NPC {
             } else {
             chest.setOpened(true);
             LinkedList<Item> inhalt = chest.getItems();
+                    for (Item item : inhalt) {
+                            item.setPlayer(this);
+                    }
             this.inventar.addAll(inhalt);
             for (Item e : inhalt) {
                 System.out.println("Du hast: " + e.getName() + " gefunden");
@@ -142,14 +134,38 @@ public final class Player extends NPC {
         this.xp = xp;
     }
 
-    public LinkedList getInventar() {
-        return inventar;
-    }
+        public LinkedList<Item> getInventar() {
+                return inventar;
+        }
 
-    public void setInventar(LinkedList inventar) {
-        this.inventar = inventar;
-    }
+        public void setInventar(LinkedList<Item> inventar) {
+                this.inventar = inventar;
+        }
+
+
+
+        public Item getArmor() {
+                return armor;
+        }
+
+        public void setArmor(Item armor) {
+                this.armor = armor;
+        }
+
+        public Item getWeapon() {
+                return weapon;
+        }
+
+        public void setWeapon(Waffe weapon) {
+                this.weapon = weapon;
+        }
+
+        public void useItem(Item selected) {
+          selected.useItem();      
+          getMain().notifyObserver(Observer.transEnum.playerstats);
+                
+        }
 
    
-    
+        
 }
