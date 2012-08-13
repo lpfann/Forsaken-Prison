@@ -25,7 +25,7 @@ private Fieldpainter painter;
 private static Main main;
 private MainFrame mainFr;
 Thread thread;
-boolean wait=false;
+boolean wait=true;
 public static final int GAME_TICK = 1000 / 25;
 
 

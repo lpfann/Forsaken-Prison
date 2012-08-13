@@ -56,7 +56,7 @@ public class MainFrame extends JFrame {
         lpanel.add(menu, new Integer(10));
         
         pack();
-        this.requestFocus();
+        menu.requestFocus();
         setVisible(true);
     }
 
@@ -77,8 +77,7 @@ public class MainFrame extends JFrame {
         gamepanel.add(spielfeld, BorderLayout.NORTH);
         gamepanel.add(statusbar, BorderLayout.CENTER);
         statusbar.setPreferredSize(new Dimension(spielfeld.getPreferredSize().width, statusbar.getPreferredSize().height));
-        
-        game.getMain().notifyobs();
+        game.resumeThread();
         pack();
         gamepanel.setVisible(true);
         gamepanel.requestFocus();
@@ -88,9 +87,9 @@ public class MainFrame extends JFrame {
     public void openGameMenu() {
         
         if (!open) {
-            this.menu.setNewGameButtonText("Continue");
+            //this.menu.setNewGameButtonText("Continue");
             
-            menu.getSaveGameButton().setEnabled(true);
+            //menu.getSaveGameButton().setEnabled(true);
             menu.setVisible(true);
             game.pauseThread();
             menu.requestFocus();

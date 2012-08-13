@@ -6,6 +6,7 @@ package Spiel.View;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 
 /**
@@ -174,9 +175,9 @@ switch (e.getKeyCode()) {
             case KeyEvent.VK_ESCAPE:
                 mainfr.openGameMenu();
                 break;
-        }
-    }
 
+    }
+    }
 
     @Override
     public void keyReleased(KeyEvent e) {
