@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 public class MainModel implements Subject, Serializable, Cloneable {
 
         int breite = 40;
-        int hoehe = 20;
+        int hoehe = 40;
         long delta = 0;
         long last = 0;
         long fps = 0;

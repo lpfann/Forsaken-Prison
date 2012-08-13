@@ -5,6 +5,7 @@ package Spiel.View;
 import Spiel.View.Observer.transEnum;
 import Spiel.model.Entities.*;
 import Spiel.model.MainModel;
+import Spiel.model.MainModel.Richtung;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -53,7 +54,7 @@ public class Fieldpainter extends JPanel implements Observer {
     private boolean[][] fogofwar;
     private LinkedList<NPC> entities= new LinkedList();
     private LinkedList<NPC> entcopy= new LinkedList();
-    public static final int FIELDSIZE=20;
+    public static final int FIELDSIZE=25;
     public final int BLOCKSIZE=50;
     public static final int RESOLUTIONX=800;
     public static final int RESOLUTIONY=600;
@@ -68,12 +69,12 @@ public class Fieldpainter extends JPanel implements Observer {
         try {
             groundimage = ImageIO.read(getClass().getResource("/resources/groundDun.png"));
             wallimage = ImageIO.read(getClass().getResource("/resources/HBlockDun.png"));
-            playerimage= loadPic("/resources/player.png");
-            orkimage= loadPic("/resources/ork.png");
-            trollimage= loadPic("/resources/troll.png");
-            doorimage= loadPic("/resources/door.png");
-            chestimage= loadPic("/resources/chest.png");
-            bloodimage= loadPic("/resources/bloodsplatter.png");
+            playerimage= loadPic("/resources/player.png",20);
+            orkimage= loadPic("/resources/ork.png",38);
+            trollimage= loadPic("/resources/troll.png",20);
+            doorimage= loadPic("/resources/door.png",20);
+            chestimage= loadPic("/resources/chest.png",32);
+            bloodimage= loadPic("/resources/bloodsplatter.png",20);
 
         } catch (IllegalArgumentException | IOException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 0);
@@ -176,13 +177,20 @@ public class Fieldpainter extends JPanel implements Observer {
                             }
                             break;
                         case "Ork":
-                            if (((Monster) e).isHit()) {
-                                compoImage.getGraphics().drawImage(orkimage[1], e.getX() * FIELDSIZE, e.getY() * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-
-                            } else {
-                                compoImage.getGraphics().drawImage(orkimage[0], e.getX() * FIELDSIZE, e.getY() * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-
-                            }
+                                switch (e.getOrientierung()) {
+                               case DOWN:
+                                    compoImage.getGraphics().drawImage(orkimage[1], e.getX() * FIELDSIZE, e.getY() * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                    break;
+                                case LEFT:
+                                    compoImage.getGraphics().drawImage(orkimage[3], e.getX() * FIELDSIZE, e.getY() * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                    break;
+                                case UP:
+                                    compoImage.getGraphics().drawImage(orkimage[2], e.getX() * FIELDSIZE, e.getY() * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                    break;
+                                case RIGHT:
+                                    compoImage.getGraphics().drawImage(orkimage[0], e.getX() * FIELDSIZE, e.getY() * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                    break;
+                                }
                             break;
                         case "Troll":
                             if (((Monster) e).isHit()) {
@@ -299,7 +307,7 @@ public class Fieldpainter extends JPanel implements Observer {
             
         }
     }
-    private BufferedImage[] loadPic(String path) {
+    private BufferedImage[] loadPic(String path,int width) {
 
         BufferedImage pic = null;
 
@@ -310,7 +318,7 @@ public class Fieldpainter extends JPanel implements Observer {
 
         } catch (IOException e) {
         }
-        int anzahl = pic.getWidth() / 20;
+        int anzahl = pic.getWidth() / width;
         BufferedImage[] pics = new BufferedImage[anzahl];
         for (int i = 0; i < anzahl; i++) {
             pics[i] = pic.getSubimage(i * pic.getWidth() / anzahl, 0, pic.getWidth() / anzahl, pic.getHeight());
@@ -320,14 +328,8 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
     }
-        public BufferedImage[] getImageforNPC(String s) {
-        BufferedImage[] img = loadPic("/resources/" + s);
 
-        return img;
-
-
-
-    }
+    
         
     public void setFlag(boolean flag) {
         this.dungeonrepaint = flag;
