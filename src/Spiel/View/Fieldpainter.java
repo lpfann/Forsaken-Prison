@@ -2,19 +2,17 @@ package Spiel.View;
 
 
 
-import Spiel.Controller.Game;
 import Spiel.View.Observer.transEnum;
 import Spiel.model.Entities.*;
 import Spiel.model.Main;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.imageio.ImageIO;
@@ -33,12 +31,15 @@ public class Fieldpainter extends JPanel implements Observer {
     private BufferedImage groundimage;
     private BufferedImage wallimage;
     
-    private Image offscreenImage;
+    private Image dungeonoffscreenImage;
+    BufferedImage transpImg;
+    private Image fowoffscreenImage;
     private Image compoImage;
     private Graphics offscreenGraph;
     private BufferedImage finalimage;
     private BufferedImage tempimg;
-    private boolean flag=true;
+    private boolean dungeonrepaint=true;
+    private boolean fogofwarrepaint=true;
     private int viewportx;
     private int viewporty;
     private int radiusy=5;
@@ -49,6 +50,7 @@ public class Fieldpainter extends JPanel implements Observer {
     private int animationCounter=0;
     private Player player;
     private char[][] map;
+    private boolean[][] fogofwar;
     private LinkedList<NPC> entities= new LinkedList();
     private LinkedList<NPC> entcopy= new LinkedList();
     public static final int FIELDSIZE=20;
@@ -88,6 +90,7 @@ public class Fieldpainter extends JPanel implements Observer {
         //Dungeon Zeichnen
         paintDungeon(g);
         paintallEntities(g);
+        paintFogofWar(g);
         
         
         
@@ -108,11 +111,11 @@ public class Fieldpainter extends JPanel implements Observer {
     
     private void paintDungeon(Graphics g) {
 
-            if (flag) {
-            flag = false;
+            if (dungeonrepaint) {
+            dungeonrepaint = false;
             //erstellt ein leeres bild.
-            offscreenImage = createImage(map[0].length * FIELDSIZE, map.length * FIELDSIZE);
-            offscreenGraph = offscreenImage.getGraphics();
+            dungeonoffscreenImage = createImage(map[0].length * FIELDSIZE, map.length * FIELDSIZE);
+            offscreenGraph = dungeonoffscreenImage.getGraphics();
             for (int y = 0; y < map.length; y++) {
                 for (int x = 0; x < map[0].length; x++) {
                     if (map[y][x] == '*') {
@@ -123,7 +126,7 @@ public class Fieldpainter extends JPanel implements Observer {
                 }
             }
         }
-        compoImage.getGraphics().drawImage(offscreenImage, 0, 0, this);
+        compoImage.getGraphics().drawImage(dungeonoffscreenImage, 0, 0, this);
         
     }
     
@@ -215,7 +218,34 @@ public class Fieldpainter extends JPanel implements Observer {
 
     }
     
-    
+    private void paintFogofWar(Graphics g) {
+            if (fogofwarrepaint) {
+            fogofwarrepaint = false;
+            //erstellt ein leeres bild.
+            transpImg= new BufferedImage(fogofwar[0].length * FIELDSIZE, fogofwar.length * FIELDSIZE, BufferedImage.TRANSLUCENT);
+            fowoffscreenImage = transpImg;
+            Graphics2D q = transpImg.createGraphics();
+            
+            for (int y = 0; y < fogofwar.length; y++) {
+                for (int x = 0; x < fogofwar[0].length; x++) {
+                    if (fogofwar[y][x]==true) {
+                        //q.drawRect(x * FIELDSIZE, y * FIELDSIZE, FIELDSIZE, FIELDSIZE);  
+                        q.setColor(Color.black);
+                        q.fillRect(x * FIELDSIZE, y * FIELDSIZE, FIELDSIZE, FIELDSIZE);
+                    } else {
+                            
+                    }
+                }
+            }
+            //q.dispose();
+        }
+        
+        compoImage.getGraphics().drawImage(fowoffscreenImage, 0, 0, this);
+        //compoImage.getGraphics().drawImage(fowoffscreenImage, 0, 0, this);
+            
+            
+            
+    }
 
     @Override
     public void update(transEnum enu, Main mm) {
@@ -227,6 +257,9 @@ public class Fieldpainter extends JPanel implements Observer {
           } else if (enu==transEnum.playerstats) {
               this.player=mm.getPlayer();
               
+          } else if (enu==transEnum.fogofwar) {
+                  this.fogofwar=mm.getFogofwar();
+                  this.fogofwarrepaint=true;
           }
           repaint();
     }
@@ -297,8 +330,16 @@ public class Fieldpainter extends JPanel implements Observer {
     }
         
     public void setFlag(boolean flag) {
-        this.flag = flag;
+        this.dungeonrepaint = flag;
     }
+
+        public boolean isFogofwarrepaint() {
+                return fogofwarrepaint;
+        }
+
+        public void setFogofwarrepaint(boolean fogofwarrepaint) {
+                this.fogofwarrepaint = fogofwarrepaint;
+        }
 
 
 }

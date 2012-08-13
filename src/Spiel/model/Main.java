@@ -7,11 +7,15 @@ package Spiel.model;
 import Spiel.View.Observer;
 import Spiel.View.Observer.transEnum;
 import Spiel.model.Entities.*;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.io.Serializable;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+//TODO Truhen spawnen vor türen
+//TODO Spieler spawnt in Türen
 
 /**
  *
@@ -25,6 +29,7 @@ public class Main implements Subject, Serializable, Cloneable {
         long last = 0;
         long fps = 0;
         public char[][] map;
+        private boolean[][] fogofwar= new boolean[hoehe][breite];
         public Player player;
         private LinkedList monsters;
         transient private MonsterFactory monstergenerator;
@@ -33,8 +38,12 @@ public class Main implements Subject, Serializable, Cloneable {
         private DungeonGenerator dungeon;
         public LinkedList<NPC> entities;
         public LinkedList<NPC> entcopy;
+        private Stack<Room> visitedRooms= new Stack<>();
         private static ArrayList<Observer> observer = new ArrayList<>();
         private boolean gameover;
+        private boolean fogofwarrepaint=true;
+
+
 
         public enum Richtung {
 
@@ -51,6 +60,10 @@ public class Main implements Subject, Serializable, Cloneable {
                 entities = new LinkedList<>();
                 player = new Player(this);
                 entities.add(player);
+                
+                //Fog of War
+                initFogofwar();
+                
                 //Türen Erstellung
                 entities.addAll(dungeon.getDoors());
                 //Monster Erstellung
@@ -70,6 +83,27 @@ public class Main implements Subject, Serializable, Cloneable {
 
 
         }
+        private void initFogofwar() {
+                for (int i = 0; i < fogofwar.length; i++) {
+                        for (int j = 0; j < fogofwar[0].length; j++) {
+                                fogofwar[i][j]=true;
+                        }
+                }
+  
+                
+        }
+        private void updateFogofWar(){
+               Room r = visitedRooms.pop();
+                
+                for (int i = r.getY1(); i <= r.getY1()+r.getHoehe(); i++) {
+                        for (int j = r.getX1(); j <= r.getX1()+r.getBreite(); j++) {
+                                fogofwar[i][j]=false;
+                        }
+                }
+                this.fogofwarrepaint=false;
+                
+                
+        }
 
         public void copyEntitie() {
                 entcopy = (LinkedList<NPC>) entities.clone();
@@ -77,23 +111,30 @@ public class Main implements Subject, Serializable, Cloneable {
         }
 
         public void doLogic() {
-                LinkedList<NPC> temp = new LinkedList<>();
+                LinkedList<NPC> toberemoved = new LinkedList<>();
                 for (NPC e : entities) {
                         e.doLogic(delta);
                         if (e.isRemovethis()) {
-                                temp.add(e);
+                                toberemoved.add(e);
                         }
                 }
-                for (NPC e : temp) {
+                for (NPC e : toberemoved) {
                         if (e instanceof Player) {
                                 this.gameover = true;
                         }
                         entities.remove(e);
                         map[e.getY()][e.getX()] = ' ';
                 }
+                if (isFogofwarrepaint()) {
+                        updateFogofWar();
+                        
+                }
+                
+                
                 notifyObserver(transEnum.entities);
                 notifyObserver(map);
                 notifyObserver(transEnum.playerstats);
+                notifyObserver(transEnum.fogofwar);
         }
 
         public void moveNPCs() {
@@ -108,6 +149,7 @@ public class Main implements Subject, Serializable, Cloneable {
                 notifyObserver(map);
                 notifyObserver(transEnum.entities);
                 notifyObserver(transEnum.playerstats);
+                notifyObserver(transEnum.fogofwar);
 
         }
 
@@ -233,4 +275,29 @@ public class Main implements Subject, Serializable, Cloneable {
         public void setEntcopy(LinkedList<NPC> entcopy) {
                 this.entcopy = entcopy;
         }
+
+        public boolean[][] getFogofwar() {
+                return fogofwar;
+        }
+
+        public void setFogofwar(boolean[][] fogofwar) {
+                this.fogofwar = fogofwar;
+        }
+
+        public boolean isFogofwarrepaint() {
+                return fogofwarrepaint;
+        }
+
+        public void setFogofwarrepaint(boolean fogofwarrepaint) {
+                this.fogofwarrepaint = fogofwarrepaint;
+        }
+
+        public Stack<Room> getVisitedRooms() {
+                return visitedRooms;
+        }
+
+        public void setVisitedRooms(Stack<Room> visitedRooms) {
+                this.visitedRooms = visitedRooms;
+        }
+        
 }

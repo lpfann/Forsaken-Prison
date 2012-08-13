@@ -20,6 +20,7 @@ public final class Player extends NPC {
         setXp(0);
         setstartposition(1, 1, main.getBreite()-2, main.getHoehe()-2);
         findRoomLocation();
+        getMain().getVisitedRooms().add(getRoom());
         setFilename("player.png");
     }
     
@@ -92,6 +93,9 @@ public final class Player extends NPC {
           Door door = (Door)objectinFront();
           door.opencloseDoorSwitch();
           changeMapforObject(door);
+          getMain().getVisitedRooms().add(findRoomLocationatXY(fieldinFront(2)[0],fieldinFront(2)[1]));
+          getMain().setFogofwarrepaint(true);
+          
         }
         
        
@@ -101,6 +105,7 @@ public final class Player extends NPC {
     public void action() {
         if (objectinFront() instanceof Door) {
             openDoor();
+            
             } else if (objectinFront() instanceof Truhe) {
                 openChest();
             } else {

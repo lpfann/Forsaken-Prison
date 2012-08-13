@@ -41,6 +41,13 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     private boolean removethis=false;
 
 
+    /**
+     * Konstrukor für abstrake Klasse NPC, wird von den Subklassen aufgerufen
+     * @param x X-Koord
+     * @param y Y-Koord
+     * @param icon Char Icon zur Identifizierung auf Map
+     * @param main Main-Methode wird übergeben
+     */
     public NPC(int x, int y, char icon,Main main) {
           this.x=x;
           this.y=y;
@@ -92,11 +99,7 @@ public abstract class NPC implements Drawable,Movable,Serializable{
         main.map[e.getY()][e.getX()] = e.getIcon();
 
     }
-        
-    //TODO computeAnimation funktion ausbauen
-    private void computeAnimation() {
-
-    }    
+    
     
     //Platzieren einer NPC im Bereich von x bis y
     /**
@@ -190,6 +193,22 @@ public abstract class NPC implements Drawable,Movable,Serializable{
         }
      return room;   
     }
+        public Room findRoomLocationatXY(int x, int y){
+        LinkedList<Room> rooms= this.main.getDungeon().getRooms();
+        Room foundroom=null;
+        
+        for (Room r : rooms) {
+            if (r.getX1()<=x && x<=r.getX1()+r.getBreite() && r.getY1()<=y && y <= r.getY1()+r.getHoehe()) {
+                foundroom=r;
+                return foundroom;
+            }
+             else {
+                
+            }
+            
+        }
+     return foundroom;   
+    }
     
 
    
@@ -210,7 +229,34 @@ public abstract class NPC implements Drawable,Movable,Serializable{
         
         
     }
-
+   
+public int[] fieldinFront(int n){
+        int[] coord= new int[2];
+     switch (getOrientierung()) {
+            case RIGHT:
+                    coord[0]=x+n;
+                    coord[1]=y;             
+                return coord;
+            case LEFT:
+                    coord[0]=x-n;
+                    coord[1]=y;             
+                return coord;
+            case UP:
+                    coord[0]=x;
+                    coord[1]=y-n;             
+                return coord;
+            case DOWN:
+                    coord[0]=x;
+                    coord[1]=y+n;             
+                return coord;
+            default:
+                return null;
+            
+        }   
+        
+        
+        
+}
 
 
 

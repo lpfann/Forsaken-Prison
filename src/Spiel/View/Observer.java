@@ -10,7 +10,7 @@ import Spiel.model.Main;
 public interface Observer {
 
     enum transEnum{
-        entities,playerstats,fps
+        entities,playerstats,fps,fogofwar
     }
 
     void update (transEnum enu,Main mm);
