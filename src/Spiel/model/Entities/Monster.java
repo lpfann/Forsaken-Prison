@@ -5,8 +5,6 @@
 package Spiel.model.Entities;
 
 import Spiel.model.Main;
-import Spiel.model.Kampf;
-import com.sun.xml.internal.ws.message.saaj.SAAJHeader;
 /**
  *
  * @author lpfannschmidt
