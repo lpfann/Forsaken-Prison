@@ -89,7 +89,6 @@ public Game (){
             main.clearObservers();
             main.addObserver(painter);
             main.addObserver(mainFr.getStatusbar());
-            painter.setFlag(true);
             main.notifyAllObservers();
             resumeThread();
         } catch (IOException ex) {

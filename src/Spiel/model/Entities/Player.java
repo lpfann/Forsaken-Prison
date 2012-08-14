@@ -13,6 +13,7 @@ public final class Player extends NPC {
     private Item armor;
     private Waffe weapon;
     private LinkedList<Item> inventar = new LinkedList<>();
+    boolean walking;
 
 
     public Player(MainModel main) {
@@ -214,6 +215,14 @@ public final class Player extends NPC {
                 this.smallpotions = smallpotions;
         }
 
+     public boolean isWalking() {
+          return walking;
+     }
+
+     public void setWalking(boolean walking) {
+          this.walking = walking;
+     }
+
         public void usePotion() {
                 if (smallpotions>0) {
                         useItem(new Heiltrank(Trank.Size.KLEIN,this));
@@ -233,5 +242,6 @@ public final class Player extends NPC {
         }
 
 
+        
         
 }

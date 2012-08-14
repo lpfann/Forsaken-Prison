@@ -1,7 +1,5 @@
 package Spiel.View;
 
-
-
 import Spiel.View.Observer.transEnum;
 import Spiel.model.Entities.*;
 import Spiel.model.MainModel;
@@ -22,321 +20,412 @@ import javax.swing.JPanel;
 
 public class Fieldpainter extends JPanel implements Observer {
 
-    private BufferedImage[] playerimage;
-    private BufferedImage[] orkimage;
-    private BufferedImage[] trollimage;
-    private BufferedImage[] chestimage;
-    private BufferedImage[] doorimage;
-    private BufferedImage[] bloodimage;
-    
-    private BufferedImage groundimage;
-    private BufferedImage wallimage;
-    
-    private Image dungeonoffscreenImage;
-    BufferedImage transpImg;
-    private Image fowoffscreenImage;
-    private Image compoImage;
-    private Graphics offscreenGraph;
-    private BufferedImage finalimage;
-    private BufferedImage tempimg;
-    private boolean dungeonrepaint=true;
-    private boolean fogofwarrepaint=true;
-    private int viewportx;
-    private int viewporty;
-    private int radiusy=5;
-    private int radiusx=8;
-    private int viewportwidth=2*radiusx;
-    private int viewportheight=2*radiusy;
-    private int fps;
-    private int animationCounter=0;
-    private Player player;
-    private char[][] map;
-    private boolean[][] fogofwar;
-    private LinkedList<NPC> entities= new LinkedList();
-    private LinkedList<NPC> entcopy= new LinkedList();
-    public static final int FIELDSIZE=40;
-    public final int BLOCKSIZE=50;
-    public static final int RESOLUTIONX=800;
-    public static final int RESOLUTIONY=600;
-    
-    public Fieldpainter(int breite, int hoehe,Player p) {
-        
+     private BufferedImage[][] playerimage;
+     private BufferedImage[] orkimage;
+     private BufferedImage[] trollimage;
+     private BufferedImage[] chestimage;
+     private BufferedImage[] doorimage;
+     private BufferedImage[] bloodimage;
+     private BufferedImage groundimage;
+     private BufferedImage wallimage;
+     private BufferedImage[] knightimage;
 
-        this.setPreferredSize(new Dimension(BLOCKSIZE*viewportwidth, BLOCKSIZE*viewportheight));
-        this.setDoubleBuffered(true);
-        player=p;
-        updateViewportCoord(p);
-        try {
-            groundimage = ImageIO.read(getClass().getResource("/resources/groundDun.png"));
-            wallimage = ImageIO.read(getClass().getResource("/resources/HBlockDun.png"));
-            playerimage= loadPic("/resources/player.png",20);
-            orkimage= loadPic("/resources/ork.png",38);
-            trollimage= loadPic("/resources/troll.png",20);
-            doorimage= loadPic("/resources/door.png",20);
-            chestimage= loadPic("/resources/chest.png",32);
-            bloodimage= loadPic("/resources/bloodsplatter.png",20);
+     private Image dungeonoffscreenImage;
+     BufferedImage transpImg;
+     private Image fowoffscreenImage;
+     private Image compoImage;
+     private Graphics offscreenGraph;
+     private boolean fogofwarrepaint = true;
+     private int viewportx;
+     private int viewporty;
+     private int radiusy = 5;
+     private int radiusx = 8;
+     private int viewportwidth = 2 * radiusx;
+     private int viewportheight = 2 * radiusy;
+     private int animcounter=0;
+     private Player player;
+     private char[][] map;
+     private boolean[][] fogofwar;
+     private LinkedList<NPC> entities = new LinkedList();
+     private LinkedList<NPC> entcopy = new LinkedList();
+     public static final int FIELDSIZE = 40;
+     public final int BLOCKSIZE = 50;
+     public static final int RESOLUTIONX = 800;
+     public static final int RESOLUTIONY = 600;
+     private int fps;
 
-        } catch (IllegalArgumentException | IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 0);
-        }
-
-}
+     public Fieldpainter(int breite, int hoehe, Player p) {
 
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        updateViewportCoord(player);
-        //Dungeon Zeichnen
-        compoImage= createImage(viewportwidth*FIELDSIZE, viewportheight*FIELDSIZE);
+          this.setPreferredSize(new Dimension(BLOCKSIZE * viewportwidth, BLOCKSIZE * viewportheight));
+          this.setDoubleBuffered(true);
+          player = p;
+          updateViewportCoord(p);
+          try {
+               groundimage = ImageIO.read(getClass().getResource("/resources/groundDun.png"));
+               wallimage = ImageIO.read(getClass().getResource("/resources/HBlockDun.png"));
+               //playerimage = loadPic("/resources/player.png", 20);
+               playerimage= loadPic("/resources/new-player.png", 64, 64);
+               orkimage = loadPic("/resources/ork.png", 38);
+               trollimage = loadPic("/resources/troll.png", 20);
+               doorimage = loadPic("/resources/new-door.png", 24);
+               chestimage = loadPic("/resources/chest.png", 32);
+               bloodimage = loadPic("/resources/bloodsplatter.png", 20);
+               knightimage = loadPic("/resources/knight.png", 40);
 
-        paintDungeon(g);
-        paintallEntities(g);
-        paintFogofWar(g);
-        
-        
-        
-        
-        try {
-        g.drawImage(compoImage, 0, 0, viewportwidth*BLOCKSIZE, viewportheight * BLOCKSIZE, this);
-            
-        } catch (Exception e) {
-          e.printStackTrace(); 
-        }
-        
-        g.setColor(Color.white);
-        g.drawString("ESC - Menü", 10, 10);
+          } catch (IllegalArgumentException | IOException e) {
+               JOptionPane.showMessageDialog(null, e.getMessage(), "Bild konnte nicht eingelesen werden", 0);
+          }
 
-    }
-    
-    private void paintDungeon(Graphics g) {
+     }
+
+     @Override
+     protected void paintComponent(Graphics g) {
+          super.paintComponent(g);
+          updateViewportCoord(player);
+          compoImage = createImage(viewportwidth * FIELDSIZE, viewportheight * FIELDSIZE);
+
+          //Dungeon Zeichnen
+          paintDungeon(g);
+          //Entities Zeichnen
+          paintallEntities(g);
+          //Fog of War zeichnen
+          paintFogofWar(g);
 
 
-            offscreenGraph = compoImage.getGraphics();
-            for (int y = viewporty; y < viewporty+viewportheight; y++) {
-                for (int x = viewportx; x < viewportx+viewportwidth; x++) {
+
+
+          try {
+               g.drawImage(compoImage, 0, 0, viewportwidth * BLOCKSIZE, viewportheight * BLOCKSIZE, this);
+
+          } catch (Exception e) {
+               e.printStackTrace();
+          }
+
+
+          //Hilfe text zeichnen
+          g.setColor(Color.white);
+          g.drawString("ESC - Menü", 10, 10);
+
+     }
+
+     private void paintDungeon(Graphics g) {
+
+
+          offscreenGraph = compoImage.getGraphics();
+          for (int y = viewporty; y < viewporty + viewportheight; y++) {
+               for (int x = viewportx; x < viewportx + viewportwidth; x++) {
                     if (map[y][x] == '*') {
-                        offscreenGraph.drawImage(wallimage, (x-viewportx) * FIELDSIZE, (y-viewporty) * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                         offscreenGraph.drawImage(wallimage, (x - viewportx) * FIELDSIZE, (y - viewporty) * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
                     } else {
-                        offscreenGraph.drawImage(groundimage, (x-viewportx )* FIELDSIZE, (y-viewporty) * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                         offscreenGraph.drawImage(groundimage, (x - viewportx) * FIELDSIZE, (y - viewporty) * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
                     }
-                }
-            }
-        
-        compoImage.getGraphics().drawImage(dungeonoffscreenImage, 0, 0, this);
-        
-    }
-    
-    //Zeichnen der Entities
-    private void paintallEntities(Graphics g) {
-        if (!entities.isEmpty()) {
-            
-            for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
-                NPC e = it.next();
-                try {
-                if (e.getX() < viewportx || e.getX() > viewportx + viewportwidth || e.getY() < viewporty || e.getY() > viewporty + viewportheight) {
-                } else {
-                    int x1=e.getX()-viewportx;
-                    int y1=e.getY()-viewporty;
-                    switch (e.getClass().getSimpleName()) {
-                        case "Player":
-                            switch (e.getOrientierung()) {
-                                case DOWN:
-                                    compoImage.getGraphics().drawImage(playerimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-                                    break;
-                                case LEFT:
-                                    compoImage.getGraphics().drawImage(playerimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-                                    break;
-                                case UP:
-                                    compoImage.getGraphics().drawImage(playerimage[2], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-                                    break;
-                                case RIGHT:
-                                    compoImage.getGraphics().drawImage(playerimage[3], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-                                    break;
-                            }
-                            break;
-                        case "Door":
-                            if (((Door) e).getOpen()) {
-                                compoImage.getGraphics().drawImage(doorimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+               }
+          }
 
-                            } else {
-                                compoImage.getGraphics().drawImage(doorimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+          compoImage.getGraphics().drawImage(dungeonoffscreenImage, 0, 0, this);
 
-                            }
-                            break;
-                        case "Truhe":
-                            if (((Truhe) e).isOpened()) {
-                                compoImage.getGraphics().drawImage(chestimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+     }
 
-                            } else {
-                                compoImage.getGraphics().drawImage(chestimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+     //Zeichnen der Entities
+     private void paintallEntities(Graphics g) {
+          if (!entities.isEmpty()) {
 
-                            }
-                            break;
-                        case "Ork":
-                                switch (e.getOrientierung()) {
-                               case DOWN:
-                                    compoImage.getGraphics().drawImage(orkimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-                                    break;
-                                case LEFT:
-                                    compoImage.getGraphics().drawImage(orkimage[3], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-                                    break;
-                                case UP:
-                                    compoImage.getGraphics().drawImage(orkimage[2], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-                                    break;
-                                case RIGHT:
-                                    compoImage.getGraphics().drawImage(orkimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-                                    break;
-                                }
-                            break;
-                        case "Troll":
-                            if (((Monster) e).isHit()) {
-                                compoImage.getGraphics().drawImage(trollimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+               for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
+                    NPC e = it.next();
+                    try {
+                         if (e.getX() < viewportx || e.getX() > viewportx + viewportwidth || e.getY() < viewporty || e.getY() > viewporty + viewportheight) {
+                         } else {
+                              int x1 = e.getX() - viewportx;
+                              int y1 = e.getY() - viewporty;
+                              switch (e.getClass().getSimpleName()) {
+                                   case "Player":
+                                        switch (e.getOrientierung()) {
+                                             case DOWN:
+                                                  if (player.isWalking()) {
+                                                      animateWalking(Richtung.DOWN,x1,y1); 
+                                                  } else {
+                                                  compoImage.getGraphics().drawImage(playerimage[0][2], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  }
+                                                  break;
+                                             case LEFT:
+                                                  if (player.isWalking()) {
+                                                      animateWalking(Richtung.LEFT,x1,y1); 
+                                                  } else {
+                                                  compoImage.getGraphics().drawImage(playerimage[0][1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  }
+                                                  break;
+                                             case UP:
+                                                  if (player.isWalking()) {
+                                                      animateWalking(Richtung.UP,x1,y1); 
+                                                  } else {
+                                                  compoImage.getGraphics().drawImage(playerimage[0][0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  }
+                                                  break;
+                                             case RIGHT:
+                                                  if (player.isWalking()) {
+                                                      animateWalking(Richtung.RIGHT,x1,y1); 
+                                                  } else {
+                                                  compoImage.getGraphics().drawImage(playerimage[0][3], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  }
+                                                  break;
+                                        }
+                                        break;
+                                   case "Door":
+                                        if (((Door) e).getOpen()) {
+                                             compoImage.getGraphics().drawImage(doorimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
 
-                            } else {
-                                compoImage.getGraphics().drawImage(trollimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                        } else {
+                                             compoImage.getGraphics().drawImage(doorimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
 
-                            }
-                            break;
+                                        }
+                                        break;
+                                   case "Truhe":
+                                        if (((Truhe) e).isOpened()) {
+                                             compoImage.getGraphics().drawImage(chestimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+
+                                        } else {
+                                             compoImage.getGraphics().drawImage(chestimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+
+                                        }
+                                        break;
+                                   case "Ork":
+                                        switch (e.getOrientierung()) {
+                                             case DOWN:
+                                                  compoImage.getGraphics().drawImage(orkimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  break;
+                                             case LEFT:
+                                                  compoImage.getGraphics().drawImage(orkimage[3], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  break;
+                                             case UP:
+                                                  compoImage.getGraphics().drawImage(orkimage[2], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  break;
+                                             case RIGHT:
+                                                  compoImage.getGraphics().drawImage(orkimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  break;
+                                        }
+                                        break;
+                                   case "Knight":
+                                        switch (e.getOrientierung()) {
+                                             case DOWN:
+                                                  compoImage.getGraphics().drawImage(knightimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  break;
+                                             case LEFT:
+                                                  compoImage.getGraphics().drawImage(knightimage[3], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  break;
+                                             case UP:
+                                                  compoImage.getGraphics().drawImage(knightimage[2], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  break;
+                                             case RIGHT:
+                                                  compoImage.getGraphics().drawImage(knightimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  break;
+                                        }
+                                        break;
+                                   case "Troll":
+                                        if (((Monster) e).isHit()) {
+                                             compoImage.getGraphics().drawImage(trollimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+
+                                        } else {
+                                             compoImage.getGraphics().drawImage(trollimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+
+                                        }
+                                        break;
 
 
+                              }
+
+
+                              if (e.isHit()) {
+
+                                   compoImage.getGraphics().drawImage(bloodimage[e.getCounter()], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+
+                              }
+
+
+
+                         }
+                    } catch (Exception ex) {
+                         ex.printStackTrace();
                     }
-                    
-                    
-                    if (e.isHit()) {
-                        
-                        compoImage.getGraphics().drawImage(bloodimage[e.getCounter()], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-                        
-                    }
-
-
-
-                }
-                } catch ( Exception ex) {
-                        ex.printStackTrace();
-                }
-            }
-        }
+               }
+          }
 
 
 
 
-    }
-    
-    private void paintFogofWar(Graphics g) {
-            //if (fogofwarrepaint) {
-            fogofwarrepaint = false;
-            //erstellt ein transparentes Bild
-            transpImg= new BufferedImage(viewportwidth * FIELDSIZE, viewportheight * FIELDSIZE, BufferedImage.TRANSLUCENT);
-            fowoffscreenImage = transpImg;
-            Graphics2D q = transpImg.createGraphics();
-            
-            for (int y = viewporty; y < viewporty+viewportheight; y++) {
-                for (int x = viewportx; x < viewportx+viewportwidth; x++) {
-                    if (fogofwar[y][x]==true) {
-                        q.setColor(Color.black);
-                        q.fillRect((x-viewportx) * FIELDSIZE, (y-viewporty)  * FIELDSIZE, FIELDSIZE, FIELDSIZE);
+     }
+
+     private void paintFogofWar(Graphics g) {
+          //if (fogofwarrepaint) {
+          fogofwarrepaint = false;
+          //erstellt ein transparentes Bild
+          transpImg = new BufferedImage(viewportwidth * FIELDSIZE, viewportheight * FIELDSIZE, BufferedImage.TRANSLUCENT);
+          fowoffscreenImage = transpImg;
+          Graphics2D q = transpImg.createGraphics();
+
+          for (int y = viewporty; y < viewporty + viewportheight; y++) {
+               for (int x = viewportx; x < viewportx + viewportwidth; x++) {
+                    if (fogofwar[y][x] == true) {
+                         q.setColor(Color.black);
+                         q.fillRect((x - viewportx) * FIELDSIZE, (y - viewporty) * FIELDSIZE, FIELDSIZE, FIELDSIZE);
                     } else {
-                            
                     }
-                }
-            }
-            q.dispose();
-        //}
-        
-        compoImage.getGraphics().drawImage(fowoffscreenImage, 0, 0, this);
-            
-            
-            
-    }
+               }
+          }
+          q.dispose();
+          //}
 
-    @Override
-    public void update(transEnum enu, MainModel mm) {
-          if (enu==transEnum.entities) {
-               entities=mm.getEntities();
-               entcopy=(LinkedList<NPC>) entities.clone();
-          } else if (enu==transEnum.fps) {
-              this.fps=(int)mm.getFps();
-          } else if (enu==transEnum.playerstats) {
-              this.player=mm.getPlayer();
-              
-          } else if (enu==transEnum.fogofwar) {
-                  this.fogofwar=mm.getFogofwar();
-                  this.fogofwarrepaint=true;
+          compoImage.getGraphics().drawImage(fowoffscreenImage, 0, 0, this);
+
+
+
+     }
+
+     @Override
+     public void update(transEnum enu, MainModel mm) {
+          if (enu == transEnum.entities) {
+               entities = mm.getEntities();
+               entcopy = (LinkedList<NPC>) entities.clone();
+          } else if (enu == transEnum.fps) {
+               this.fps = (int) mm.getFps();
+          } else if (enu == transEnum.playerstats) {
+               this.player = mm.getPlayer();
+
+          } else if (enu == transEnum.fogofwar) {
+               this.fogofwar = mm.getFogofwar();
+               this.fogofwarrepaint = true;
           }
           repaint();
-    }
+     }
+
+     @Override
+     public void update(char[][] map) {
+          this.map = map;
+          repaint();
+
+     }
+
+     private void updateViewportCoord(Player p) {
+
+          if (p != null && map != null) {
+               if (p.getX() < radiusx) {
+                    this.viewportx = 0;
+               } else {
+                    this.viewportx = p.getX() - radiusx;
+
+               }
+               if (p.getY() < radiusy) {
+                    this.viewporty = 0;
+               } else {
+                    this.viewporty = p.getY() - radiusy;
+
+               }
+               if (map[0].length - p.getX() < radiusx) {
+                    this.viewportx = p.getX() - radiusx - (radiusx - (map[0].length - p.getX()));
+               } else {
+               }
+               if (map.length - p.getY() < radiusy) {
+                    this.viewporty = p.getY() - radiusy - (radiusy - (map.length - p.getY()));
+               } else {
+               }
+
+          }
+     }
+
+     private BufferedImage[] loadPic(String path, int width) {
+
+          BufferedImage pic = null;
+
+          URL pathtopic = getClass().getResource(path);
+
+          try {
+               pic = ImageIO.read(pathtopic);
+
+          } catch (IOException e) {
+          }
+          int anzahl = pic.getWidth() / width;
+          BufferedImage[] pics = new BufferedImage[anzahl];
+          for (int i = 0; i < anzahl; i++) {
+               pics[i] = pic.getSubimage(i * pic.getWidth() / anzahl, 0, pic.getWidth() / anzahl, pic.getHeight());
+          }
+          return pics;
 
 
-    @Override
-    public void update(char[][] map) {
-        this.map=map;
-        repaint();
 
-    }
+     }
+     
+     private BufferedImage[][] loadPic(String path, int width,int height) {
 
+          BufferedImage pic = null;
 
-    private void updateViewportCoord(Player p){
-        
-        if (p!=null && map!=null) {
-            if (p.getX() < radiusx) {
-                this.viewportx = 0;
-            } else {
-                this.viewportx = p.getX() - radiusx;
+          URL pathtopic = getClass().getResource(path);
 
-            }
-            if (p.getY() < radiusy) {
-                this.viewporty = 0;
-            } else {
-                this.viewporty = p.getY() - radiusy;
+          try {
+               pic = ImageIO.read(pathtopic);
 
-            }
-            if (map[0].length - p.getX() < radiusx) {
-                this.viewportx= p.getX()-radiusx-(radiusx-(map[0].length - p.getX())) ;
-            } else {
-            }
-            if (map.length - p.getY() < radiusy) {
-                this.viewporty = p.getY()-radiusy-(radiusy-(map.length - p.getY()));
-            } else {
-            }
-            
-        }
-    }
-    private BufferedImage[] loadPic(String path,int width) {
-
-        BufferedImage pic = null;
-
-        URL pathtopic = getClass().getResource(path);
-
-        try {
-            pic = ImageIO.read(pathtopic);
-
-        } catch (IOException e) {
-        }
-        int anzahl = pic.getWidth() / width;
-        BufferedImage[] pics = new BufferedImage[anzahl];
-        for (int i = 0; i < anzahl; i++) {
-            pics[i] = pic.getSubimage(i * pic.getWidth() / anzahl, 0, pic.getWidth() / anzahl, pic.getHeight());
-        }
-        return pics;
+          } catch (IOException e) {
+          }
+          int anzahlx = pic.getWidth() / width;
+          int anzahly = pic.getHeight() / height;
+          BufferedImage[][] pics = new BufferedImage[anzahlx][anzahly];
+          for (int i = 0; i < anzahlx; i++) {
+               for (int j = 0; j < anzahly; j++) {
+                    pics[i][j] = pic.getSubimage(i * width, j*height, width, height);
+                    
+               }
+          }
+          return pics;
 
 
 
-    }
+     }
 
-    
-        
-    public void setFlag(boolean flag) {
-        this.dungeonrepaint = flag;
-    }
+     public boolean isFogofwarrepaint() {
+          return fogofwarrepaint;
+     }
 
-        public boolean isFogofwarrepaint() {
-                return fogofwarrepaint;
-        }
+     public void setFogofwarrepaint(boolean fogofwarrepaint) {
+          this.fogofwarrepaint = fogofwarrepaint;
+     }
+     private void animateWalking(Richtung dir,int x1,int y1){
+     
+          switch (dir) {
+               case DOWN:
+                    if (animcounter<8) {
+                         animcounter++;
+                    } else {
+                         animcounter=0;
+                    }
+                    compoImage.getGraphics().drawImage(playerimage[animcounter][2], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
 
-        public void setFogofwarrepaint(boolean fogofwarrepaint) {
-                this.fogofwarrepaint = fogofwarrepaint;
-        }
-
-
+                    
+                    break;
+               case LEFT:
+                    if (animcounter<8) {
+                         animcounter++;
+                    } else {
+                         animcounter=0;
+                    }
+                    compoImage.getGraphics().drawImage(playerimage[animcounter][1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                    break;
+               case UP:
+                    if (animcounter<8) {
+                         animcounter++;
+                    } else {
+                         animcounter=0;
+                    }
+                    compoImage.getGraphics().drawImage(playerimage[animcounter][0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                    break;
+               case RIGHT:
+                    if (animcounter<8) {
+                         animcounter++;
+                    } else {
+                         animcounter=0;
+                    }
+                    compoImage.getGraphics().drawImage(playerimage[animcounter][3], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                    break;
+     
+     
+          }
+     }
 }

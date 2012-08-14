@@ -16,7 +16,6 @@ import java.util.LinkedList;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//TODO Truhen spawnen vor türen
 //TODO Spieler spawnt in Türen
 
 /**
@@ -186,6 +185,14 @@ public class MainModel implements Subject, Serializable, Cloneable {
          */
         public void moveNPCs() {
                 for (NPC e : entities) {
+                        if (e instanceof Player) {
+                             if (e.getMovex()==0 && e.getMovey()==0) {
+                                  ((Player)e).setWalking(false);
+                             } else {
+                                  
+                                  ((Player)e).setWalking(true);
+                             }
+                     }
                         e.move();
 
                 }

@@ -4,6 +4,7 @@
  */
 package Spiel.model.Entities;
 
+import Spiel.model.Entities.monsterpack.Knight;
 import Spiel.model.Entities.monsterpack.Ork;
 import Spiel.model.Entities.monsterpack.Troll;
 import Spiel.model.MainModel;
@@ -44,13 +45,18 @@ public class MonsterFactory {
                   int anzahl= (int)(size*0.04);
                   
                   for (int i = 0; i < anzahl; i++) {
-                      int random= Spiel.model.Utilites.randomizer(0, 4);
+                      int random= Spiel.model.Utilites.randomizer(0, 10);
                           if (random==0) {
                                     monster= new Troll(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
                                     monster.setRoom(room);
                                     monsters.add(monster);   
-                          } else if (random >0) {
+                          } else if (random >0 && random<8) {
                                     monster= new Ork(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
+                                    monster.setRoom(room);
+                                    monsters.add(monster);   
+                      
+                          } else if (random >=8) {
+                                    monster= new Knight(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
                                     monster.setRoom(room);
                                     monsters.add(monster);   
                       }
