@@ -2,6 +2,7 @@ package Spiel.model.Entities;
 
 import Spiel.View.Observer;
 import Spiel.model.Entities.Items.*;
+import Spiel.model.Entities.Items.Armor.Lederwams;
 import Spiel.model.MainModel;
 import java.util.LinkedList;
 
@@ -25,7 +26,9 @@ public final class Player extends NPC {
         findRoomLocation();
         getMain().getVisitedRooms().add(getRoom());
         setWeapon(new Schwert());
-        setArmor(new Armor("Kettenhemd", 10));
+        getWeapon().setPlayer(this);
+        setArmor(new Lederwams());
+        getArmor().setPlayer(this);
         setFilename("player.png");
     }
 
@@ -132,6 +135,10 @@ public final class Player extends NPC {
 
     public void setXp(int xp) {
         this.xp = xp;
+            if (xp>100) {
+                    setLvl(getLvl()+1);       
+            }
+                    
     }
 
         public LinkedList<Item> getInventar() {
@@ -148,8 +155,9 @@ public final class Player extends NPC {
                 return armor;
         }
 
-        public void setArmor(Item armor) {
+        public void setArmor(Armor armor) {
                 this.armor = armor;
+                setDefence(armor.getDefence());
         }
 
         public Item getWeapon() {
@@ -158,6 +166,7 @@ public final class Player extends NPC {
 
         public void setWeapon(Waffe weapon) {
                 this.weapon = weapon;
+                setDmg(weapon.getDamage());
         }
 
         public void useItem(Item selected) {

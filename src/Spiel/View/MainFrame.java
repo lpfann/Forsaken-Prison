@@ -41,7 +41,7 @@ public class MainFrame extends JFrame {
         itemwindow= new Itemwindow(game);
         game.getMain().addObserver(itemwindow);
         
-        //this.setResizable(false);
+        this.setResizable(false);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocation(screensize.width / 4, screensize.height / 4);
         this.setPreferredSize(new Dimension(game.getPainter().getPreferredSize().width,game.getPainter().getPreferredSize().height+statusbar.getPreferredSize().height));

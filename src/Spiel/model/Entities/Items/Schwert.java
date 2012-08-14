@@ -12,12 +12,12 @@ public class Schwert extends Waffe {
 
        public Schwert() {
        super("Schwert",5);
-       
+       setSubimagex(0);
+       setSubimagey(7);
 
        }
       
       
       
-      
-      
+
 }

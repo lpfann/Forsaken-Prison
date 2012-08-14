@@ -37,8 +37,12 @@ public class ItemListRenderer extends JLabel implements ListCellRenderer{
                 }
 
                 String name = item.getName();
-                
+                if (Itemwindow.singleitem[item.getSubimagex()][item.getSubimagey()]!=null) {
+                        setIcon(Itemwindow.singleitem[item.getSubimagex()][item.getSubimagey()]);
+                        
+                }
                 setText(name);
+                
                 setFont(list.getFont());
 
                 return this;

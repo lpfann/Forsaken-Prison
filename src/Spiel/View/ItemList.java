@@ -18,8 +18,8 @@ import javax.swing.ListSelectionModel;
  * @author Gamer
  */
 public class ItemList extends JList implements KeyListener {
-Game game;
-Item selected;
+private Game game;
+private Item selected;
 
         public ItemList(Game game) {
                 super();
@@ -46,8 +46,12 @@ Item selected;
                                 game.getMainFr().openItemWindow();
                                 break;
                         case KeyEvent.VK_E:
+                                
                                 selected=(Item)this.getSelectedValue();
+                                if (selected!=null) {
                                 game.getMain().player.useItem(selected);
+                                        
+                                }
                                 break;
 
 

@@ -146,7 +146,7 @@ private void redirectSystemStreams() {
   };
  
   System.setOut(new PrintStream(out, true));
-  System.setErr(new PrintStream(out, true));
+  //System.setErr(new PrintStream(out, true));
 }
 
 

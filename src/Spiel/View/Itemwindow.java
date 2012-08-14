@@ -8,12 +8,21 @@ import Spiel.Controller.Game;
 import Spiel.model.Entities.Items.Item;
 import Spiel.model.Entities.Player;
 import Spiel.model.MainModel;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.CropImageFilter;
+import java.awt.image.FilteredImageSource;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import sun.awt.image.FileImageSource;
 
 /**
  *
  * @author Gamer
  */
+
 public class Itemwindow extends javax.swing.JPanel implements Observer {
 
 
@@ -21,13 +30,27 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         private int i;
         private final Game game;
         private Item[] items;
+        private BufferedImage allitems;
+        public static ImageIcon[][] singleitem= new ImageIcon[8][8];
         /**
          * Creates new form Itemwindow
          */
         public Itemwindow(Game game) {
                 this.game=game;
                 initComponents();
-                
+                try {
+                      allitems= ImageIO.read(getClass().getResource("/resources/items1.png"));
+                        //Erstellen der Icons für alle Items
+                        for (int j = 0; j < 8; j++) {
+                                for (int k = 0; k < 8; k++) {
+
+                                singleitem[j][k] = new ImageIcon(allitems.getSubimage(j*32,k*32,32,32));
+                                }
+                        }
+
+                } catch (Exception e) {
+                        
+                }
                 
                 setVisible(false);
         }
@@ -134,6 +157,12 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                 if (enu==transEnum.playerstats) {
                         this.player=mm.getPlayer();
                         this.weaponLabel.setText(player.getWeapon().getName()) ;
+                        int weaponx=player.getWeapon().getSubimagex();
+                        int weapony=player.getWeapon().getSubimagey();
+                        this.weaponLabel.setIcon(singleitem[weaponx][weapony]);
+                        int armorx=player.getArmor().getSubimagex();
+                        int armory=player.getArmor().getSubimagey();
+                        this.armorLabel.setIcon(singleitem[armorx][armory]);
                         this.armorLabel.setText(player.getArmor().getName());
                         i = itemList.getSelectedIndex();
                         items= (Item[]) player.getInventar().toArray(new Item[0]);

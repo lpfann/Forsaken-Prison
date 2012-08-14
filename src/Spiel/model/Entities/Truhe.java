@@ -4,12 +4,14 @@
  */
 package Spiel.model.Entities;
 
+import Spiel.model.Entities.Items.Armor.BeschlageneLederRüstung;
+import Spiel.model.Entities.Items.Armor.Eisenrüstung;
+import Spiel.model.Entities.Items.Armor.Goldrüstung;
+import Spiel.model.Entities.Items.Armor.Kettenhemd;
+import Spiel.model.Entities.Items.Armor.Lederwams;
 import Spiel.model.Entities.Items.Heiltrank;
-import Spiel.model.Entities.Items.Schwert;
 import Spiel.model.Entities.Items.Trank;
 import Spiel.model.MainModel;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 
@@ -29,11 +31,11 @@ private boolean opened;
       private LinkedList generatecontent() {
             LinkedList items = new LinkedList();
             items.add(new Heiltrank(Trank.Size.GROß));
-            items.add(new Schwert());
-            items.add(new Schwert());
-            items.add(new Schwert());
-            items.add(new Schwert());
-            items.add(new Schwert());
+            items.add(new Lederwams());
+            items.add(new Eisenrüstung());
+            items.add(new Goldrüstung());
+            items.add(new Kettenhemd());
+            items.add(new BeschlageneLederRüstung());
             
          return items;  
       }
