@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
         this.setPreferredSize(new Dimension(game.getPainter().getPreferredSize().width,game.getPainter().getPreferredSize().height+statusbar.getPreferredSize().height));
         this.setLayout(new BorderLayout(5, 5));
         gamepanel.setBackground(menu.getBackground());
-        
+        statusbar.setBackground(menu.getBackground());
         this.add(lpanel,BorderLayout.CENTER);
         lpanel.setBounds(0,0,this.getPreferredSize().width,this.getPreferredSize().height);
         gamepanel.setBounds(0,0,this.getPreferredSize().width,this.getPreferredSize().height);
@@ -93,7 +93,7 @@ public class MainFrame extends JFrame {
     public void openGameMenu() {
         
         if (!open) {
-            this.menu.setNewGameButtonText("Continue");
+            this.menu.setNewGameButtonText("Weiterspielen");
             
             menu.getSaveGameButton().setEnabled(true);
             menu.setVisible(true);

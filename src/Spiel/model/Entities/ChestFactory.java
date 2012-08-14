@@ -52,8 +52,8 @@ public class ChestFactory {
                 if (Spiel.model.Utilites.randomizer(1, 10) < 6) {
                     
                     Truhe chest = new Truhe(0, 0, 'C', main);
-                    chest.setstartposition(room.getX1() + 2, room.getY1() + 2, room.getBreite() - 4, room.getHoehe() - 4);
-
+                    chest.setstartposition(room.getX1() + 2, room.getY1() + 2, room.getBreite() - 3, room.getHoehe() - 3);
+                    //TODO Truhen spawnen noch manchmal vor Türen
                     chests.add(chest);
                 }
             }

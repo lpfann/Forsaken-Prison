@@ -6,9 +6,17 @@ package Spiel.View;
 
 import Spiel.model.Entities.Player;
 import Spiel.model.MainModel;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.security.Policy;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.Document;
 
 /**
  *
@@ -21,39 +29,127 @@ private String health;
     private String xp;
     private String level;
     private String playername;
+    private String damage;
+    private String defence;
+    
     private MainModel main;
     private Statsfield healthlabel;
     private Statsfield namelabel;
     private Statsfield manalabel;
     private Statsfield xplabel;
     private Statsfield lvllabel;
-
+    private Statsfield damagelabel;
+    private Statsfield defencelabel;
+    private JTextPane console;
+    public static ImageIcon heart;
+    public static ImageIcon tome;
+    public static ImageIcon dagger;
+    public static ImageIcon shield;
+    
+    
+//TODO Statspanel vereinfachen mit for schleife etc...
     public Statspanel() {
+            try {
+            heart =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/heart.png")));
+            tome =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/tome.png")));
+            dagger =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/dagger.png")));
+            shield =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/shield.png")));
 
+
+        } catch (IllegalArgumentException | IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 0);
+        }
     health = "0";
     playername ="0";
     mana = "0";
     xp = "0";
     level = "0";
+    damage="0";
+    defence="0";
     
-    this.setLayout(new FlowLayout());
+    
+    this.setLayout(new BorderLayout(5,5));
+    JPanel stats = new JPanel();
+    stats.setLayout(new FlowLayout(FlowLayout.CENTER));
+    stats.setBackground(Color.black);
+    stats.setPreferredSize(new Dimension(200,40));
     healthlabel = new Statsfield(health);
     namelabel = new Statsfield(playername);
-    manalabel = new Statsfield(mana);
+    //manalabel = new Statsfield(mana);
     xplabel = new Statsfield(xp);
     lvllabel = new Statsfield(level);
-
-
+    damagelabel = new Statsfield(damage);
+    defencelabel = new Statsfield(defence);
     
-    add(healthlabel);
-    add(manalabel);
-    add(namelabel);
-    add(xplabel);
-    add(lvllabel);
+    console= new JTextPane();
+    console.setPreferredSize(new Dimension(200,50));
+    console.setEditable(false);
+    console.setFocusable(false);
+    console.setAutoscrolls(true);
+    console.setBackground(Color.black);
+    console.setForeground(Color.white);
+    JScrollPane consolescroller= new JScrollPane(console);
+    consolescroller.setPreferredSize(new Dimension(200,50));
+    consolescroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    consolescroller.setFocusable(false);
+    redirectSystemStreams();        
 
-    this.setPreferredSize(new Dimension(200,80));
+    healthlabel.setIcon(heart);
+    xplabel.setIcon(tome);
+    damagelabel.setIcon(dagger);
+    defencelabel.setIcon(shield);
+    stats.add(healthlabel);
+    //stats.add(manalabel);
+    stats.add(healthlabel);
+    //stats.add(namelabel);
+    stats.add(xplabel);
+    stats.add(lvllabel);
+    stats.add(damagelabel);
+    stats.add(defencelabel);
+    add(stats,BorderLayout.CENTER);
+    add(consolescroller,BorderLayout.NORTH);
+
+    this.setPreferredSize(new Dimension(200,160));
 
     }
+    
+  private void updateTextPane(final String text) {
+  SwingUtilities.invokeLater(new Runnable() {
+    public void run() {
+      Document doc = console.getDocument();
+      try {
+        doc.insertString(doc.getLength(), text, null);
+      } catch (BadLocationException e) {
+        throw new RuntimeException(e);
+      }
+      console.setCaretPosition(doc.getLength() - 1);
+    }
+  });
+}
+ 
+private void redirectSystemStreams() {
+  OutputStream out = new OutputStream() {
+    @Override
+    public void write(final int b) throws IOException {
+      updateTextPane(String.valueOf((char) b));
+    }
+ 
+    @Override
+    public void write(byte[] b, int off, int len) throws IOException {
+      updateTextPane(new String(b, off, len));
+    }
+ 
+    @Override
+    public void write(byte[] b) throws IOException {
+      write(b, 0, b.length);
+    }
+  };
+ 
+  System.setOut(new PrintStream(out, true));
+  System.setErr(new PrintStream(out, true));
+}
+
+
 
     @Override
     public void update(transEnum enu, MainModel mm) {
@@ -61,14 +157,19 @@ private String health;
             main = mm;
             health = "HP: " + String.valueOf(main.player.getHp());
             playername = "Name: " + String.valueOf(main.player.getName());
-            mana = "Mana: " + String.valueOf(main.player.getMana());
-            xp = "Erfahrung: " + String.valueOf(main.player.getXp());
-            level = "Level: " + String.valueOf(main.player.getLvl());
+            //mana = "Mana: " + String.valueOf(main.player.getMana());
+            xp = "XP: " + String.valueOf(main.player.getXp());
+            level = "LVL: " + String.valueOf(main.player.getLvl());
+            damage = "DMG: " + String.valueOf(main.player.getDmg());
+            defence = "DEF: " + String.valueOf(main.player.getDefence());
+            
             healthlabel.setText(health);
             namelabel.setText(playername);
-            manalabel.setText(mana);
+            //manalabel.setText(mana);
             xplabel.setText(xp);
             lvllabel.setText(level);
+            defencelabel.setText(defence);
+            damagelabel.setText(damage);
         }
     }
 
