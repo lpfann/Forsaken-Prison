@@ -73,7 +73,7 @@ public class Fieldpainter extends JPanel implements Observer {
                bloodimage = loadPic("/resources/bloodsplatter.png", 20);
                knightimage = loadPic("/resources/knight.png", 40);
 
-          } catch (IllegalArgumentException | IOException e) {
+          } catch (IOException e) {
                JOptionPane.showMessageDialog(null, e.getMessage(), "Bild konnte nicht eingelesen werden", 0);
           }
 

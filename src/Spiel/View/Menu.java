@@ -39,7 +39,6 @@ MainFrame mainfr;
 
         setBackground(new java.awt.Color(51, 51, 51));
         setForeground(new java.awt.Color(255, 255, 255));
-        setNextFocusableComponent(newGameButton);
 
         newGameButton.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
         newGameButton.setForeground(new java.awt.Color(255, 255, 255));

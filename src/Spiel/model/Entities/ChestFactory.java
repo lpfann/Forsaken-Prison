@@ -6,7 +6,6 @@ package Spiel.model.Entities;
 
 import Spiel.model.MainModel;
 import Spiel.model.Room;
-import com.sun.xml.internal.ws.api.DistributedPropertySet;
 import java.util.LinkedList;
 
 /**

@@ -90,11 +90,6 @@
         <Property name="text" type="java.lang.String" value="Ausr&#xfc;stung"/>
         <Property name="focusable" type="boolean" value="false"/>
       </Properties>
-      <BindingProperties>
-        <BindingProperty name="foreground" source="Form" sourcePath="${foreground}" target="headLineLabel" targetPath="foreground" updateStrategy="0" immediately="false">
-          <Property name="name" type="java.lang.String" value=""/>
-        </BindingProperty>
-      </BindingProperties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <Properties>
@@ -288,9 +283,6 @@
             <Property name="text" type="java.lang.String" value="Weapon"/>
             <Property name="verticalAlignment" type="int" value="3"/>
           </Properties>
-          <BindingProperties>
-            <BindingProperty name="foreground" source="Form" sourcePath="${foreground}" target="weaponLabel" targetPath="foreground" updateStrategy="0" immediately="false"/>
-          </BindingProperties>
         </Component>
         <Component class="javax.swing.JLabel" name="damageLabel">
           <Properties>
@@ -362,9 +354,6 @@
             <Property name="text" type="java.lang.String" value="Armor"/>
             <Property name="verticalAlignment" type="int" value="3"/>
           </Properties>
-          <BindingProperties>
-            <BindingProperty name="foreground" source="Form" sourcePath="${foreground}" target="armorLabel" targetPath="foreground" updateStrategy="0" immediately="false"/>
-          </BindingProperties>
         </Component>
         <Component class="javax.swing.JLabel" name="defenceLabel">
           <Properties>

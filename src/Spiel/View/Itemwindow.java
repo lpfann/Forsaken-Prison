@@ -62,7 +62,6 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         headLineLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -88,9 +87,6 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         headLineLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         headLineLabel.setText("Ausrüstung");
         headLineLabel.setFocusable(false);
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${foreground}"), headLineLabel, org.jdesktop.beansbinding.BeanProperty.create("foreground"), "");
-        bindingGroup.addBinding(binding);
 
         jScrollPane1.setBackground(new java.awt.Color(183, 89, 22));
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Inventar", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 14), java.awt.Color.white)); // NOI18N
@@ -153,9 +149,6 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         weaponLabel.setText("Weapon");
         weaponLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${foreground}"), weaponLabel, org.jdesktop.beansbinding.BeanProperty.create("foreground"));
-        bindingGroup.addBinding(binding);
-
         damageLabel.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
         damageLabel.setForeground(new java.awt.Color(255, 255, 255));
         damageLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Schaden", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 14), java.awt.Color.white)); // NOI18N
@@ -186,9 +179,6 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         armorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         armorLabel.setText("Armor");
         armorLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${foreground}"), armorLabel, org.jdesktop.beansbinding.BeanProperty.create("foreground"));
-        bindingGroup.addBinding(binding);
 
         defenceLabel.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
         defenceLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -266,8 +256,6 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel armorLabel;
@@ -285,7 +273,6 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
     private javax.swing.JLabel mediumhealthPotionLabel;
     private javax.swing.JLabel smallhealthPotionLabel;
     private javax.swing.JLabel weaponLabel;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
         @Override
