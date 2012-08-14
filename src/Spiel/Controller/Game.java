@@ -23,9 +23,10 @@ public class Game implements Runnable {
 private Fieldpainter painter;
 private static MainModel main;
 private MainFrame mainFr;
-Thread thread;
+private Thread thread;
 boolean wait=true;
-public static final int GAME_TICK = 1000 / 25;
+final int MAXFPS=60;
+final int GAME_TICK = 1000 / MAXFPS;
 
 
 
