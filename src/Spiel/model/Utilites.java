@@ -83,6 +83,15 @@ public class Utilites {
        
        
    } 
+        public static int distance(NPC a, int x, int y) {
+        int x1 = a.getX();
+        int x2 = x;
+        int y1 = a.getY();
+        int y2 = y;
+        return (int)Math.sqrt(Math.pow((x2-x1), 2)+Math.pow((y2-y1), 2));
+       
+       
+   } 
     public static NPC findEntitieonMap(MainModel main,int x,int y) {
         if (main.getEntities()!=null) {
             

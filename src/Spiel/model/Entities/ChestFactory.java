@@ -6,6 +6,7 @@ package Spiel.model.Entities;
 
 import Spiel.model.MainModel;
 import Spiel.model.Room;
+import com.sun.xml.internal.ws.api.DistributedPropertySet;
 import java.util.LinkedList;
 
 /**
@@ -49,11 +50,19 @@ public class ChestFactory {
 
             for (int i = 0; i < anzahl; i++) {
                 //  Chance das Truhe gespawnt wird.
-                if (Spiel.model.Utilites.randomizer(1, 10) < 6) {
+                if (Spiel.model.Utilites.randomizer(1, 10) < 4) {
                     
                     Truhe chest = new Truhe(0, 0, 'C', main);
+                    boolean fertig=false;
+                   //Verhindert das Truhen direkt vor Türen gesetzt werden und sie so blockieren
+                    while(!fertig) {
                     chest.setstartposition(room.getX1() + 2, room.getY1() + 2, room.getBreite() - 3, room.getHoehe() - 3);
-                    //TODO Truhen spawnen noch manchmal vor Türen
+                        if (Spiel.model.Utilites.distance(chest, room.getDoorx(),room.getDoory() )>1) {
+                                fertig=true;
+                        }
+                    
+                    
+                    }
                     chests.add(chest);
                 }
             }
