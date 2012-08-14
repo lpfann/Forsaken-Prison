@@ -53,6 +53,14 @@ private Item selected;
                                         
                                 }
                                 break;
+                        case KeyEvent.VK_R:
+                                game.getMain().player.usePotion();
+                                break;
+                                
+
+                                        
+                                
+                                
 
 
     }

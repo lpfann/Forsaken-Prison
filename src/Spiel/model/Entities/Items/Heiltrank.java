@@ -15,9 +15,9 @@ import Spiel.model.Entities.Player;
 public class Heiltrank extends Trank {
 
 
-      public Heiltrank(Size s) {
+      public Heiltrank(Size s,Player p) {
             super("Heiltrank",s);
-
+            setPlayer(p);
       }
 
       

@@ -65,7 +65,7 @@ public abstract class Armor extends Item {
       
       public static class BeschlageneLederRüstung extends Armor {
            public BeschlageneLederRüstung(){
-                   super("Beschlagene Leder Rüstung", 3,5,1);
+                   super("Beschlagene Rüstung", 3,5,1);
                    
            }   
       }  

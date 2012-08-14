@@ -3,12 +3,13 @@ package Spiel.model.Entities;
 import Spiel.View.Observer;
 import Spiel.model.Entities.Items.*;
 import Spiel.model.Entities.Items.Armor.Lederwams;
+import Spiel.model.Entities.Items.Schwert.Zweihänder;
 import Spiel.model.MainModel;
 import java.util.LinkedList;
 
 public final class Player extends NPC {
 
-    private int xp, lvl, mana;
+    private int xp, lvl, mana,smallpotions,mediumpotions,bigpotions;
     private Item armor;
     private Waffe weapon;
     private LinkedList<Item> inventar = new LinkedList<>();
@@ -25,7 +26,7 @@ public final class Player extends NPC {
         setstartposition(1, 1, main.getBreite()-2, main.getHoehe()-2);
         findRoomLocation();
         getMain().getVisitedRooms().add(getRoom());
-        setWeapon(new Schwert());
+        setWeapon(new Zweihänder());
         getWeapon().setPlayer(this);
         setArmor(new Lederwams());
         getArmor().setPlayer(this);
@@ -67,11 +68,25 @@ public final class Player extends NPC {
             LinkedList<Item> inhalt = chest.getItems();
                     for (Item item : inhalt) {
                             item.setPlayer(this);
+                            if (item instanceof Heiltrank) {
+                                 switch (((Trank)item).getSize()){
+                                         case KLEIN:
+                                                 smallpotions++;
+                                                 break;
+                                         case MITTEL:
+                                                 mediumpotions++;
+                                                 break;
+                                         case GROß:
+                                                 bigpotions++;
+                                                 break;
+                                 } 
+                            } else {
+                               inventar.add(item);     
+                                    
+                            }
+                             System.out.println("Du hast: " + item.getName() + " gefunden");
+                            
                     }
-            this.inventar.addAll(inhalt);
-            for (Item e : inhalt) {
-                System.out.println("Du hast: " + e.getName() + " gefunden");
-            }
             chest.setItems(null);
             }
 
@@ -175,6 +190,48 @@ public final class Player extends NPC {
                 
         }
 
-   
+        public int getBigpotions() {
+                return bigpotions;
+        }
+
+        public void setBigpotions(int bigpotions) {
+                this.bigpotions = bigpotions;
+        }
+
+        public int getMediumpotions() {
+                return mediumpotions;
+        }
+
+        public void setMediumpotions(int mediumpotions) {
+                this.mediumpotions = mediumpotions;
+        }
+
+        public int getSmallpotions() {
+                return smallpotions;
+        }
+
+        public void setSmallpotions(int smallpotions) {
+                this.smallpotions = smallpotions;
+        }
+
+        public void usePotion() {
+                if (smallpotions>0) {
+                        useItem(new Heiltrank(Trank.Size.KLEIN,this));
+                        smallpotions--;
+                } else if ( mediumpotions>0) {
+                        useItem(new Heiltrank(Trank.Size.MITTEL,this));
+                        mediumpotions--;
+                } else if (bigpotions>0) {
+                        useItem(new Heiltrank(Trank.Size.GROß,this));
+                        bigpotions--;
+                } else {
+                        System.out.println("Du hast keine Tränke");
+                }
+                
+                
+                
+        }
+
+
         
 }
