@@ -104,7 +104,8 @@ public class Fieldpainter extends JPanel implements Observer {
           e.printStackTrace(); 
         }
         
-
+        g.setColor(Color.white);
+        g.drawString("ESC - Menü", 10, 10);
 
     }
     

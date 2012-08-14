@@ -79,6 +79,11 @@ MainFrame mainfr;
         helpButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         buttonGroup1.add(helpButton);
         helpButton.setContentAreaFilled(false);
+        helpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpButtonActionPerformed(evt);
+            }
+        });
 
         saveGameButton.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
         saveGameButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -166,6 +171,10 @@ MainFrame mainfr;
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitButtonActionPerformed
+
+        private void helpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonActionPerformed
+                mainfr.openHelp();
+        }//GEN-LAST:event_helpButtonActionPerformed
 
 
    public void setNewGameButtonText(String text) {

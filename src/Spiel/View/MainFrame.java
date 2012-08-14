@@ -29,6 +29,7 @@ public class MainFrame extends JFrame {
     private JLayeredPane lpanel = new JLayeredPane();
     private JPanel gamepanel = new JPanel();
     private Itemwindow itemwindow;
+    private Help helpwindow;
     private boolean open = false;
 
     
@@ -39,6 +40,7 @@ public class MainFrame extends JFrame {
         statusbar = new Statspanel();
         menu = new Menu(this);
         itemwindow= new Itemwindow(game);
+        helpwindow = new Help();
         game.getMain().addObserver(itemwindow);
         
         this.setResizable(false);
@@ -55,12 +57,16 @@ public class MainFrame extends JFrame {
         gamepanel.setDoubleBuffered(true);
         menu.setBounds(this.getPreferredSize().width/2-menu.getPreferredSize().width/2,0,menu.getPreferredSize().width,menu.getPreferredSize().height);
         itemwindow.setBounds(this.getPreferredSize().width/2-itemwindow.getPreferredSize().width/2,0,itemwindow.getPreferredSize().width,itemwindow.getPreferredSize().height);
+        helpwindow.setBounds(this.getPreferredSize().width/2-helpwindow.getPreferredSize().width/2,0,helpwindow.getPreferredSize().width,helpwindow.getPreferredSize().height);
         
         itemwindow.setOpaque(true);
         menu.setOpaque(true);
+        helpwindow.setOpaque(true);
+        helpwindow.setVisible(false);
         lpanel.add(gamepanel,new Integer(0));
         lpanel.add(menu, new Integer(10));
         lpanel.add(itemwindow, new Integer(10));
+        lpanel.add(helpwindow,new Integer(11));
         pack();
         menu.requestFocus();
         setVisible(true);
@@ -125,23 +131,30 @@ public class MainFrame extends JFrame {
         return game;
     }
 
-void openItemWindow() {
-        if (!open) {
-            itemwindow.setVisible(true);
-            game.pauseThread();
-            itemwindow.focustoItemList();
-            open=true;
-        } else {
-                itemwindow.setVisible(false);
-                game.resumeThread();
-                gamepanel.requestFocus();
-                open=false;
+        public void openItemWindow() {
+                if (!open) {
+                        itemwindow.setVisible(true);
+                        game.pauseThread();
+                        itemwindow.focustoItemList();
+                        open = true;
+                } else {
+                        itemwindow.setVisible(false);
+                        game.resumeThread();
+                        gamepanel.requestFocus();
+                        open = false;
+                }
+
+
+
+
         }
-    
-    
-    
-    
-}
+        public void openHelp() {
+                helpwindow.setVisible(true);
+
+
+
+
+        }
 
 
 
