@@ -40,7 +40,7 @@ public class MainFrame extends JFrame {
         statusbar = new Statspanel();
         menu = new Menu(this);
         itemwindow= new Itemwindow(game);
-        helpwindow = new Help();
+        helpwindow = new Help(this);
         game.getMain().addObserver(itemwindow);
         
         this.setResizable(false);
@@ -155,6 +155,23 @@ public class MainFrame extends JFrame {
 
 
         }
+
+     public Help getHelpwindow() {
+          return helpwindow;
+     }
+
+     public Itemwindow getItemwindow() {
+          return itemwindow;
+     }
+
+     public Menu getMenu() {
+          return menu;
+     }
+
+     public Fieldpainter getSpielfeld() {
+          return spielfeld;
+     }
+
 
 
 

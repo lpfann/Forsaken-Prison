@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 public final class Player extends NPC {
 
-    private int xp, lvl, mana,smallpotions,mediumpotions,bigpotions;
+    private int xp, lvl, mana,smallpotions,mediumpotions,bigpotions,basedamage;
     private Item armor;
     private Waffe weapon;
     private LinkedList<Item> inventar = new LinkedList<>();
@@ -19,7 +19,8 @@ public final class Player extends NPC {
     public Player(MainModel main) {
         super(0, 0, 'P', main);
         setName("Held");
-        setDmg(5);
+        setBasedamage(3);
+        setDmg(basedamage);
         setHp(100);
         setLvl(1);
         setMana(10);
@@ -27,10 +28,7 @@ public final class Player extends NPC {
         setstartposition(1, 1, main.getBreite()-2, main.getHoehe()-2);
         findRoomLocation();
         getMain().getVisitedRooms().add(getRoom());
-        setWeapon(new Zweihänder());
-        getWeapon().setPlayer(this);
-        setArmor(new Lederwams());
-        getArmor().setPlayer(this);
+
         setFilename("player.png");
     }
 
@@ -240,6 +238,14 @@ public final class Player extends NPC {
                 
                 
         }
+
+     public int getBasedamage() {
+          return basedamage;
+     }
+
+     public void setBasedamage(int basedamage) {
+          this.basedamage = basedamage;
+     }
 
 
         

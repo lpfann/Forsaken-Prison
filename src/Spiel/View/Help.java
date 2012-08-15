@@ -9,12 +9,14 @@ package Spiel.View;
  * @author Gamer
  */
 public class Help extends javax.swing.JPanel {
+     private final MainFrame main;
 
         /**
          * Creates new form Help
          */
-        public Help() {
+        public Help(MainFrame main) {
                 initComponents();
+                this.main=main;
         }
 
         /**
@@ -78,6 +80,7 @@ public class Help extends javax.swing.JPanel {
 
         private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
                 this.setVisible(false);
+                main.getMenu().requestFocus();
         }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -10,12 +10,13 @@ package Spiel.model.Entities.Items;
  */
 public abstract class Armor extends Item {
         private int defence;
-      public Armor(String name,int def,int x,int y){
+      public Armor(String name,int def,int x,int y,double droprate){
               super();
               this.defence=def;
               setSubimagex(x);
               setSubimagey(y);
               setName(name);
+              setDroprate(droprate);
               
               
       }
@@ -40,38 +41,38 @@ public abstract class Armor extends Item {
         
       public static class Lederwams extends Armor {
            public Lederwams(){
-                   super("Lederwams", 1,0,1);
+                   super("Lederwams", 1,0,1,300);
                    
            }   
       }  
       public static class Eisenrüstung extends Armor {
            public Eisenrüstung(){
-                   super("Eisenrüstung", 5,1,1);
+                   super("Eisenrüstung", 5,1,1,100);
                    
            }   
       }  
       public static class Goldrüstung extends Armor {
            public Goldrüstung(){
-                   super("Goldrüstung", 6,2,1);
+                   super("Goldrüstung", 6,2,1,10);
                    
            }   
       }  
       public static class Lederrüstung extends Armor {
            public Lederrüstung(){
-                   super("Lederrüstung", 2,3,1);
+                   super("Lederrüstung", 2,3,1,250);
                    
            }   
       }
       
       public static class BeschlageneLederRüstung extends Armor {
            public BeschlageneLederRüstung(){
-                   super("Beschlagene Rüstung", 3,5,1);
+                   super("Beschlagene Rüstung", 3,5,1,200);
                    
            }   
       }  
       public static class Kettenhemd extends Armor {
            public Kettenhemd(){
-                   super("Kettenhemd", 4,4,1);
+                   super("Kettenhemd", 4,4,1,150);
                    
            }   
       }  

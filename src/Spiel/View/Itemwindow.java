@@ -27,7 +27,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         private Player player;
         private int i;
         private final Game game;
-        private Item[] items;
+        private Item[] items=new Item[1000];
         private BufferedImage allitems;
         public static ImageIcon[][] singleitem= new ImageIcon[8][8];
         /**
@@ -84,6 +84,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         setForeground(new java.awt.Color(255, 255, 255));
 
         headLineLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        headLineLabel.setForeground(new java.awt.Color(255, 255, 255));
         headLineLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         headLineLabel.setText("Ausrüstung");
         headLineLabel.setFocusable(false);
@@ -145,8 +146,9 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Waffe", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 24), java.awt.Color.white)); // NOI18N
         jPanel2.setOpaque(false);
 
+        weaponLabel.setForeground(new java.awt.Color(255, 255, 255));
         weaponLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        weaponLabel.setText("Weapon");
+        weaponLabel.setText("Keine Waffe");
         weaponLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         damageLabel.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
@@ -176,8 +178,10 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Rüstung", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Georgia", 1, 24), java.awt.Color.white)); // NOI18N
         jPanel3.setOpaque(false);
 
+        armorLabel.setForeground(new java.awt.Color(255, 255, 255));
         armorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        armorLabel.setText("Armor");
+        armorLabel.setText("Keine Rüstung");
+        armorLabel.setToolTipText("");
         armorLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         defenceLabel.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
@@ -282,19 +286,24 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                         
                         
                         //Aktualisieren der Labels im Fenster
+                        if (player.getWeapon()!=null) {
                         this.weaponLabel.setText(player.getWeapon().getName()) ;
                         int weaponx=player.getWeapon().getSubimagex();
                         int weapony=player.getWeapon().getSubimagey();
                         this.weaponLabel.setIcon(singleitem[weaponx][weapony]);
+                        this.damageLabel.setText(Integer.toString(((Waffe)player.getWeapon()).getDamage()));
+                          
+                     }
+                        if (player.getArmor()!=null) {
+                        this.armorLabel.setText(player.getArmor().getName());
                         int armorx=player.getArmor().getSubimagex();
                         int armory=player.getArmor().getSubimagey();
                         this.armorLabel.setIcon(singleitem[armorx][armory]);
-                        this.armorLabel.setText(player.getArmor().getName());
+                        this.defenceLabel.setText(Integer.toString(((Armor)player.getArmor()).getDefence()));
+                     }
                         this.smallhealthPotionLabel.setText(Integer.toString(player.getSmallpotions()));
                         this.mediumhealthPotionLabel.setText(Integer.toString(player.getMediumpotions()));
                         this.bighealthPotionLabel.setText(Integer.toString(player.getBigpotions()));
-                        this.damageLabel.setText(Integer.toString(((Waffe)player.getWeapon()).getDamage()));
-                        this.defenceLabel.setText(Integer.toString(((Armor)player.getArmor()).getDefence()));
                         
                         //Festlegen des Inhalts für die Inventarliste
                         i = itemList.getSelectedIndex();

@@ -53,11 +53,14 @@ public abstract class Trank extends Item {
       private void potionSizeRenamer() {
             if (size == Size.KLEIN) {
               setName("Kleiner "+getName());
+              setDroprate(600);
           } else if (size == Size.MITTEL) {
               setName("Mittlerer "+getName());
+              setDroprate(400);
               
             } else if (size == Size.GROß) {
                   setName("Großer "+getName());
+              setDroprate(200);
 
             }   else {
           }

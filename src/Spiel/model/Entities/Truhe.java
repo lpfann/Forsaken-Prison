@@ -9,6 +9,7 @@ import Spiel.model.Entities.Items.Armor.Goldrüstung;
 import Spiel.model.Entities.Items.Armor.Kettenhemd;
 import Spiel.model.Entities.Items.Armor.Lederwams;
 import Spiel.model.Entities.Items.Heiltrank;
+import Spiel.model.Entities.Items.Item;
 import Spiel.model.Entities.Items.Schwert.Dolch;
 import Spiel.model.Entities.Items.Schwert.Donnerschwert;
 import Spiel.model.Entities.Items.Schwert.Flammenschwert;
@@ -19,39 +20,50 @@ import Spiel.model.Entities.Items.Schwert.MagischesSchwert;
 import Spiel.model.Entities.Items.Schwert.Zweihänder;
 import Spiel.model.Entities.Items.Trank;
 import Spiel.model.MainModel;
+import Spiel.model.Utilites;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public class Truhe extends NPC {
 private LinkedList items;
 private boolean opened;
-      
-      public Truhe(int x, int y,char icon,MainModel main) {
+private ArrayList<Item> allitems;      
+
+      public Truhe(int x, int y,char icon,MainModel main,List<Item> allitems) {
             super(x,y,icon,main);
-            this.items=generatecontent();
             setFilename("chest.png");
+            this.allitems=(ArrayList<Item>) allitems;
+            this.items=generatecontent();
             this.opened=false;
+            
+
+            
+            
      }
       
 //Zufällige Erstellung von Inhalt für die Truhe 
-// TODO Zufallsalgorithmus erstellen
+
       private LinkedList generatecontent() {
-            LinkedList items = new LinkedList();
-            items.add(new Heiltrank(Trank.Size.GROß,null));
-            items.add(new Lederwams());
-            items.add(new Eisenrüstung());
-            items.add(new Goldrüstung());
-            items.add(new Kettenhemd());
-            items.add(new Dolch());
-            items.add(new Kurzschwert());
-            items.add(new Flammenschwert());
-            items.add(new Frostschwert());
-            items.add(new Grasklinge());
-            items.add(new Donnerschwert());
-            items.add(new MagischesSchwert());
-            items.add(new Zweihänder());
+            LinkedList loot = new LinkedList();
+            int maxitems= Utilites.randomizer(1,10);
+            for (int i = 0; i < allitems.size(); i++) {
+                //int randomindex= Utilites.randomizer(1,allitems.size())-1;
+                Item item = allitems.get(i);
+                double d =item.getDroprate();
+                int rand = Utilites.randomizer(1, 1000);
+                 if (rand < d) {
+                      loot.add(item);
+                 
             
-         return items;  
+            }
+            
+                
+           }
+
+            
+         return loot;  
       }
 
     public LinkedList getItems() {
