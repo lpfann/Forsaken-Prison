@@ -64,8 +64,7 @@ public class Fieldpainter extends JPanel implements Observer {
           try {
                groundimage = ImageIO.read(getClass().getResource("/resources/groundDun.png"));
                wallimage = ImageIO.read(getClass().getResource("/resources/HBlockDun.png"));
-               //playerimage = loadPic("/resources/player.png", 20);
-               playerimage= loadPic("/resources/new-player.png", 64, 64);
+               playerimage= enlargePic(loadPic("/resources/new-player.png", 64, 64),10,15);
                orkimage = loadPic("/resources/ork.png", 38);
                trollimage = loadPic("/resources/troll.png", 20);
                doorimage = loadPic("/resources/new-door.png", 24);
@@ -428,4 +427,28 @@ public class Fieldpainter extends JPanel implements Observer {
      
           }
      }
+     
+     
+     private BufferedImage [][] enlargePic(BufferedImage img[][],int cropx,int cropy){
+          BufferedImage biggerimg[][]= new BufferedImage [img.length][img[0].length];
+          for (int i = 0; i < img.length; i++) {
+               for (int j = 0; j < img[0].length; j++) {
+                    try {
+                    biggerimg[i][j]= img[i][j].getSubimage(cropx, cropy, img[i][j].getWidth()-2*cropx, img[i][j].getHeight()-cropy);
+                         
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                   
+               }
+          }
+          
+          return biggerimg;
+          
+          
+          
+          
+     }
+             
+             
 }
