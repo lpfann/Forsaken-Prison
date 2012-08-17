@@ -36,11 +36,13 @@ public abstract class Trank extends Item {
           switch (getSize()) {
               case KLEIN:
                   potionAuswirkung(p,20);
+                   break;
               case MITTEL:
-                  potionAuswirkung(p,50);
-                  
+                  potionAuswirkung(p,50);  
+                   break;
               case GROß:
                   potionAuswirkung(p,100);
+                   break;
                   
           }
 

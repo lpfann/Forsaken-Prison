@@ -4,11 +4,7 @@ import Spiel.View.Observer.transEnum;
 import Spiel.model.Entities.*;
 import Spiel.model.MainModel;
 import Spiel.model.MainModel.Richtung;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -53,6 +49,7 @@ public class Fieldpainter extends JPanel implements Observer {
      public static final int RESOLUTIONX = 800;
      public static final int RESOLUTIONY = 600;
      private int fps;
+     private boolean gameover;
 
      public Fieldpainter(int breite, int hoehe, Player p) {
 
@@ -105,6 +102,13 @@ public class Fieldpainter extends JPanel implements Observer {
           //Hilfe text zeichnen
           g.setColor(Color.white);
           g.drawString("ESC - Menü", 10, 10);
+          
+          //GAME OVER Text
+          if (gameover) {
+               g.setColor(Color.red);
+               g.setFont(new Font("Monospaced", Font.BOLD, 100));
+               g.drawString("GAME OVER", viewportwidth*BLOCKSIZE/2-300, viewportheight*BLOCKSIZE/2);
+          }
 
      }
 
@@ -289,6 +293,7 @@ public class Fieldpainter extends JPanel implements Observer {
                this.fps = (int) mm.getFps();
           } else if (enu == transEnum.playerstats) {
                this.player = mm.getPlayer();
+               this.gameover=mm.isGameover();
 
           } else if (enu == transEnum.fogofwar) {
                this.fogofwar = mm.getFogofwar();

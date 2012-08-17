@@ -142,6 +142,11 @@ public class MainModel implements Subject, Serializable, Cloneable {
          * Ausführung der Spiellogik für alle Objekte und Funktionen. Bei jedem Durchlauf eines Threads
          */
         public void doSpiellogik() {
+               if (!gameover) {
+
+             
+             
+             
                 //Liste der Objekte die gelöscht werden
                 LinkedList<NPC> toberemoved = new LinkedList<>();
                 
@@ -177,6 +182,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 
                 //Benachrichtigen aller Observer
                 notifyAllObservers();
+               }
         }
 
         /**
@@ -422,5 +428,13 @@ public class MainModel implements Subject, Serializable, Cloneable {
         public void setLast(long last) {
                 this.last = last;
         }
+
+     public boolean isGameover() {
+          return gameover;
+     }
+
+     public void setGameover(boolean gameover) {
+          this.gameover = gameover;
+     }
 
 }

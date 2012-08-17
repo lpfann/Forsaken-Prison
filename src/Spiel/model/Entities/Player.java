@@ -248,6 +248,13 @@ public final class Player extends NPC {
      }
 
 
-        
+
+     @Override
+    public void setHp(int hp) {
+        super.setHp(hp);
+            if (hp <1) {
+                    getMain().setGameover(true);
+            }
+    }
         
 }
