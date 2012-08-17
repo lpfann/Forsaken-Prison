@@ -8,7 +8,7 @@ import Spiel.model.Entities.Player;
 import java.io.Serializable;
 
 
-public abstract class Item implements Usable,Serializable {
+public abstract class Item implements Usable,Serializable,Comparable<Item> {
 
       private String name;
       private double droprate;
@@ -63,8 +63,17 @@ public abstract class Item implements Usable,Serializable {
                 this.subimagey = subimagey;
         }
 
+     @Override
+     public int compareTo(Item o) {
+          if (this.getDroprate()<o.getDroprate()) {
+               return -1;
+          }    
+          if (this.getDroprate()>o.getDroprate()) {
+               return 1;
+          }
+          return 0;
+     }
 
-     
 
 
 }

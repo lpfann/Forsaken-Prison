@@ -4,24 +4,11 @@
  */
 package Spiel.model.Entities;
 
-import Spiel.model.Entities.Items.Armor.Eisenrüstung;
-import Spiel.model.Entities.Items.Armor.Goldrüstung;
-import Spiel.model.Entities.Items.Armor.Kettenhemd;
-import Spiel.model.Entities.Items.Armor.Lederwams;
-import Spiel.model.Entities.Items.Heiltrank;
 import Spiel.model.Entities.Items.Item;
-import Spiel.model.Entities.Items.Schwert.Dolch;
-import Spiel.model.Entities.Items.Schwert.Donnerschwert;
-import Spiel.model.Entities.Items.Schwert.Flammenschwert;
-import Spiel.model.Entities.Items.Schwert.Frostschwert;
-import Spiel.model.Entities.Items.Schwert.Grasklinge;
-import Spiel.model.Entities.Items.Schwert.Kurzschwert;
-import Spiel.model.Entities.Items.Schwert.MagischesSchwert;
-import Spiel.model.Entities.Items.Schwert.Zweihänder;
-import Spiel.model.Entities.Items.Trank;
 import Spiel.model.MainModel;
 import Spiel.model.Utilites;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +22,9 @@ private ArrayList<Item> allitems;
             super(x,y,icon,main);
             setFilename("chest.png");
             this.allitems=(ArrayList<Item>) allitems;
+            //Nach Seltenheit sortieren
+            Collections.sort(allitems);
+            
             this.items=generatecontent();
             this.opened=false;
             
@@ -47,17 +37,23 @@ private ArrayList<Item> allitems;
 
       private LinkedList generatecontent() {
             LinkedList loot = new LinkedList();
-            int maxitems= Utilites.randomizer(1,10);
-            for (int i = 0; i < allitems.size(); i++) {
-                //int randomindex= Utilites.randomizer(1,allitems.size())-1;
-                Item item = allitems.get(i);
-                double d =item.getDroprate();
-                int rand = Utilites.randomizer(1, 1000);
-                 if (rand < d) {
-                      loot.add(item);
-                 
+            //Maximale Anzahl von Items in einer Kiste
+            int maxitems= Utilites.randomizer(1,3);
             
-            }
+            //Würfeln vom seltensten bis zum häufigsten Item bis maximale Anzahl erreicht ist
+           //while (loot.size() < maxitems) {
+                for (int i = 0; i < allitems.size(); i++) {
+
+                     Item item = allitems.get(i);
+                     double d = item.getDroprate();
+                     int rand = Utilites.randomizer(1, 2000);
+                     if (rand < d) {
+                          loot.add(item);
+
+                     }
+
+
+                //}
             
                 
            }

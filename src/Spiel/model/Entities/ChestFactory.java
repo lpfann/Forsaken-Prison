@@ -69,9 +69,9 @@ public class ChestFactory {
 
         for (Room room : rooms) {
             int size = room.getBreite() * room.getHoehe();
-            int anzahl = (int) (size * 0.03);
+            int anzahl = 2;
 
-            for (int i = 0; i < anzahl; i++) {
+            for (int i = 0; i <= anzahl; i++) {
                 //  Chance das Truhe gespawnt wird.
                 if (Spiel.model.Utilites.randomizer(1, 10) < 4) {
                     
@@ -79,7 +79,7 @@ public class ChestFactory {
                     boolean fertig=false;
                    //Verhindert das Truhen direkt vor Türen gesetzt werden und sie so blockieren
                     while(!fertig) {
-                    chest.setstartposition(room.getX1() + 2, room.getY1() + 2, room.getBreite() - 3, room.getHoehe() - 3);
+                    chest.setstartposition(room.getX1() + 1, room.getY1() + 1, room.getBreite() - 2, room.getHoehe() - 2);
                         if (Spiel.model.Utilites.distance(chest, room.getDoorx(),room.getDoory() )>1) {
                                 fertig=true;
                         }
