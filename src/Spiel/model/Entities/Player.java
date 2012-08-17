@@ -2,8 +2,6 @@ package Spiel.model.Entities;
 
 import Spiel.View.Observer;
 import Spiel.model.Entities.Items.*;
-import Spiel.model.Entities.Items.Armor.Lederwams;
-import Spiel.model.Entities.Items.Schwert.Zweihänder;
 import Spiel.model.MainModel;
 import java.util.LinkedList;
 

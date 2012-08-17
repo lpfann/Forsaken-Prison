@@ -34,7 +34,7 @@ final int GAME_TICK = 1000 / MAXFPS;
 public Game (){
         main=new MainModel();
         init();
-        painter = new Fieldpainter(main.getBreite(),main.getHoehe(),main.getPlayer());
+        painter = new Fieldpainter(main.getBreite(),main.getHoehe(),main.getPlayer(),main.getFIELDSIZE());
         main.addObserver(painter);
         mainFr = new MainFrame(this);
         main.notifyAllObservers();

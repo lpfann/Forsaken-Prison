@@ -44,18 +44,19 @@ public class Fieldpainter extends JPanel implements Observer {
      private boolean[][] fogofwar;
      private LinkedList<NPC> entities = new LinkedList();
      private LinkedList<NPC> entcopy = new LinkedList();
-     public static final int FIELDSIZE = 40;
+     private final int FIELDSIZE;
      public final int BLOCKSIZE = 50;
      public static final int RESOLUTIONX = 800;
      public static final int RESOLUTIONY = 600;
      private int fps;
      private boolean gameover;
 
-     public Fieldpainter(int breite, int hoehe, Player p) {
+     public Fieldpainter(int breite, int hoehe, Player p,int fieldsize) {
 
 
           this.setPreferredSize(new Dimension(BLOCKSIZE * viewportwidth, BLOCKSIZE * viewportheight));
           this.setDoubleBuffered(true);
+          this.FIELDSIZE=fieldsize;
           player = p;
           updateViewportCoord(p);
           try {

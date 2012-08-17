@@ -29,6 +29,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         long delta = 0;
         long last = 0;
         long fps = 0;
+        private final int FIELDSIZE=40;
         /**
          * Hauptspielfeld
          */
@@ -435,6 +436,10 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
      public void setGameover(boolean gameover) {
           this.gameover = gameover;
+     }
+
+     public int getFIELDSIZE() {
+          return FIELDSIZE;
      }
 
 }

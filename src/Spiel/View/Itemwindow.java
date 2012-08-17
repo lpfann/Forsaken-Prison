@@ -29,6 +29,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         private final Game game;
         private Item[] items=new Item[1000];
         private BufferedImage allitems;
+        private BufferedImage bg;
         public static ImageIcon[][] singleitem= new ImageIcon[8][8];
         /**
          * Creates new form Itemwindow
@@ -37,6 +38,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                 this.game=game;
                 initComponents();
                 try {
+                     bg= ImageIO.read(getClass().getResource("/resources/inventorybg.png"));
                       allitems= ImageIO.read(getClass().getResource("/resources/items1.png"));
                         //Erstellen der Icons für alle Items
                         for (int j = 0; j < 8; j++) {

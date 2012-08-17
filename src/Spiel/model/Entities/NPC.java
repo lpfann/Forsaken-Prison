@@ -92,7 +92,6 @@ public abstract class NPC implements Drawable,Movable,Serializable{
                 this.movey++;
             }
         }
-
         changeMapforObject(this);
       }
     
