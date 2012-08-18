@@ -172,7 +172,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
                         }
                         
                         entities.remove(e);
-                        map[e.getY()][e.getX()] = ' ';
+                        map[e.getY()/FIELDSIZE][e.getX()/FIELDSIZE] = ' ';
                 }
                 
                 
@@ -193,14 +193,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
          */
         public void moveNPCs() {
                 for (NPC e : entities) {
-                        if (e instanceof Player) {
-                             if (e.getMovex()==0 && e.getMovey()==0) {
-                                  ((Player)e).setWalking(false);
-                             } else {
-                                  
-                                  ((Player)e).setWalking(true);
-                             }
-                     }
+
                         e.move();
 
                 }
@@ -223,7 +216,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
          */
         public void placeAllNPConMap() {
                 for (NPC e : entities) {
-                        map[e.getY()][e.getX()] = e.getIcon();
+                        map[e.getY()/FIELDSIZE][e.getX()/FIELDSIZE] = e.getIcon();
                 }
                 notifyObserver(map);
         }

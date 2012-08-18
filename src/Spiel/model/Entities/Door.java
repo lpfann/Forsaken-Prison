@@ -38,6 +38,9 @@ public class Door extends NPC {
             setIcon(' ');
         }
     }
-    
+         @Override
+     public void move() {
+              
+         }
 
 }

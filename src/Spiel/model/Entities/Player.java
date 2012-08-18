@@ -14,7 +14,7 @@ public final class Player extends NPC {
     boolean walking;
     private final int[] levelups= { 100,200,300,400,500,650,850,1100,1300,1500,1800,2100};
          
-    
+
 
 
     public Player(MainModel main) {
@@ -30,6 +30,7 @@ public final class Player extends NPC {
         setstartposition(1, 1, main.getBreite()-2, main.getHoehe()-2);
         findRoomLocation();
         getMain().getVisitedRooms().add(getRoom());
+        
 
         setFilename("player.png");
     }
@@ -227,13 +228,7 @@ public final class Player extends NPC {
                 this.smallpotions = smallpotions;
         }
 
-     public boolean isWalking() {
-          return walking;
-     }
 
-     public void setWalking(boolean walking) {
-          this.walking = walking;
-     }
 
         public void usePotion() {
                 if (smallpotions>0) {

@@ -30,16 +30,21 @@ public class Keys implements KeyListener {
         public void keyPressed(KeyEvent ke) {
                 switch (ke.getKeyCode()) {
                         case KeyEvent.VK_LEFT:
-                                game.getMain().player.setMovex(-1);
+                                game.getMain().player.setOrientierung(Richtung.LEFT);
+                                game.getMain().player.setWalking(true);
+                                
                                 break;
                         case KeyEvent.VK_RIGHT:
-                                game.getMain().player.setMovex(+1);
+                                game.getMain().player.setOrientierung(Richtung.RIGHT);
+                                game.getMain().player.setWalking(true);
                                 break;
                         case KeyEvent.VK_UP:
-                                game.getMain().player.setMovey(-1);
+                                game.getMain().player.setOrientierung(Richtung.UP);
+                                game.getMain().player.setWalking(true);
                                 break;
                         case KeyEvent.VK_DOWN:
-                                game.getMain().player.setMovey(+1);
+                                game.getMain().player.setOrientierung(Richtung.DOWN);
+                                game.getMain().player.setWalking(true);
                                 break;
                         case KeyEvent.VK_Q:
                                 System.exit(0);
@@ -69,6 +74,21 @@ public class Keys implements KeyListener {
         }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent ke) {
+                      switch (ke.getKeyCode()) {
+                        case KeyEvent.VK_LEFT:
+                                game.getMain().player.setWalking(false);
+                                
+                                break;
+                        case KeyEvent.VK_RIGHT:
+                                game.getMain().player.setWalking(false);
+                                break;
+                        case KeyEvent.VK_UP:
+                                game.getMain().player.setWalking(false);
+                                break;
+                        case KeyEvent.VK_DOWN:
+                                game.getMain().player.setWalking(false);
+                                break;   
+                      }
     }
 }

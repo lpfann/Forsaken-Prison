@@ -32,6 +32,7 @@ public class Fieldpainter extends JPanel implements Observer {
      private Image compoImage;
      private Graphics offscreenGraph;
      private boolean fogofwarrepaint = true;
+     private int FIELDSIZE;
      private int viewportx;
      private int viewporty;
      private int radiusy = 5;
@@ -44,7 +45,6 @@ public class Fieldpainter extends JPanel implements Observer {
      private boolean[][] fogofwar;
      private LinkedList<NPC> entities = new LinkedList();
      private LinkedList<NPC> entcopy = new LinkedList();
-     private final int FIELDSIZE;
      public final int BLOCKSIZE = 50;
      public static final int RESOLUTIONX = 800;
      public static final int RESOLUTIONY = 600;
@@ -119,8 +119,8 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
           offscreenGraph = compoImage.getGraphics();
-          for (int y = viewporty; y < viewporty + viewportheight; y++) {
-               for (int x = viewportx; x < viewportx + viewportwidth; x++) {
+          for (int y = viewporty/FIELDSIZE; y < viewporty/FIELDSIZE + viewportheight/FIELDSIZE; y++) {
+               for (int x = viewportx/FIELDSIZE; x < viewportx/FIELDSIZE + viewportwidth/FIELDSIZE; x++) {
                     if (map[y][x] == '*') {
                          offscreenGraph.drawImage(wallimage, (x - viewportx) * FIELDSIZE, (y - viewporty) * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
                     } else {
@@ -140,10 +140,10 @@ public class Fieldpainter extends JPanel implements Observer {
                for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
                     NPC e = it.next();
                     try {
-                         if (e.getX() < viewportx || e.getX() > viewportx + viewportwidth || e.getY() < viewporty || e.getY() > viewporty + viewportheight) {
+                         if (e.getX()/FIELDSIZE < viewportx || e.getX()/FIELDSIZE > viewportx + viewportwidth || e.getY()/FIELDSIZE < viewporty || e.getY()/FIELDSIZE > viewporty + viewportheight) {
                          } else {
-                              int x1 = e.getX() - viewportx;
-                              int y1 = e.getY() - viewporty;
+                              int x1 = e.getX() - viewportx*FIELDSIZE;
+                              int y1 = e.getY() - viewporty*FIELDSIZE;
                               switch (e.getClass().getSimpleName()) {
                                    case "Player":
                                         switch (e.getOrientierung()) {
@@ -151,88 +151,88 @@ public class Fieldpainter extends JPanel implements Observer {
                                                   if (player.isWalking()) {
                                                       animateWalking(Richtung.DOWN,x1,y1); 
                                                   } else {
-                                                  compoImage.getGraphics().drawImage(playerimage[0][2], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(playerimage[0][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   }
                                                   break;
                                              case LEFT:
                                                   if (player.isWalking()) {
                                                       animateWalking(Richtung.LEFT,x1,y1); 
                                                   } else {
-                                                  compoImage.getGraphics().drawImage(playerimage[0][1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(playerimage[0][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   }
                                                   break;
                                              case UP:
                                                   if (player.isWalking()) {
                                                       animateWalking(Richtung.UP,x1,y1); 
                                                   } else {
-                                                  compoImage.getGraphics().drawImage(playerimage[0][0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(playerimage[0][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   }
                                                   break;
                                              case RIGHT:
                                                   if (player.isWalking()) {
                                                       animateWalking(Richtung.RIGHT,x1,y1); 
                                                   } else {
-                                                  compoImage.getGraphics().drawImage(playerimage[0][3], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(playerimage[0][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   }
                                                   break;
                                         }
                                         break;
                                    case "Door":
                                         if (((Door) e).getOpen()) {
-                                             compoImage.getGraphics().drawImage(doorimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                             compoImage.getGraphics().drawImage(doorimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         } else {
-                                             compoImage.getGraphics().drawImage(doorimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                             compoImage.getGraphics().drawImage(doorimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         }
                                         break;
                                    case "Truhe":
                                         if (((Truhe) e).isOpened()) {
-                                             compoImage.getGraphics().drawImage(chestimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                             compoImage.getGraphics().drawImage(chestimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         } else {
-                                             compoImage.getGraphics().drawImage(chestimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                             compoImage.getGraphics().drawImage(chestimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         }
                                         break;
                                    case "Ork":
                                         switch (e.getOrientierung()) {
                                              case DOWN:
-                                                  compoImage.getGraphics().drawImage(orkimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(orkimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case LEFT:
-                                                  compoImage.getGraphics().drawImage(orkimage[3], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(orkimage[3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case UP:
-                                                  compoImage.getGraphics().drawImage(orkimage[2], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(orkimage[2], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case RIGHT:
-                                                  compoImage.getGraphics().drawImage(orkimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(orkimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                         }
                                         break;
                                    case "Knight":
                                         switch (e.getOrientierung()) {
                                              case DOWN:
-                                                  compoImage.getGraphics().drawImage(knightimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(knightimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case LEFT:
-                                                  compoImage.getGraphics().drawImage(knightimage[3], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(knightimage[3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case UP:
-                                                  compoImage.getGraphics().drawImage(knightimage[2], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(knightimage[2], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case RIGHT:
-                                                  compoImage.getGraphics().drawImage(knightimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                                  compoImage.getGraphics().drawImage(knightimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                         }
                                         break;
                                    case "Troll":
                                         if (((Monster) e).isHit()) {
-                                             compoImage.getGraphics().drawImage(trollimage[1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                             compoImage.getGraphics().drawImage(trollimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         } else {
-                                             compoImage.getGraphics().drawImage(trollimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                             compoImage.getGraphics().drawImage(trollimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         }
                                         break;
@@ -248,7 +248,7 @@ public class Fieldpainter extends JPanel implements Observer {
 
                               if (e.isHit()) {
 
-                                   compoImage.getGraphics().drawImage(bloodimage[e.getCounter()], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                   compoImage.getGraphics().drawImage(bloodimage[e.getCounter()], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                               }
 
@@ -274,11 +274,11 @@ public class Fieldpainter extends JPanel implements Observer {
           fowoffscreenImage = transpImg;
           Graphics2D q = transpImg.createGraphics();
 
-          for (int y = viewporty; y < viewporty + viewportheight; y++) {
-               for (int x = viewportx; x < viewportx + viewportwidth; x++) {
+          for (int y = viewporty/FIELDSIZE; y < viewporty/FIELDSIZE + viewportheight/FIELDSIZE; y++) {
+               for (int x = viewportx/FIELDSIZE; x < viewportx/FIELDSIZE + viewportwidth/FIELDSIZE; x++) {
                     if (fogofwar[y][x] == true) {
                          q.setColor(Color.black);
-                         q.fillRect((x - viewportx) * FIELDSIZE, (y - viewporty) * FIELDSIZE, FIELDSIZE, FIELDSIZE);
+                         q.fillRect((x - viewportx/FIELDSIZE) * FIELDSIZE, (y - viewporty/FIELDSIZE) * FIELDSIZE, FIELDSIZE, FIELDSIZE);
                     } else {
                     }
                }
@@ -323,21 +323,21 @@ public class Fieldpainter extends JPanel implements Observer {
                if (p.getX() < radiusx) {
                     this.viewportx = 0;
                } else {
-                    this.viewportx = p.getX() - radiusx;
+                    this.viewportx = p.getX() - radiusx*FIELDSIZE;
 
                }
                if (p.getY() < radiusy) {
                     this.viewporty = 0;
                } else {
-                    this.viewporty = p.getY() - radiusy;
+                    this.viewporty = p.getY() - radiusy*FIELDSIZE;
 
                }
-               if (map[0].length - p.getX() < radiusx) {
-                    this.viewportx = p.getX() - radiusx - (radiusx - (map[0].length - p.getX()));
+               if (map[0].length - p.getX() < radiusx*FIELDSIZE) {
+                    this.viewportx = p.getX() - radiusx*FIELDSIZE - (radiusx*FIELDSIZE - (map[0].length*FIELDSIZE - p.getX()));
                } else {
                }
-               if (map.length - p.getY() < radiusy) {
-                    this.viewporty = p.getY() - radiusy - (radiusy - (map.length - p.getY()));
+               if (map.length - p.getY() < radiusy*FIELDSIZE) {
+                    this.viewporty = p.getY() - radiusy*FIELDSIZE - (radiusy*FIELDSIZE - (map.length*FIELDSIZE - p.getY()));
                } else {
                }
 
@@ -408,7 +408,7 @@ public class Fieldpainter extends JPanel implements Observer {
                     } else {
                          animcounter=0;
                     }
-                    compoImage.getGraphics().drawImage(playerimage[animcounter][2], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                    compoImage.getGraphics().drawImage(playerimage[animcounter][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                     
                     break;
@@ -418,7 +418,7 @@ public class Fieldpainter extends JPanel implements Observer {
                     } else {
                          animcounter=0;
                     }
-                    compoImage.getGraphics().drawImage(playerimage[animcounter][1], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                    compoImage.getGraphics().drawImage(playerimage[animcounter][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
                case UP:
                     if (animcounter<8) {
@@ -426,7 +426,7 @@ public class Fieldpainter extends JPanel implements Observer {
                     } else {
                          animcounter=0;
                     }
-                    compoImage.getGraphics().drawImage(playerimage[animcounter][0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                    compoImage.getGraphics().drawImage(playerimage[animcounter][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
                case RIGHT:
                     if (animcounter<8) {
@@ -434,7 +434,7 @@ public class Fieldpainter extends JPanel implements Observer {
                     } else {
                          animcounter=0;
                     }
-                    compoImage.getGraphics().drawImage(playerimage[animcounter][3], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                    compoImage.getGraphics().drawImage(playerimage[animcounter][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
      
      

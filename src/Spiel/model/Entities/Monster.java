@@ -25,22 +25,7 @@ public abstract class Monster extends NPC {
 
     }
 
-//    @Override
-//    public void drawEntitie(Graphics g, int fieldsize) {
-//        if (hit) {
-//            setCounter(getCounter()+1);
-//            g.drawImage(getImage()[1], getX() * fieldsize, getY() * fieldsize, fieldsize, fieldsize, null);
-//            if (getCounter() > 20) {
-//                hit = false;
-//                setCounter(0);
-//            }
-//        } else {
-//            g.drawImage(getImage()[0], getX() * fieldsize, getY() * fieldsize, fieldsize, fieldsize, null);
-//
-//        }
-//
-//
-//    }
+
     
         @Override
     public void doLogic(long delta) {
@@ -53,20 +38,25 @@ public abstract class Monster extends NPC {
             if (counter1 >=50) {
                 Player pl = getMain().player;
                     if (Spiel.model.Utilites.distance(this, pl)==1 && objectinFront() instanceof Player) {
+                            setWalking(false);
                             attack(objectinFront());
                     } else
                                 if (Spiel.model.Utilites.distance(this, pl) < 6) {
 
                                 if (pl.getX() < this.getX()) {
-                                        setMovex(-1);
+                                        setWalking(true);
+                                        setOrientierung(MainModel.Richtung.LEFT);
                                 } else if (pl.getX() > this.getX()) {
-                                        setMovex(+1);
+                                        setWalking(true);
+                                        setOrientierung(MainModel.Richtung.RIGHT);
                                 } else {
                                 }
                                 if (pl.getY() < this.getY()) {
-                                        setMovey(-1);
+                                        setWalking(true);
+                                        setOrientierung(MainModel.Richtung.UP);
                                 } else if (pl.getY() > this.getY()) {
-                                        setMovey(+1);
+                                        setWalking(true);
+                                        setOrientierung(MainModel.Richtung.DOWN);
                                 } else {
                                 }
 
@@ -80,16 +70,16 @@ public abstract class Monster extends NPC {
             int rand2 = Spiel.model.Utilites.randomizer(0, 3);
             switch (rand2) {
                 case 0:
-                    setMovex(1);
-                    break;
+                     setOrientierung(MainModel.Richtung.LEFT);
+                     break;
                 case 1:
-                    setMovex(-1);
+                     setOrientierung(MainModel.Richtung.RIGHT);
                     break;
                 case 2:
-                    setMovey(1);
+                     setOrientierung(MainModel.Richtung.UP);
                     break;
                 case 3:
-                    setMovey(-1);
+                     setOrientierung(MainModel.Richtung.DOWN);
                     break;
             }
             counter1=0;

@@ -75,18 +75,18 @@ public class Utilites {
     }
       
         public static int distance(NPC a, NPC b) {
-        int x1 = a.getX();
-        int x2 = b.getX();
-        int y1 = a.getY();
-        int y2 = b.getY();
+        int x1 = a.getX()/a.getFIELDSIZE();
+        int x2 = b.getX()/a.getFIELDSIZE();
+        int y1 = a.getY()/a.getFIELDSIZE();
+        int y2 = b.getY()/a.getFIELDSIZE();
         return (int)Math.sqrt(Math.pow((x2-x1), 2)+Math.pow((y2-y1), 2));
        
        
    } 
         public static int distance(NPC a, int x, int y) {
-        int x1 = a.getX();
+        int x1 = a.getX()/a.getFIELDSIZE();
         int x2 = x;
-        int y1 = a.getY();
+        int y1 = a.getY()/a.getFIELDSIZE();
         int y2 = y;
         return (int)Math.sqrt(Math.pow((x2-x1), 2)+Math.pow((y2-y1), 2));
        
@@ -97,13 +97,13 @@ public class Utilites {
             
             for (ListIterator<NPC> it = main.getEntities().listIterator(); it.hasNext();) {
                 NPC e = it.next();
-                if (e.getX()==x && e.getY()==y) {
+                if (e.getX()/e.getFIELDSIZE()==x && e.getY()/e.getFIELDSIZE()==y) {
                     return e;
                 } else {
                     
                 }
-            
-        }
+            }
+        
         } else {
             return null;
         }

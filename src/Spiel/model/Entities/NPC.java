@@ -36,6 +36,11 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     private int defence;
     private int movex=0;
     private int movey=0;
+    private int targetx=0;
+    private int targety;
+    private float walkspeed;
+    private boolean walking;
+    private final int FIELDSIZE;
     private boolean hit=false;
     private String filename;
     private Richtung orientierung=Richtung.DOWN;
@@ -50,11 +55,77 @@ public abstract class NPC implements Drawable,Movable,Serializable{
      * @param main MainModel-Methode wird übergeben
      */
     public NPC(int x, int y, char icon,MainModel main) {
-          this.x=x;
-          this.y=y;
+          this.FIELDSIZE=main.getFIELDSIZE();
+          this.x=x*FIELDSIZE;
+          this.y=y*FIELDSIZE;
           this.icon=icon;
           this.main=main;
     }
+    
+     @Override
+     public void move() {
+          
+               
+         
+          if (walking  && movex==0 && movey==0 && getMain().map[fieldinFront(1)[1]][fieldinFront(1)[0]] == ' ') {
+          switch (orientierung) {
+               case LEFT:
+                    movex=-FIELDSIZE;
+                    targetx=x-FIELDSIZE;
+                         
+                    break;
+               case RIGHT:
+                    movex=+FIELDSIZE;
+                    targetx=x+FIELDSIZE;
+                    break;
+               case UP:
+                    movey=-FIELDSIZE;
+                    targety=y-FIELDSIZE;
+                    break;
+               case DOWN:
+                    movey=+FIELDSIZE;
+                    targety=y+FIELDSIZE;
+                    break;
+                    
+          }
+          
+          }
+          if (movex!=0) {
+             this.x+=movex*(main.getDelta()/1e9*4);
+
+               if (movex>0 && x > targetx) {
+                    this.x=targetx;
+                    movex=0;
+               } else if ( movex<0 && x < targetx) {
+                    this.x=targetx;
+                    movex=0;
+                    
+               }
+               
+               
+               
+          } else if (movey!=0) {
+             this.y+=movey*(main.getDelta()/1e9*4);
+
+               if (movey>0 && y > targety) {
+                    this.y=targety;
+                    movey=0;
+               } else if ( movey <0 && y < targety) {
+                    this.y=targety;
+                    movey=0;
+                    
+               }
+               
+               
+          }
+          
+     }
+          
+    
+    
+    
+    
+    
         @Override
     public void doLogic(long delta) {
             if    (hit) {
@@ -69,35 +140,16 @@ public abstract class NPC implements Drawable,Movable,Serializable{
             internalCounter++;        
       
             }
+             if (gametick ==60) {
+                  gametick=0;
+             } else {
+            gametick++;
+             }
     }
             
-    @Override
-    public void move() {
 
-        if (movex != 0) {
-            if (movex>0) {
-                moveRight();
-                this.movex--;
-            } else {
-                moveLeft();
-                this.movex++;
-            }
-            
-        }
-        if (movey != 0) {
-            if (movey>0) {
-                moveDown();
-                this.movey--;
-            } else {
-                moveUp();
-                this.movey++;
-            }
-        }
-        changeMapforObject(this);
-      }
-    
         public void changeMapforObject(NPC e) {
-        main.map[e.getY()][e.getX()] = e.getIcon();
+        main.map[e.getY()/FIELDSIZE][e.getX()/FIELDSIZE] = e.getIcon();
 
     }
     
@@ -110,16 +162,16 @@ public abstract class NPC implements Drawable,Movable,Serializable{
      * @param w Breite des Bereichs wo NPC platziert werden soll
      * @param h Höhe des Bereichs wo NPC platziert werden soll
      */
-    public void setstartposition(int x1, int y1, int w, int h) {
-        for (int i = 0; i < main.getBreite() * main.getHoehe(); i++) {
-            int x = Spiel.model.Utilites.randomizer(x1, x1 + w);
-            int y = Spiel.model.Utilites.randomizer(y1, y1 + h);
-            try {
-                if (main.map[y][x] == ' ' && notinFrontofDoor()) {
-                    this.x = x;
-                    this.y = y;
-                    main.map[y][x] = this.icon;
-                    break;
+    public void setstartposition(int x1, int y1,int w, int h) {
+          for (int i = 0; i < main.getBreite()*main.getHoehe(); i++) {
+          int x=  Spiel.model.Utilites.randomizer(x1,(x1+w));
+          int y=  Spiel.model.Utilites.randomizer(y1,(y1+h));
+                try {
+                if (main.map[y][x]== ' ' && notinFrontofDoor()) {
+                      this.x=x*FIELDSIZE;
+                      this.y=y*FIELDSIZE;
+                      main.map[y][x]=this.icon;
+                      break;
                 } else {
                 }
             } catch (ArrayIndexOutOfBoundsException ex) {
@@ -134,56 +186,13 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     
 
 
-    public void moveLeft() {
-        if (main.map[y][x - 1] == ' ') {
-            main.map[y][x] = ' ';
-            this.x += movex;
-            this.orientierung= Richtung.LEFT;
-        findRoomLocation();
-        } else {
-          this.orientierung= Richtung.LEFT;  
-        }
-    }
-
-    public void moveRight() {
-        if (main.map[y][x + 1] == ' ') {
-            main.map[y][x] = ' ';
-            this.x += movex;
-            this.orientierung= Richtung.RIGHT;
-        findRoomLocation();
-        } else {
-          this.orientierung= Richtung.RIGHT;  
-        }
-    }
-
-    public void moveUp() {
-        if (main.map[y - 1][x] == ' ') {
-            main.map[y][x] = ' ';
-            this.y += movey;
-            this.orientierung= Richtung.UP;
-        findRoomLocation();
-        } else {
-          this.orientierung= Richtung.UP;  
-        }
-    }
-
-    public void moveDown() {
-        if (main.map[y + 1][x] == ' ') {
-            main.map[y][x] = ' ';
-            this.y += movey;
-            this.orientierung= Richtung.DOWN;
-            findRoomLocation();
-        } else {
-          this.orientierung= Richtung.DOWN;  
-        }
-    }
-        
+ 
 
     public Room findRoomLocation(){
         LinkedList<Room> rooms= this.main.getDungeon().getRooms();
         
         for (Room r : rooms) {
-            if (r.getX1()<=this.x && this.x<=r.getX1()+r.getBreite() && r.getY1()<=this.y && this.y <= r.getY1()+r.getHoehe()) {
+            if (r.getX1()<=this.x/FIELDSIZE && this.x/FIELDSIZE<=r.getX1()+r.getBreite() && r.getY1()<=this.y/FIELDSIZE && this.y/FIELDSIZE <= r.getY1()+r.getHoehe()) {
                 this.room=r;
             }
              else {
@@ -198,7 +207,7 @@ public abstract class NPC implements Drawable,Movable,Serializable{
         Room foundroom=null;
         
         for (Room r : rooms) {
-            if (r.getX1()<=x && x<=r.getX1()+r.getBreite() && r.getY1()<=y && y <= r.getY1()+r.getHoehe()) {
+            if (r.getX1()<=x/FIELDSIZE && x/FIELDSIZE<=r.getX1()+r.getBreite() && r.getY1()<=y/FIELDSIZE && y/FIELDSIZE <= r.getY1()+r.getHoehe()) {
                 foundroom=r;
                 return foundroom;
             }
@@ -215,13 +224,13 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     public NPC objectinFront() {
         switch (getOrientierung()) {
             case RIGHT:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()+1, getY());
+                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()/FIELDSIZE+1, getY()/FIELDSIZE);
             case LEFT:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()-1, getY());
+                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()/FIELDSIZE-1, getY()/FIELDSIZE);
             case UP:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX(), getY()-1);
+                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()/FIELDSIZE, getY()/FIELDSIZE-1);
             case DOWN:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX(), getY()+1);
+                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()/FIELDSIZE, getY()/FIELDSIZE+1);
             default:
                 return null;
             
@@ -234,20 +243,20 @@ public int[] fieldinFront(int n){
         int[] coord= new int[2];
      switch (getOrientierung()) {
             case RIGHT:
-                    coord[0]=x+n;
-                    coord[1]=y;             
+                    coord[0]=x/FIELDSIZE+n;
+                    coord[1]=y/FIELDSIZE;             
                 return coord;
             case LEFT:
-                    coord[0]=x-n;
-                    coord[1]=y;             
+                    coord[0]=x/FIELDSIZE-n;
+                    coord[1]=y/FIELDSIZE;             
                 return coord;
             case UP:
-                    coord[0]=x;
-                    coord[1]=y-n;             
+                    coord[0]=x/FIELDSIZE;
+                    coord[1]=y/FIELDSIZE-n;             
                 return coord;
             case DOWN:
-                    coord[0]=x;
-                    coord[1]=y+n;             
+                    coord[0]=x/FIELDSIZE;
+                    coord[1]=y/FIELDSIZE+n;             
                 return coord;
             default:
                 return null;
@@ -481,6 +490,42 @@ public boolean notinFrontofDoor(){
     public void setRemovethis(boolean removethis) {
         this.removethis = removethis;
     }
+
+     public boolean isWalking() {
+          return walking;
+     }
+
+     public void setWalking(boolean walking) {
+          this.walking = walking;
+     }
+
+     public int getTargetx() {
+          return targetx;
+     }
+
+     public void setTargetx(int targetx) {
+          this.targetx = targetx;
+     }
+
+     public int getTargety() {
+          return targety;
+     }
+
+     public void setTargety(int targety) {
+          this.targety = targety;
+     }
+
+     public float getWalkspeed() {
+          return walkspeed;
+     }
+
+     public void setWalkspeed(float walkspeed) {
+          this.walkspeed = walkspeed;
+     }
+
+     public int getFIELDSIZE() {
+          return FIELDSIZE;
+     }
 
 
 }
