@@ -50,6 +50,12 @@ public class Fieldpainter extends JPanel implements Observer {
      public static final int RESOLUTIONY = 600;
      private int fps;
      private boolean gameover;
+     private double delta;
+     private int animationdelay;
+               int maximumx;
+          int maximumy;
+          int minimumx;
+          int minimumy;
 
 
      public Fieldpainter(int breite, int hoehe, Player p,int fieldsize) {
@@ -117,21 +123,50 @@ public class Fieldpainter extends JPanel implements Observer {
 
      private void paintDungeon(Graphics g) {
 
-
-          offscreenGraph = compoImage.getGraphics();
-          for (int y = viewporty/FIELDSIZE; y < viewporty/FIELDSIZE + viewportheight/FIELDSIZE; y++) {
-               for (int x = viewportx/FIELDSIZE; x < viewportx/FIELDSIZE + viewportwidth/FIELDSIZE; x++) {
+          //Erstellen eines DungeonImages. Der Viewport wird verbreitert um genug "Verschiebefläche" zu haben. siehe Kommentar unten
+          dungeonoffscreenImage = createImage((2+viewportwidth)*FIELDSIZE, (2+viewportheight)*FIELDSIZE);
+          offscreenGraph = dungeonoffscreenImage.getGraphics();
+         
+          for (int y = minimumy; y < maximumy; y++) {
+               for (int x = minimumx; x < maximumx; x++) {
                     if (map[y][x] == '*') {
-                         offscreenGraph.drawImage(wallimage, (x - viewportx) * FIELDSIZE, (y - viewporty) * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                         offscreenGraph.drawImage(wallimage, (x - viewportx/FIELDSIZE)*FIELDSIZE, (y - viewporty/FIELDSIZE)*FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
                     } else {
-                         offscreenGraph.drawImage(groundimage, (x - viewportx) * FIELDSIZE, (y - viewporty) * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                         offscreenGraph.drawImage(groundimage, (x - viewportx/FIELDSIZE)*FIELDSIZE, (y - viewporty/FIELDSIZE)*FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
                     }
                }
           }
-
-          compoImage.getGraphics().drawImage(dungeonoffscreenImage, 0, 0, this);
+          //Zeichen des Dungeon Bildes
+          //wichtig ist hierbei die Verschiebung um %FIELDSIZE. dadurch wird der Hintergrund weich verschoben genau wie sich der Spieler bewegt.
+          compoImage.getGraphics().drawImage(dungeonoffscreenImage, -viewportx%FIELDSIZE, -viewporty%FIELDSIZE, this);
 
      }
+          private void paintFogofWar(Graphics g) {
+          //if (fogofwarrepaint) {
+          fogofwarrepaint = false;
+          //erstellt ein transparentes Bild
+          transpImg = new BufferedImage((viewportwidth+2) * FIELDSIZE, (viewportheight+2) * FIELDSIZE, BufferedImage.TRANSLUCENT);
+          fowoffscreenImage = transpImg;
+          Graphics2D q = transpImg.createGraphics();
+
+                    for (int y = minimumy; y < maximumy; y++) {
+               for (int x = minimumx; x < maximumx; x++) {
+                    if (fogofwar[y][x] == true) {
+                         q.setColor(Color.black);
+                         q.fillRect((x - viewportx/FIELDSIZE) * FIELDSIZE, (y - viewporty/FIELDSIZE) * FIELDSIZE, FIELDSIZE, FIELDSIZE);
+                    } else {
+                    }
+               }
+          }
+          q.dispose();
+          //}
+
+          compoImage.getGraphics().drawImage(fowoffscreenImage, -viewportx%FIELDSIZE, -viewporty%FIELDSIZE, this);
+
+
+
+     }
+
 
      //Zeichnen der Entities
      private void paintallEntities(Graphics g) {
@@ -140,10 +175,10 @@ public class Fieldpainter extends JPanel implements Observer {
                for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
                     NPC e = it.next();
                     try {
-                         if (e.getX()/FIELDSIZE < viewportx || e.getX()/FIELDSIZE > viewportx + viewportwidth || e.getY()/FIELDSIZE < viewporty || e.getY()/FIELDSIZE > viewporty + viewportheight) {
+                         if (e.getX() < viewportx || e.getX()> viewportx + viewportwidth*FIELDSIZE || e.getY() < viewporty || e.getY()> viewporty + viewportheight*FIELDSIZE) {
                          } else {
-                              int x1 = e.getX() - viewportx*FIELDSIZE;
-                              int y1 = e.getY() - viewporty*FIELDSIZE;
+                              int x1 = e.getX() - viewportx;
+                              int y1 = e.getY() - viewporty;
                               switch (e.getClass().getSimpleName()) {
                                    case "Player":
                                         switch (e.getOrientierung()) {
@@ -266,31 +301,6 @@ public class Fieldpainter extends JPanel implements Observer {
 
      }
 
-     private void paintFogofWar(Graphics g) {
-          //if (fogofwarrepaint) {
-          fogofwarrepaint = false;
-          //erstellt ein transparentes Bild
-          transpImg = new BufferedImage(viewportwidth * FIELDSIZE, viewportheight * FIELDSIZE, BufferedImage.TRANSLUCENT);
-          fowoffscreenImage = transpImg;
-          Graphics2D q = transpImg.createGraphics();
-
-          for (int y = viewporty/FIELDSIZE; y < viewporty/FIELDSIZE + viewportheight/FIELDSIZE; y++) {
-               for (int x = viewportx/FIELDSIZE; x < viewportx/FIELDSIZE + viewportwidth/FIELDSIZE; x++) {
-                    if (fogofwar[y][x] == true) {
-                         q.setColor(Color.black);
-                         q.fillRect((x - viewportx/FIELDSIZE) * FIELDSIZE, (y - viewporty/FIELDSIZE) * FIELDSIZE, FIELDSIZE, FIELDSIZE);
-                    } else {
-                    }
-               }
-          }
-          q.dispose();
-          //}
-
-          compoImage.getGraphics().drawImage(fowoffscreenImage, 0, 0, this);
-
-
-
-     }
 
      @Override
      public void update(transEnum enu, MainModel mm) {
@@ -299,6 +309,12 @@ public class Fieldpainter extends JPanel implements Observer {
                entcopy = (LinkedList<NPC>) entities.clone();
           } else if (enu == transEnum.fps) {
                this.fps = (int) mm.getFps();
+               this.delta=mm.getDelta();
+               animationdelay+=this.delta/1e6;
+               if (animationdelay>20) {
+                    animationdelay=0;
+                    animcounter++;
+               }
           } else if (enu == transEnum.playerstats) {
                this.player = mm.getPlayer();
                this.gameover=mm.isGameover();
@@ -320,27 +336,46 @@ public class Fieldpainter extends JPanel implements Observer {
      private void updateViewportCoord(Player p) {
          
           if (p != null && map != null) {
-               if (p.getX() < radiusx) {
+               if (p.getX()/FIELDSIZE < radiusx) {
                     this.viewportx = 0;
                } else {
                     this.viewportx = p.getX() - radiusx*FIELDSIZE;
 
                }
-               if (p.getY() < radiusy) {
+               if (p.getY()/FIELDSIZE < radiusy) {
                     this.viewporty = 0;
                } else {
                     this.viewporty = p.getY() - radiusy*FIELDSIZE;
 
                }
-               if (map[0].length - p.getX() < radiusx*FIELDSIZE) {
+               if (map[0].length*FIELDSIZE - p.getX() < radiusx*FIELDSIZE) {
                     this.viewportx = p.getX() - radiusx*FIELDSIZE - (radiusx*FIELDSIZE - (map[0].length*FIELDSIZE - p.getX()));
                } else {
                }
-               if (map.length - p.getY() < radiusy*FIELDSIZE) {
+               if (map.length*FIELDSIZE - p.getY() < radiusy*FIELDSIZE) {
                     this.viewporty = p.getY() - radiusy*FIELDSIZE - (radiusy*FIELDSIZE - (map.length*FIELDSIZE - p.getY()));
                } else {
                }
-
+ if (viewportx<FIELDSIZE) {
+               minimumx=0;
+          } else {
+              minimumx = viewportx/FIELDSIZE-1;
+          }
+          if (viewporty<FIELDSIZE) {
+               minimumy=0;
+          } else {
+              minimumy = viewporty/FIELDSIZE-1;
+          }
+          if (viewporty/FIELDSIZE + viewportheight+1>=map.length) {
+               maximumy = viewporty/FIELDSIZE + viewportheight;
+          } else {
+               maximumy = viewporty/FIELDSIZE + viewportheight+1;
+          }
+          if (viewportx/FIELDSIZE + viewportwidth+1>=map[0].length) {
+               maximumx = viewportx/FIELDSIZE + viewportwidth;
+          } else {
+               maximumx=viewportx/FIELDSIZE + viewportwidth+1;
+          }
           }
      }
 
@@ -401,39 +436,25 @@ public class Fieldpainter extends JPanel implements Observer {
      }
      private void animateWalking(Richtung dir,int x1,int y1){
      
+               if (animcounter>=8) {
+                    animcounter=0;
+               }
           switch (dir) {
                case DOWN:
-                    if (animcounter<8) {
-                         animcounter++;
-                    } else {
-                         animcounter=0;
-                    }
                     compoImage.getGraphics().drawImage(playerimage[animcounter][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                     
                     break;
                case LEFT:
-                    if (animcounter<8) {
-                         animcounter++;
-                    } else {
-                         animcounter=0;
-                    }
+
                     compoImage.getGraphics().drawImage(playerimage[animcounter][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
                case UP:
-                    if (animcounter<8) {
-                         animcounter++;
-                    } else {
-                         animcounter=0;
-                    }
+
                     compoImage.getGraphics().drawImage(playerimage[animcounter][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
                case RIGHT:
-                    if (animcounter<8) {
-                         animcounter++;
-                    } else {
-                         animcounter=0;
-                    }
+
                     compoImage.getGraphics().drawImage(playerimage[animcounter][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
      

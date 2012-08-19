@@ -105,8 +105,8 @@ public Game (){
         while  (true) {
 
             
-                main.computeDelta();
                 
+                main.computeDelta();
                 main.doSpiellogik();
                 main.moveNPCs();
 

@@ -70,25 +70,28 @@ public class Keys implements KeyListener {
                         case KeyEvent.VK_R:
                                 game.getMain().player.usePotion();
                                 break;
+                        case KeyEvent.VK_L:
+                                game.getMain().player.debugPrintObjectinFront();
+                                break;
                 }
         }
 
     @Override
     public void keyReleased(KeyEvent ke) {
-                      switch (ke.getKeyCode()) {
-                        case KeyEvent.VK_LEFT:
-                                game.getMain().player.setWalking(false);
-                                
-                                break;
-                        case KeyEvent.VK_RIGHT:
-                                game.getMain().player.setWalking(false);
-                                break;
-                        case KeyEvent.VK_UP:
-                                game.getMain().player.setWalking(false);
-                                break;
-                        case KeyEvent.VK_DOWN:
-                                game.getMain().player.setWalking(false);
-                                break;   
-                      }
+//                      switch (ke.getKeyCode()) {
+//                        case KeyEvent.VK_LEFT:
+//                                game.getMain().player.setWalking(false);
+//                                
+//                                break;
+//                        case KeyEvent.VK_RIGHT:
+//                                game.getMain().player.setWalking(false);
+//                                break;
+//                        case KeyEvent.VK_UP:
+//                                game.getMain().player.setWalking(false);
+//                                break;
+//                        case KeyEvent.VK_DOWN:
+//                                game.getMain().player.setWalking(false);
+//                                break;   
+//                      }
     }
 }

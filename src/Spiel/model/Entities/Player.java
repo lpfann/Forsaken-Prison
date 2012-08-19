@@ -271,6 +271,7 @@ public final class Player extends NPC {
                  
             }
     }
+
      @Override
      public void setDmg(int dmg) {
           super.setDmg(dmg);
@@ -291,6 +292,17 @@ public final class Player extends NPC {
                
                setDmg(getBasedamage());
           }
+     }
+     
+     public void debugPrintObjectinFront(){
+          NPC n = objectinFront();
+          if (n!=null) {
+          System.err.println(n.getClass().getSimpleName());
+               
+          }
+          System.err.println(getMain().map[fieldinFront(1)[1]][fieldinFront(1)[0]]);
+          
+
      }
         
 }

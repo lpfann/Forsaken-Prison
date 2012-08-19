@@ -58,16 +58,19 @@ public abstract class NPC implements Drawable,Movable,Serializable{
           this.FIELDSIZE=main.getFIELDSIZE();
           this.x=x*FIELDSIZE;
           this.y=y*FIELDSIZE;
+          this.targetx=x;
+          this.targety=y;
           this.icon=icon;
           this.main=main;
     }
     
      @Override
      public void move() {
-          
-               
-         
+          delay+=main.getDelta()/1e6;
+
           if (walking  && movex==0 && movey==0 && getMain().map[fieldinFront(1)[1]][fieldinFront(1)[0]] == ' ') {
+          main.map[targety/FIELDSIZE][targetx/FIELDSIZE] = ' ';       
+          
           switch (orientierung) {
                case LEFT:
                     movex=-FIELDSIZE;
@@ -77,6 +80,7 @@ public abstract class NPC implements Drawable,Movable,Serializable{
                case RIGHT:
                     movex=+FIELDSIZE;
                     targetx=x+FIELDSIZE;
+          
                     break;
                case UP:
                     movey=-FIELDSIZE;
@@ -86,33 +90,38 @@ public abstract class NPC implements Drawable,Movable,Serializable{
                     movey=+FIELDSIZE;
                     targety=y+FIELDSIZE;
                     break;
-                    
           }
           
+          main.map[targety/FIELDSIZE][targetx/FIELDSIZE] = getIcon();       
           }
+          
           if (movex!=0) {
-             this.x+=movex*(main.getDelta()/1e9*4);
+             this.x+=movex*main.getDelta()/1e8;
 
-               if (movex>0 && x > targetx) {
+               if (movex>=0 && x >= targetx) {
                     this.x=targetx;
                     movex=0;
-               } else if ( movex<0 && x < targetx) {
+                    walking=false;
+               } else if ( movex<=0 && x <= targetx) {
                     this.x=targetx;
                     movex=0;
+                    walking=false;
                     
                }
                
                
                
           } else if (movey!=0) {
-             this.y+=movey*(main.getDelta()/1e9*4);
+             this.y+=movey*main.getDelta()/1e8;
 
-               if (movey>0 && y > targety) {
+               if (movey>=0 && y >= targety) {
                     this.y=targety;
                     movey=0;
-               } else if ( movey <0 && y < targety) {
+                    walking=false;
+               } else if ( movey <=0 && y <= targety) {
                     this.y=targety;
                     movey=0;
+                    walking=false;
                     
                }
                
@@ -170,6 +179,9 @@ public abstract class NPC implements Drawable,Movable,Serializable{
                 if (main.map[y][x]== ' ' && notinFrontofDoor()) {
                       this.x=x*FIELDSIZE;
                       this.y=y*FIELDSIZE;
+                      this.targetx=this.x;
+                      this.targety=this.y;
+                      
                       main.map[y][x]=this.icon;
                       break;
                 } else {
@@ -207,7 +219,7 @@ public abstract class NPC implements Drawable,Movable,Serializable{
         Room foundroom=null;
         
         for (Room r : rooms) {
-            if (r.getX1()<=x/FIELDSIZE && x/FIELDSIZE<=r.getX1()+r.getBreite() && r.getY1()<=y/FIELDSIZE && y/FIELDSIZE <= r.getY1()+r.getHoehe()) {
+            if (r.getX1()<=x && x<=r.getX1()+r.getBreite() && r.getY1()<=y && y <= r.getY1()+r.getHoehe()) {
                 foundroom=r;
                 return foundroom;
             }
@@ -222,7 +234,7 @@ public abstract class NPC implements Drawable,Movable,Serializable{
 
    
     public NPC objectinFront() {
-        switch (getOrientierung()) {
+         switch (getOrientierung()) {
             case RIGHT:
                 return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()/FIELDSIZE+1, getY()/FIELDSIZE);
             case LEFT:
@@ -407,7 +419,8 @@ public boolean notinFrontofDoor(){
     }
 
     public void setOrientierung(Richtung orientierung) {
-        this.orientierung = orientierung;
+             this.orientierung = orientierung;
+              
     }
 
     public Room getRoom() {

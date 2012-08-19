@@ -87,7 +87,6 @@ public abstract class Monster extends NPC {
         }
 
 
-
     }
         
         
