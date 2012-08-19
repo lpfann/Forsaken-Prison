@@ -41,13 +41,13 @@ public abstract class Armor extends Item {
         
       public static class Lederwams extends Armor {
            public Lederwams(){
-                   super("Lederwams", 1,0,1,300);
+                   super("Lederwams", 1,0,1,500);
                    
            }   
       }  
       public static class Eisenrüstung extends Armor {
            public Eisenrüstung(){
-                   super("Eisenrüstung", 5,1,1,100);
+                   super("Eisenrüstung", 5,1,1,30);
                    
            }   
       }  
@@ -59,20 +59,20 @@ public abstract class Armor extends Item {
       }  
       public static class Lederrüstung extends Armor {
            public Lederrüstung(){
-                   super("Lederrüstung", 2,3,1,250);
+                   super("Lederrüstung", 2,3,1,350);
                    
            }   
       }
       
       public static class BeschlageneLederRüstung extends Armor {
            public BeschlageneLederRüstung(){
-                   super("Beschlagene Rüstung", 3,5,1,200);
+                   super("Beschlagene Rüstung", 3,5,1,250);
                    
            }   
       }  
       public static class Kettenhemd extends Armor {
            public Kettenhemd(){
-                   super("Kettenhemd", 4,4,1,150);
+                   super("Kettenhemd", 4,4,1,100);
                    
            }   
       }  

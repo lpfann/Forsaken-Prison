@@ -21,43 +21,43 @@ public abstract class Schwert extends Waffe {
         public static class Dolch extends Schwert {
 
                 public Dolch() {
-                        super("Dolch", 1, 7, 7,340);
+                        super("Dolch", 1, 7, 7,500);
                 }
         }
         public static class Kurzschwert extends Schwert {
 
                 public Kurzschwert() {
-                        super("Kurzschwert", 2, 0, 7,280);
+                        super("Kurzschwert", 2, 0, 7,350);
                 }
         }
         public static class Flammenschwert extends Schwert {
 
                 public Flammenschwert() {
-                        super("Flammenschwert", 3, 1, 7,240);
+                        super("Flammenschwert", 3, 1, 7,110);
                 }
         }
         public static class Frostschwert extends Schwert {
 
                 public Frostschwert() {
-                        super("Frostschwert", 4, 2, 7,200);
+                        super("Frostschwert", 4, 2, 7,110);
                 }
         }
         public static class Grasklinge extends Schwert {
 
                 public Grasklinge() {
-                        super("Grasklinge", 4, 3, 7,175);
+                        super("Grasklinge", 4, 3, 7,100);
                 }
         }
         public static class Donnerschwert extends Schwert {
 
                 public Donnerschwert() {
-                        super("Donnerschwert", 5, 4, 7,125);
+                        super("Donnerschwert", 5, 4, 7,60);
                 }
         }
         public static class MagischesSchwert extends Schwert {
 
                 public MagischesSchwert() {
-                        super("Magisches Schwert", 5, 5, 7,100);
+                        super("Magisches Schwert", 5, 5, 7,50);
                 }
         }
         public static class Zweihänder extends Schwert {

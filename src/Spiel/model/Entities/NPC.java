@@ -262,6 +262,7 @@ public int[] fieldinFront(int n){
 
     public void attack(NPC d) {
        NPC a = this;
+         
        int dmg = a.getDmg();
        int def = d.getDefence();
        int schaden = dmg - def;
@@ -271,8 +272,8 @@ public int[] fieldinFront(int n){
             } else {
 
 
-                if (schaden < 0) {
-                    System.out.println("Kein Schaden");
+                if (schaden <= 0) {
+                    System.out.println(d.getName()+" hat den Angriff abgeblockt");
                 } else {
                     d.setHp(d.getHp() - schaden);
                     System.out.println(a.getName()+" hat dem "+d.getName()+ " "+ schaden + " Schaden zugefügt");

@@ -25,6 +25,7 @@ public class Heiltrank extends Trank {
     @Override
     public void potionAuswirkung(Player p, int i) {
         p.setHp(p.getHp()+i);
+         System.out.println("Trank getrunken. +"+i+" HP");
     }
 
 

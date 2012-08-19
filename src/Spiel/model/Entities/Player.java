@@ -7,21 +7,25 @@ import java.util.LinkedList;
 
 public final class Player extends NPC {
 
-    private int xp, lvl, mana,smallpotions,mediumpotions,bigpotions,basedamage;
-    private Item armor;
+    private int xp, lvl, mana,smallpotions,mediumpotions,bigpotions,basedamage,maxhp;
+    private Armor armor;
     private Waffe weapon;
     private LinkedList<Item> inventar = new LinkedList<>();
     boolean walking;
+    private final int[] levelups= { 100,200,300,400,500,650,850,1100,1300,1500,1800,2100};
+         
+    
 
 
     public Player(MainModel main) {
         super(0, 0, 'P', main);
         setName("Held");
         setBasedamage(3);
-        setDmg(basedamage);
-        setHp(100);
-        setLvl(1);
-        setMana(10);
+        setDmg(0);
+        updateDmg();
+        setMaxhp(50);
+        setHp(50);
+        lvl=1;
         setXp(0);
         setstartposition(1, 1, main.getBreite()-2, main.getHoehe()-2);
         findRoomLocation();
@@ -130,9 +134,20 @@ public final class Player extends NPC {
     }
 
     public void setLvl(int lvl) {
+        
         this.lvl = lvl;
     }
-
+    public void increaseLevel(){
+        setLvl(getLvl()+1);
+         setBasedamage(getBasedamage()+1);
+        updateDmg();
+        setMaxhp(maxhp+10);
+         System.out.println("Du bist ein Level aufgestiegen! Dein Schaden und deine max. Lebenspunkte haben sich erhöht!");
+         
+         
+         
+         
+    }
     public int getMana() {
         return mana;
     }
@@ -147,8 +162,9 @@ public final class Player extends NPC {
 
     public void setXp(int xp) {
         this.xp = xp;
-            if (xp>100) {
-                    setLvl(getLvl()+1);       
+        
+            if (xp>=levelups[getLvl()-1]) {
+                    increaseLevel();     
             }
                     
     }
@@ -163,7 +179,7 @@ public final class Player extends NPC {
 
 
 
-        public Item getArmor() {
+        public Armor getArmor() {
                 return armor;
         }
 
@@ -172,7 +188,7 @@ public final class Player extends NPC {
                 setDefence(armor.getDefence());
         }
 
-        public Item getWeapon() {
+        public Waffe getWeapon() {
                 return weapon;
         }
 
@@ -249,10 +265,37 @@ public final class Player extends NPC {
 
      @Override
     public void setHp(int hp) {
-        super.setHp(hp);
             if (hp <1) {
                     getMain().setGameover(true);
             }
+            if (hp>maxhp) {
+             super.setHp(maxhp);
+               
+          } else {
+             super.setHp(hp);
+                 
+            }
     }
+     @Override
+     public void setDmg(int dmg) {
+          super.setDmg(dmg);
+     }
+
+     public int getMaxhp() {
+          return maxhp;
+     }
+
+     public void setMaxhp(int maxhp) {
+          this.maxhp = maxhp;
+     }
+     public void  updateDmg(){
+          if (getWeapon()!=null) {
+          setDmg(getWeapon().getDamage()+getBasedamage());
+               
+          } else {
+               
+               setDmg(getBasedamage());
+          }
+     }
         
 }

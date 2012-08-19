@@ -36,24 +36,34 @@ private ArrayList<Item> allitems;
 //Zufällige Erstellung von Inhalt für die Truhe 
 
       private LinkedList generatecontent() {
+            int maxitems=0;
             LinkedList loot = new LinkedList();
             //Maximale Anzahl von Items in einer Kiste
-            int maxitems= Utilites.randomizer(1,3);
+            int randmax = Utilites.randomizer(1, 100);
+            if (randmax <80) {
+                maxitems=1;
+           } else if (randmax >=80 && randmax < 98) {
+                maxitems=2;
+                
+           } else if (randmax >=98 && randmax <=100) {
+                maxitems=3;
+                
+           }
             
             //Würfeln vom seltensten bis zum häufigsten Item bis maximale Anzahl erreicht ist
-           //while (loot.size() < maxitems) {
+           while (loot.size() < maxitems) {
                 for (int i = 0; i < allitems.size(); i++) {
 
                      Item item = allitems.get(i);
                      double d = item.getDroprate();
-                     int rand = Utilites.randomizer(1, 2000);
+                     int rand = Utilites.randomizer(1, 100000);
                      if (rand < d) {
                           loot.add(item);
+                          break;
 
                      }
 
-
-                //}
+                }
             
                 
            }
