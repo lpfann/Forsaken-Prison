@@ -25,7 +25,7 @@ public class Fieldpainter extends JPanel implements Observer {
      private BufferedImage groundimage;
      private BufferedImage wallimage;
      private BufferedImage[] knightimage;
-
+     private  BufferedImage[] stairsimage;
      private Image dungeonoffscreenImage;
      BufferedImage transpImg;
      private Image fowoffscreenImage;
@@ -51,6 +51,7 @@ public class Fieldpainter extends JPanel implements Observer {
      private int fps;
      private boolean gameover;
 
+
      public Fieldpainter(int breite, int hoehe, Player p,int fieldsize) {
 
 
@@ -69,6 +70,7 @@ public class Fieldpainter extends JPanel implements Observer {
                chestimage = loadPic("/resources/chest.png", 32);
                bloodimage = loadPic("/resources/bloodsplatter.png", 20);
                knightimage = loadPic("/resources/knight.png", 40);
+               stairsimage = loadPic("/resources/stairs.png", 40);
 
           } catch (IOException e) {
                JOptionPane.showMessageDialog(null, e.getMessage(), "Bild konnte nicht eingelesen werden", 0);
@@ -234,6 +236,11 @@ public class Fieldpainter extends JPanel implements Observer {
 
                                         }
                                         break;
+                                   case "Stairs":
+                                             compoImage.getGraphics().drawImage(stairsimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+
+
+                                        break;
 
 
                               }
@@ -311,7 +318,7 @@ public class Fieldpainter extends JPanel implements Observer {
      }
 
      private void updateViewportCoord(Player p) {
-
+         
           if (p != null && map != null) {
                if (p.getX() < radiusx) {
                     this.viewportx = 0;

@@ -7,6 +7,7 @@ package Spiel.model;
 import Spiel.model.Entities.ChestFactory;
 import Spiel.model.Entities.Door;
 import Spiel.model.Entities.MonsterFactory;
+import Spiel.model.Entities.Stairs;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -38,12 +39,14 @@ public class DungeonGenerator implements Serializable {
                 entitiesinLevel.addAll(doorEntities);
                 entitiesinLevel.addAll(new MonsterFactory(main).populateDungeon(rooms));
                 entitiesinLevel.addAll(new ChestFactory(main).populateDungeon(rooms));
+                int rand = Utilites.randomizer(0, rooms.size()-1);
+                Room stairRoom =(Room)rooms.get(rand);
+                entitiesinLevel.add(new Stairs(stairRoom.getX1(), stairRoom.getY1(), stairRoom.getBreite(), stairRoom.getHoehe(), main));
 
 
         }
 
         public char[][] generate(int width, int heigth) {
-                dungeonTree.clear();
                 map = new char[heigth][width];
                 level = new Room(0, 0, width - 1, heigth - 1, this);
 

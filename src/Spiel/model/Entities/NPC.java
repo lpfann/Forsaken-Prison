@@ -8,6 +8,7 @@ import Spiel.View.Observer;
 import Spiel.model.MainModel;
 import Spiel.model.MainModel.Richtung;
 import Spiel.model.Room;
+import Spiel.model.Utilites;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
@@ -109,25 +110,24 @@ public abstract class NPC implements Drawable,Movable,Serializable{
      * @param w Breite des Bereichs wo NPC platziert werden soll
      * @param h Höhe des Bereichs wo NPC platziert werden soll
      */
-    public void setstartposition(int x1, int y1,int w, int h) {
-          for (int i = 0; i < main.getBreite()*main.getHoehe(); i++) {
-          int x=  Spiel.model.Utilites.randomizer(x1,x1+w);
-          int y=  Spiel.model.Utilites.randomizer(y1,y1+h);
-                try {
-                if (main.map[y][x]== ' ') {
-                      this.x=x;
-                      this.y=y;
-                      main.map[y][x]=this.icon;
-                      break;
+    public void setstartposition(int x1, int y1, int w, int h) {
+        for (int i = 0; i < main.getBreite() * main.getHoehe(); i++) {
+            int x = Spiel.model.Utilites.randomizer(x1, x1 + w);
+            int y = Spiel.model.Utilites.randomizer(y1, y1 + h);
+            try {
+                if (main.map[y][x] == ' ' && notinFrontofDoor()) {
+                    this.x = x;
+                    this.y = y;
+                    main.map[y][x] = this.icon;
+                    break;
                 } else {
-                      
                 }
-                } catch (ArrayIndexOutOfBoundsException ex) {
-                    System.out.println("stop");
-                }
-          }
-                
-          
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+
     }
     
     
@@ -256,6 +256,32 @@ public int[] fieldinFront(int n){
         
         
         
+}
+public boolean notinFrontofDoor(){
+    if ( Utilites.findEntitieonMap(getMain(), getX()+1, getY()) instanceof Door) {
+        return false;
+
+    }
+
+    if ( Utilites.findEntitieonMap(getMain(), getX()-1, getY()) instanceof Door) {
+        return false;
+
+    }
+
+    if ( Utilites.findEntitieonMap(getMain(), getX(), getY()+1) instanceof Door) {
+        return false;
+
+    }
+
+    if ( Utilites.findEntitieonMap(getMain(), getX(), getY()-1) instanceof Door) {
+        return false;
+
+    }
+
+    return true;
+
+
+
 }
 
 

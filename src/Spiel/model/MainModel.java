@@ -24,8 +24,8 @@ import java.util.logging.Logger;
  */
 public class MainModel implements Subject, Serializable, Cloneable {
 
-        int breite = 200;
-        int hoehe = 200;
+        int breite = 20;
+        int hoehe = 20;
         long delta = 0;
         long last = 0;
         long fps = 0;
@@ -97,6 +97,23 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
 
                 
+        }
+
+        public void changeLevel(){
+           dungeon = new DungeonGenerator(breite, hoehe, this);
+           map = dungeon.getMap();
+           entities.clear();
+           visitedRooms.clear();
+           dungeon.addEntities();
+           entities.addAll(dungeon.getEntitiesinLevel());
+           player.setstartposition(1, 1, breite, hoehe);
+           entities.add(player);
+           visitedRooms.add(player.findRoomLocation());
+           this.setFogofwarrepaint(true);
+           initFogofwar();
+
+
+
         }
         
         

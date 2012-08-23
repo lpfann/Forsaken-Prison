@@ -119,8 +119,8 @@ public final class Player extends NPC {
             
             } else if (objectinFront() instanceof Truhe) {
                 openChest();
-            } else {
-                
+            } else if (objectinFront() instanceof Stairs) {
+                getMain().changeLevel();
             }
         
     }
