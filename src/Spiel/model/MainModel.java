@@ -40,16 +40,12 @@ public class MainModel implements Subject, Serializable, Cloneable {
          * Spieler
          */
         public Player player;
-        private LinkedList monsters;
-        transient private MonsterFactory monstergenerator;
-        private LinkedList chests;
-        transient private ChestFactory chestgenerator;
         private DungeonGenerator dungeon;
 
         /**
          * Liste aller erstellten Objekte im Spiel
          */
-        public LinkedList<NPC> entities;
+        public LinkedList<NPC> entities= new LinkedList<>();
 
         private Stack<Room> visitedRooms= new Stack<>();
         private static ArrayList<Observer> observer = new ArrayList<>();
@@ -71,7 +67,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         
 
         /**
-         * Konstuktor des MainModels
+         * Konstruktor des MainModels
          */
         public MainModel() {
 
@@ -87,10 +83,8 @@ public class MainModel implements Subject, Serializable, Cloneable {
         //Dungeonerstellung
                 dungeon = new DungeonGenerator(breite, hoehe, this);
                 map = dungeon.getMap();
-                entities = new LinkedList<>();
-                //Türen Erstellung
-                entities.addAll(dungeon.getDoors());
-                placeAllNPConMap();        
+                dungeon.addEntities();
+                entities.addAll(dungeon.getEntitiesinLevel());
 
                 //Player Erstellung
                 player = new Player(this);
@@ -99,19 +93,9 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 //Fog of War
                 initFogofwar();
                 
-                //Monster Erstellung
-                monstergenerator = new MonsterFactory(this);
-                monsters = monstergenerator.populateDungeon(dungeon.getRooms());
-                entities.addAll(monsters);
-
-                //Truhen Erstellung
-                chestgenerator = new ChestFactory(this);
-                chests = chestgenerator.populateDungeon(dungeon.getRooms());
-                entities.addAll(chests);
 
 
-                //Objekte auf Map verteilen
-                
+
                 
         }
         

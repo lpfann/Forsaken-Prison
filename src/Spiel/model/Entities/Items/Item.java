@@ -12,6 +12,7 @@ public abstract class Item implements Usable,Serializable,Comparable<Item> {
 
       private String name;
       private double droprate;
+      private int itemlvl;
       private Player player;
       private int subimagex;
       private int subimagey;
@@ -72,6 +73,14 @@ public abstract class Item implements Usable,Serializable,Comparable<Item> {
                return 1;
           }
           return 0;
+     }
+
+     public int getItemlvl() {
+          return itemlvl;
+     }
+
+     public void setItemlvl(int itemlvl) {
+          this.itemlvl = itemlvl;
      }
 
 

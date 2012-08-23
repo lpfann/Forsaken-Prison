@@ -4,7 +4,9 @@ package Spiel.model;
  * To change this template, choose Tools | Templates and open the template in
  * the editor.
  */
+import Spiel.model.Entities.ChestFactory;
 import Spiel.model.Entities.Door;
+import Spiel.model.Entities.MonsterFactory;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -23,11 +25,20 @@ public class DungeonGenerator implements Serializable {
         final static char TÜR = ' ';
         private Room level;
         private MainModel main;
+        private LinkedList entitiesinLevel= new LinkedList<>();
+
 
         public DungeonGenerator(int w, int h, MainModel main) {
                 this.main = main;
                 map = generate(w, h);
                 rooms = dungeonTree;
+
+        }
+        public void addEntities(){
+                entitiesinLevel.addAll(doorEntities);
+                entitiesinLevel.addAll(new MonsterFactory(main).populateDungeon(rooms));
+                entitiesinLevel.addAll(new ChestFactory(main).populateDungeon(rooms));
+
 
         }
 
@@ -209,5 +220,9 @@ public class DungeonGenerator implements Serializable {
         public void setRoomswithDoors(LinkedList<Room> roomswithDoors) {
                 this.roomswithDoors = roomswithDoors;
         }
+
+    public LinkedList getEntitiesinLevel() {
+        return entitiesinLevel;
+    }
 
 }
