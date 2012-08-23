@@ -13,6 +13,7 @@ public final class Player extends NPC {
     private LinkedList<Item> inventar = new LinkedList<>();
     boolean walking;
     private final int[] levelups= { 100,200,300,400,500,650,850,1100,1300,1500,1800,2100};
+    private boolean up,down,left,right;
          
 
 
@@ -35,6 +36,36 @@ public final class Player extends NPC {
         setFilename("player.png");
     }
 
+    @Override
+    public void doLogic(long delta) {
+        super.doLogic(delta);
+
+        if (up || down || left || right) {
+            setWalking(true);
+        } else {
+            setWalking(false);
+        }
+
+        if (up) {
+            setOrientierung(MainModel.Richtung.UP);
+        }
+        if (down) {
+
+            setOrientierung(MainModel.Richtung.DOWN);
+        }
+
+
+
+        if (left) {
+            setOrientierung(MainModel.Richtung.LEFT);
+        }
+        if (right) {
+
+            setOrientierung(MainModel.Richtung.RIGHT);
+        }
+
+
+    }
     
     
     public void attackmonster() {
@@ -60,9 +91,9 @@ public final class Player extends NPC {
     
 
     public void openChest() {
-        if (objectinFront() instanceof Truhe) {
+        if (objectinFront() instanceof Chest) {
             
-            Truhe chest = (Truhe) objectinFront();
+            Chest chest = (Chest) objectinFront();
             if (chest.isOpened()) {
                 
             } else {
@@ -118,7 +149,7 @@ public final class Player extends NPC {
         if (objectinFront() instanceof Door) {
             openDoor();
             
-            } else if (objectinFront() instanceof Truhe) {
+            } else if (objectinFront() instanceof Chest) {
                 openChest();
             } else if (objectinFront() instanceof Stairs) {
                 getMain().changeLevel();
@@ -304,5 +335,37 @@ public final class Player extends NPC {
           
 
      }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
+    }
         
 }

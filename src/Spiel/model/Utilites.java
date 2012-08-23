@@ -53,17 +53,17 @@ public class Utilites {
         
         
         
-        static Truhe nearestChest(Player a,MainModel main) {
+        static Chest nearestChest(Player a,MainModel main) {
         int d = 50;
-        Truhe dmin=null;
+        Chest dmin=null;
         for (NPC e : main.getEntities()) {
             if (e == a)  {
                 
             } else {
-                if (e instanceof Truhe) {
+                if (e instanceof Chest) {
                     if (distance(a, e) < d) {
                         d = distance(a, e);
-                        dmin = (Truhe)e;
+                        dmin = (Chest)e;
                     }
                     
                 }

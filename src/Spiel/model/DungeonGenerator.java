@@ -23,7 +23,7 @@ public class DungeonGenerator implements Serializable {
         private LinkedList<Room> roomswithDoors = new LinkedList<>();
         private LinkedList<Door> doorEntities = new LinkedList<>();
         final static char WAND = '*';
-        final static char TÜR = ' ';
+        final static char TÜR = 'D';
         private Room level;
         private MainModel main;
         private LinkedList entitiesinLevel= new LinkedList<>();

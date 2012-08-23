@@ -38,7 +38,7 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     private int movey=0;
     private int targetx=0;
     private int targety;
-    private float walkspeed;
+    private double walkspeed=3e8;
     private boolean walking;
     private final int FIELDSIZE;
     private boolean hit=false;
@@ -94,38 +94,48 @@ public abstract class NPC implements Drawable,Movable,Serializable{
           
           main.map[targety/FIELDSIZE][targetx/FIELDSIZE] = getIcon();       
           }
-          
-          if (movex!=0) {
-             this.x+=movex*main.getDelta()/1e8;
 
-               if (movex>=0 && x >= targetx) {
-                    this.x=targetx;
-                    movex=0;
-                    walking=false;
-               } else if ( movex<=0 && x <= targetx) {
-                    this.x=targetx;
-                    movex=0;
-                    walking=false;
-                    
-               }
-               
-               
-               
-          } else if (movey!=0) {
-             this.y+=movey*main.getDelta()/1e8;
+         if (movex != 0) {
+             if (movex > 0) {
+                 this.x = (int) (this.x + (movex * main.getDelta() / walkspeed * 2));
+                 if (x >= targetx) {
+                     this.x = targetx;
+                     movex = 0;
+                 }
+             }
+             if (movex < 0) {
+                 this.x = (int) (this.x + (movex * main.getDelta() / walkspeed));
+                 if (x <= targetx) {
+                     this.x = targetx;
+                     movex = 0;
 
-               if (movey>=0 && y >= targety) {
-                    this.y=targety;
-                    movey=0;
-                    walking=false;
-               } else if ( movey <=0 && y <= targety) {
-                    this.y=targety;
-                    movey=0;
-                    walking=false;
-                    
-               }
+                 }
+             }
+
+
                
-               
+
+          } else{}
+
+             if (movey != 0) {
+              if (movey > 0) {
+                  this.y = (int) (this.y + (movey * main.getDelta() / walkspeed * 2));
+                  if (y >= targety) {
+                      this.y = targety;
+                      movey = 0;
+                  }
+              }
+              if (movey < 0) {
+                  this.y = (int) (this.y + (movey * main.getDelta() / walkspeed));
+                  if ( y <= targety) {
+                      this.y = targety;
+                      movey = 0;
+
+                  }
+              }
+
+
+
           }
           
      }
@@ -279,22 +289,22 @@ public int[] fieldinFront(int n){
         
 }
 public boolean notinFrontofDoor(){
-    if ( Utilites.findEntitieonMap(getMain(), getX()+1, getY()) instanceof Door) {
+    if ( Utilites.findEntitieonMap(getMain(), (getX()/FIELDSIZE)+1, getY()) instanceof Door) {
         return false;
 
     }
 
-    if ( Utilites.findEntitieonMap(getMain(), getX()-1, getY()) instanceof Door) {
+    if ( Utilites.findEntitieonMap(getMain(), (getX()/FIELDSIZE)-1, getY()) instanceof Door) {
         return false;
 
     }
 
-    if ( Utilites.findEntitieonMap(getMain(), getX(), getY()+1) instanceof Door) {
+    if ( Utilites.findEntitieonMap(getMain(), getX(), (getY()/FIELDSIZE)+1) instanceof Door) {
         return false;
 
     }
 
-    if ( Utilites.findEntitieonMap(getMain(), getX(), getY()-1) instanceof Door) {
+    if ( Utilites.findEntitieonMap(getMain(), getX(), (getY()/FIELDSIZE)-1) instanceof Door) {
         return false;
 
     }
@@ -528,11 +538,11 @@ public boolean notinFrontofDoor(){
           this.targety = targety;
      }
 
-     public float getWalkspeed() {
+     public double getWalkspeed() {
           return walkspeed;
      }
 
-     public void setWalkspeed(float walkspeed) {
+     public void setWalkspeed(double walkspeed) {
           this.walkspeed = walkspeed;
      }
 

@@ -13,12 +13,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class Truhe extends NPC {
+public class Chest extends NPC {
 private LinkedList items;
 private boolean opened;
 private ArrayList<Item> allitems;      
 
-      public Truhe(int x, int y,char icon,MainModel main,List<Item> allitems) {
+      public Chest(int x, int y,char icon,MainModel main,List<Item> allitems) {
             super(x,y,icon,main);
             setFilename("chest.png");
             this.allitems=(ArrayList<Item>) allitems;
@@ -33,7 +33,7 @@ private ArrayList<Item> allitems;
             
      }
       
-//Zufällige Erstellung von Inhalt für die Truhe 
+//Zufällige Erstellung von Inhalt für die Chest
 
       private LinkedList generatecontent() {
             int maxitems=0;

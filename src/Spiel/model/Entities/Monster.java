@@ -44,13 +44,13 @@ public abstract class Monster extends NPC {
                                 if (Spiel.model.Utilites.distance(this, pl) < 6) {
 
                                 if (pl.getX() < this.getX()) {
-                                        setWalking(true);
                                         setOrientierung(MainModel.Richtung.LEFT);
-                                } else if (pl.getX() > this.getX()) {
                                         setWalking(true);
+                                } else if (pl.getX() > this.getX()) {
                                         setOrientierung(MainModel.Richtung.RIGHT);
-                                } else {
-                                }
+                                        setWalking(true);
+                                } else {}
+                                
                                 if (pl.getY() < this.getY()) {
                                         setWalking(true);
                                         setOrientierung(MainModel.Richtung.UP);
@@ -93,6 +93,11 @@ public abstract class Monster extends NPC {
 
         
 }
-           
+        @Override
+     public void move() {
+            super.move();
+            setWalking(false);
+
+     }
       
 }

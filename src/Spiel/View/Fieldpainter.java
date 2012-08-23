@@ -221,8 +221,8 @@ public class Fieldpainter extends JPanel implements Observer {
 
                                         }
                                         break;
-                                   case "Truhe":
-                                        if (((Truhe) e).isOpened()) {
+                                   case "Chest":
+                                        if (((Chest) e).isOpened()) {
                                              compoImage.getGraphics().drawImage(chestimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         } else {
@@ -272,7 +272,7 @@ public class Fieldpainter extends JPanel implements Observer {
                                         }
                                         break;
                                    case "Stairs":
-                                             compoImage.getGraphics().drawImage(stairsimage[0], x1 * FIELDSIZE, y1 * FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                                             compoImage.getGraphics().drawImage(stairsimage[0], x1 , y1, FIELDSIZE, FIELDSIZE, this);
 
 
                                         break;

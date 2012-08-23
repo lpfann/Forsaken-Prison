@@ -47,22 +47,7 @@ public class ChestFactory {
       }
       
       
-      public LinkedList createchests(int anzahl,int x,int y, int w, int h) {
-            LinkedList chests= new LinkedList<>();
-            
-              for (int i = 0; i < anzahl; i++) {
-                
-                    Truhe chest= new Truhe(0, 0, 'C',main,items);
-                    chest.setstartposition(x, y, w, h);
-                    
-                    chests.add(chest);
-                      
-                  }
-                    
-                    
-              
-              return chests;
-      }
+
       
     public LinkedList populateDungeon(LinkedList<Room> rooms) {
         LinkedList chests = new LinkedList<>();
@@ -72,20 +57,13 @@ public class ChestFactory {
             int anzahl = (int)(size*0.02);
 
             for (int i = 0; i <= anzahl; i++) {
-                //  Chance das Truhe gespawnt wird.
+                //  Chance das Chest gespawnt wird.
                 if (Spiel.model.Utilites.randomizer(1, 10) < 4) {
                     
-                    Truhe chest = new Truhe(0, 0, 'C', main,items);
-                    boolean fertig=false;
-                   //Verhindert das Truhen direkt vor Türen gesetzt werden und sie so blockieren
-                    while(!fertig) {
+                    Chest chest = new Chest(0, 0, 'C', main,items);
+
                     chest.setstartposition(room.getX1() + 1, room.getY1() + 1, room.getBreite() - 2, room.getHoehe() - 2);
-                        if (Spiel.model.Utilites.distance(chest, room.getDoorx(),room.getDoory() )>1) {
-                                fertig=true;
-                        }
-                    
-                    
-                    }
+
                     chests.add(chest);
                 }
             }
