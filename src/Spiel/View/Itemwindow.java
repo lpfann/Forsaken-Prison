@@ -5,16 +5,21 @@
 package Spiel.View;
 
 import Spiel.Controller.Game;
-import Spiel.model.Entities.Items.Armor;
+import Spiel.model.Entities.Items.Armor.Armor;
+import Spiel.model.Entities.Items.Armor.Armor.Armortype;
 import Spiel.model.Entities.Items.Item;
 import Spiel.model.Entities.Items.Waffe;
 import Spiel.model.Entities.Player;
 import Spiel.model.MainModel;
+import com.sun.media.sound.JARSoundbankReader;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.jar.Attributes;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,6 +36,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         private BufferedImage allitems;
         private BufferedImage bg;
         public static ImageIcon[][] singleitem= new ImageIcon[8][8];
+        public static ImageIcon[][] armoritem= new ImageIcon[5][20];
         /**
          * Creates new form Itemwindow
          */
@@ -48,9 +54,34 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                                 singleitem[j][k] = new ImageIcon(temp);
                                 }
                         }
+                    for (Armortype ar : Armortype.values()) {
+                       boolean nextFile; 
+                        String name = ar.name();
+                        int i = 1;
+                        do {
 
+                            String path = "/resources/items/" + name + " (" + i + ").png";
+                            armoritem[ar.getValue()][i] = new ImageIcon(ImageIO.read(getClass().getResource(path)).getScaledInstance(34, 34, Image.SCALE_DEFAULT));
+                            boolean exists = false;
+                            try {
+                                exists = (new File(getClass().getResource("/resources/items/" + name + " (" + (i + 1) + ").png").toURI())).exists();
+
+                            } catch (Exception e) {
+                                exists = false;
+                            }
+
+                            if (exists) {
+                                nextFile = true;
+                                i++;
+                            } else {
+                                nextFile = false;
+                            }
+
+                        } while (nextFile);
+                        
+                    }
                 } catch (Exception e) {
-                    e.printStackTrace();    
+                    e.printStackTrace();
                 }
                 
                 setVisible(false);
@@ -75,11 +106,15 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         mediumhealthPotionLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         weaponLabel = new javax.swing.JLabel();
-        damageLabel = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        armorLabel = new javax.swing.JLabel();
-        defenceLabel = new javax.swing.JLabel();
+        bodyArmorLabel = new javax.swing.JLabel();
+        helmetLabel = new javax.swing.JLabel();
+        shoesLabel = new javax.swing.JLabel();
+        glovesLabel = new javax.swing.JLabel();
+        shieldLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        defenceLabel = new javax.swing.JLabel();
+        damageLabel = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(183, 89, 22));
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -131,7 +166,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mediumhealthPotionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mediumhealthPotionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
             .addComponent(bighealthPotionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(smallhealthPotionLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -153,44 +188,48 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         weaponLabel.setText("Keine Waffe");
         weaponLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
-        damageLabel.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
-        damageLabel.setForeground(new java.awt.Color(255, 255, 255));
-        damageLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Schaden", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 14), java.awt.Color.white)); // NOI18N
-        damageLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(damageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(weaponLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 7, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(weaponLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(weaponLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(31, 31, 31)
-                .addComponent(damageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(weaponLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Rüstung", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Georgia", 1, 24), java.awt.Color.white)); // NOI18N
         jPanel3.setOpaque(false);
 
-        armorLabel.setForeground(new java.awt.Color(255, 255, 255));
-        armorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        armorLabel.setText("Keine Rüstung");
-        armorLabel.setToolTipText("");
-        armorLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        bodyArmorLabel.setForeground(new java.awt.Color(255, 255, 255));
+        bodyArmorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bodyArmorLabel.setText("Keine Rüstung");
+        bodyArmorLabel.setToolTipText("");
+        bodyArmorLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
-        defenceLabel.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
-        defenceLabel.setForeground(new java.awt.Color(255, 255, 255));
-        defenceLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        defenceLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Verteidigung", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 14), java.awt.Color.white)); // NOI18N
-        defenceLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        helmetLabel.setForeground(new java.awt.Color(255, 255, 255));
+        helmetLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        helmetLabel.setText("Kein Helm");
+        helmetLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        shoesLabel.setForeground(new java.awt.Color(255, 255, 255));
+        shoesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        shoesLabel.setText("Keine Schuhe");
+        shoesLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        glovesLabel.setForeground(new java.awt.Color(255, 255, 255));
+        glovesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        glovesLabel.setText("Keine Handschuhe");
+        glovesLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        shieldLabel.setForeground(new java.awt.Color(255, 255, 255));
+        shieldLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        shieldLabel.setText("Kein Schild");
+        shieldLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -198,26 +237,54 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(glovesLabel)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(armorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(defenceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(shoesLabel)
+                            .addComponent(helmetLabel))
+                        .addGap(50, 50, 50))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(bodyArmorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addComponent(shieldLabel)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(armorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(31, 31, 31)
-                .addComponent(defenceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(shieldLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(helmetLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(glovesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bodyArmorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(shoesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("i - Fenster schließen");
+
+        defenceLabel.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        defenceLabel.setForeground(new java.awt.Color(255, 255, 255));
+        defenceLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        defenceLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Verteidigung", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 14), java.awt.Color.white)); // NOI18N
+        defenceLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        damageLabel.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+        damageLabel.setForeground(new java.awt.Color(255, 255, 255));
+        damageLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Schaden", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 14), java.awt.Color.white)); // NOI18N
+        damageLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -229,46 +296,56 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(166, 166, 166)
-                                .addComponent(headLineLabel)
-                                .addGap(29, 29, 29)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(damageLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(defenceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(23, 23, 23)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(2, 2, 2)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(headLineLabel)
+                .addGap(281, 281, 281))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(headLineLabel)
-                    .addComponent(jLabel2))
+                .addComponent(headLineLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(damageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(defenceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel armorLabel;
     private javax.swing.JLabel bighealthPotionLabel;
+    private javax.swing.JLabel bodyArmorLabel;
     private javax.swing.JLabel damageLabel;
     private javax.swing.JLabel defenceLabel;
+    private javax.swing.JLabel glovesLabel;
     private javax.swing.JLabel headLineLabel;
+    private javax.swing.JLabel helmetLabel;
     private javax.swing.JList itemList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -277,6 +354,8 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel mediumhealthPotionLabel;
+    private javax.swing.JLabel shieldLabel;
+    private javax.swing.JLabel shoesLabel;
     private javax.swing.JLabel smallhealthPotionLabel;
     private javax.swing.JLabel weaponLabel;
     // End of variables declaration//GEN-END:variables
@@ -296,13 +375,31 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                         this.damageLabel.setText(Integer.toString(((Waffe)player.getWeapon()).getDamage()));
                           
                      }
-                        if (player.getArmor()!=null) {
-                        this.armorLabel.setText(player.getArmor().getName());
-                        int armorx=player.getArmor().getSubimagex();
-                        int armory=player.getArmor().getSubimagey();
-                        this.armorLabel.setIcon(singleitem[armorx][armory]);
-                        this.defenceLabel.setText(Integer.toString(((Armor)player.getArmor()).getDefence()));
+
+
+
+                        if (player.getArmor(Armortype.BodyArmor)!=null) {
+                        this.bodyArmorLabel.setText(player.getArmor(Armortype.BodyArmor).getName());
+                        this.bodyArmorLabel.setIcon(armoritem[Armortype.BodyArmor.getValue()] [player.getArmor(Armortype.BodyArmor).getItemlvl()]);
                      }
+                        if (player.getArmor(Armortype.Shoes)!=null) {
+                        this.shoesLabel.setText(player.getArmor(Armortype.Shoes).getName());
+                        this.shoesLabel.setIcon(armoritem[Armortype.Shoes.getValue()] [player.getArmor(Armortype.Shoes).getItemlvl()]);
+                     }
+                        if (player.getArmor(Armortype.Gloves)!=null) {
+                        this.glovesLabel.setText(player.getArmor(Armortype.Gloves).getName());
+                        this.glovesLabel.setIcon(armoritem[Armortype.Gloves.getValue()] [player.getArmor(Armortype.Gloves).getItemlvl()]);
+                     }
+                        if (player.getArmor(Armortype.Shield)!=null) {
+                        this.shieldLabel.setText(player.getArmor(Armortype.Shield).getName());
+                        this.shieldLabel.setIcon(armoritem[Armortype.Shield.getValue()] [player.getArmor(Armortype.Shield).getItemlvl()]);
+                     }
+                        if (player.getArmor(Armortype.Helmet)!=null) {
+                        this.helmetLabel.setText(player.getArmor(Armortype.Helmet).getName());
+                        this.helmetLabel.setIcon(armoritem[Armortype.Helmet.getValue()] [player.getArmor(Armortype.Helmet).getItemlvl()]);
+                     }
+
+                        this.defenceLabel.setText(Integer.toString(player.getDefence()));
                         this.smallhealthPotionLabel.setText(Integer.toString(player.getSmallpotions()));
                         this.mediumhealthPotionLabel.setText(Integer.toString(player.getMediumpotions()));
                         this.bighealthPotionLabel.setText(Integer.toString(player.getBigpotions()));

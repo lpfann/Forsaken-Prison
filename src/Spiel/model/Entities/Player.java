@@ -4,11 +4,19 @@ import Spiel.View.Observer;
 import Spiel.model.Entities.Items.*;
 import Spiel.model.MainModel;
 import java.util.LinkedList;
+import Spiel.model.Entities.Items.Armor.Armor;
+import Spiel.model.Entities.Items.Armor.Armor.Armortype;
+import Spiel.model.Entities.Items.Armor.BodyArmor;
+import Spiel.model.Entities.Items.Armor.Gloves;
+import Spiel.model.Entities.Items.Armor.Helmet;
+import Spiel.model.Entities.Items.Armor.Shield;
+import Spiel.model.Entities.Items.Armor.Shoes;
 
 public final class Player extends NPC {
 
     private int xp, lvl, mana,smallpotions,mediumpotions,bigpotions,basedamage,maxhp;
-    private Armor armor;
+
+    private Armor[] armor= new Armor[5];
     private Waffe weapon;
     private LinkedList<Item> inventar = new LinkedList<>();
     boolean walking;
@@ -28,13 +36,13 @@ public final class Player extends NPC {
         updateDmg();
         setMaxhp(100);
         setHp(100);
+        setDefence(0);
         lvl=1;
         setXp(0);
         setstartposition(1, 1, main.getBreite()-2, main.getHoehe()-2);
         findRoomLocation();
         getMain().getVisitedRooms().add(getRoom());
 
-        setFilename("player.png");
     }
 
     @Override
@@ -234,13 +242,25 @@ public final class Player extends NPC {
 
 
 
-        public Armor getArmor() {
-                return armor;
+        public Armor getArmor(Armortype a) {
+                return this.armor[a.getValue()];
         }
 
-        public void setArmor(Armor armor) {
-                this.armor = armor;
-                setDefence(armor.getDefence());
+        public void setArmor(Armor a) {
+
+                this.armor[a.getType().getValue()]= a;
+                setDefence(calcDefence());
+        }
+
+        private int calcDefence(){
+            int def=0;
+            for (int i = 0; i < armor.length; i++) {
+                if (armor[i]!=null) {
+                def+=armor[i].getDefence();
+
+                }
+            }
+            return def;
         }
 
         public Waffe getWeapon() {

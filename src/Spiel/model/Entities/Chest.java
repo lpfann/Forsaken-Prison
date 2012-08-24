@@ -51,7 +51,7 @@ private ArrayList<Item> allitems;
            }
             
             //Würfeln vom seltensten bis zum häufigsten Item bis maximale Anzahl erreicht ist
-           while (loot.size() < maxitems) {
+           while (loot.size() < 10) {
                 for (int i = 0; i < allitems.size(); i++) {
 
                      Item item = allitems.get(i);

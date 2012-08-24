@@ -16,9 +16,10 @@ public abstract class Item implements Usable,Serializable,Comparable<Item> {
       private Player player;
       private int subimagex;
       private int subimagey;
+      
 
 
-      Item() {
+      public Item() {
           this.name="";
           this.droprate=0;
         

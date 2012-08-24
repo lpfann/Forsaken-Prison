@@ -4,7 +4,9 @@
  */
 package Spiel.View;
 
+import Spiel.model.Entities.Items.Armor.Armor;
 import Spiel.model.Entities.Items.Item;
+import Spiel.model.Entities.Items.Waffe;
 import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -37,10 +39,23 @@ public class ItemListRenderer extends JLabel implements ListCellRenderer{
                 }
 
                 String name = item.getName();
-                if (Itemwindow.singleitem[item.getSubimagex()][item.getSubimagey()]!=null) {
-                        setIcon(Itemwindow.singleitem[item.getSubimagex()][item.getSubimagey()]);
-                        
+                if (item instanceof Armor) {
+                    if (Itemwindow.armoritem[item.getSubimagex()][item.getSubimagey()]!=null) {
+                            setIcon(Itemwindow.armoritem[item.getSubimagex()][item.getSubimagey()]);
+
+                    }
+
                 }
+                if (item instanceof Waffe) {
+
+                    if (Itemwindow.singleitem[item.getSubimagex()][item.getSubimagey()]!=null) {
+                            setIcon(Itemwindow.singleitem[item.getSubimagex()][item.getSubimagey()]);
+
+                    }
+
+                }
+
+
                 setText(name + " +"+ item.showStat());
 
                 

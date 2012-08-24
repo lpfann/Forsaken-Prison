@@ -54,6 +54,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         private static ArrayList<Observer> observer = new ArrayList<>();
         private boolean gameover;
         private boolean fogofwarrepaint=true;
+        private int currentDungeonLevel=1;
 
 
 
@@ -446,5 +447,13 @@ public class MainModel implements Subject, Serializable, Cloneable {
      public int getFIELDSIZE() {
           return FIELDSIZE;
      }
+
+    public int getCurrentDungeonLevel() {
+        return currentDungeonLevel;
+    }
+
+    public void setCurrentDungeonLevel(int currentDungeonLevel) {
+        this.currentDungeonLevel = currentDungeonLevel;
+    }
 
 }
