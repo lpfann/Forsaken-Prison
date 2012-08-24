@@ -6,8 +6,7 @@ package Spiel.model;
  */
 import Spiel.View.Observer;
 import Spiel.View.Observer.transEnum;
-import Spiel.model.Entities.ChestFactory;
-import Spiel.model.Entities.MonsterFactory;
+import Spiel.model.Entities.Effect;
 import Spiel.model.Entities.NPC;
 import Spiel.model.Entities.Player;
 import java.io.Serializable;
@@ -49,6 +48,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
          * Liste aller erstellten Objekte im Spiel
          */
         public LinkedList<NPC> entities= new LinkedList<>();
+        public LinkedList<Effect> effects= new LinkedList<>();
 
         private Stack<Room> visitedRooms= new Stack<>();
         private static ArrayList<Observer> observer = new ArrayList<>();
@@ -109,7 +109,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
            visitedRooms.clear();
            dungeon.addEntities();
            entities.addAll(dungeon.getEntitiesinLevel());
-           player.setstartposition(1, 1, breite, hoehe);
+           player.setstartposition(1, 1, breite-1, hoehe-1);
            entities.add(player);
            visitedRooms.add(player.findRoomLocation());
            this.setFogofwarrepaint(true);
@@ -165,7 +165,11 @@ public class MainModel implements Subject, Serializable, Cloneable {
                         }
                         
                 }
-                
+                entities.addAll(effects);
+                effects.clear();
+
+
+
                 //Löschen der "toten" Objekte
                 for (NPC e : toberemoved) {
                         
@@ -174,9 +178,13 @@ public class MainModel implements Subject, Serializable, Cloneable {
                                 this.gameover = true;
                         }
                         
-                        entities.remove(e);
-                        map[e.getY()/FIELDSIZE][e.getX()/FIELDSIZE] = ' ';
-                }
+                       entities.remove(e);
+                       if (e instanceof Effect) {
+                       } else {
+
+                           map[e.getY() / FIELDSIZE][e.getX() / FIELDSIZE] = ' ';
+                       }
+                   }
                 
                 
                 //Neuzeichnen des Fog-of-War wenn Flag auf True gesetzt ist

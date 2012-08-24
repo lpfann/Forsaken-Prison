@@ -15,6 +15,7 @@ public abstract class Schwert extends Waffe {
        setSubimagex(x);
        setSubimagey(y);
        setDroprate(droprate);
+       setAttackspeed(1);
 
        }
 
@@ -22,6 +23,7 @@ public abstract class Schwert extends Waffe {
 
                 public Dolch() {
                         super("Dolch", 1, 7, 7,500);
+                        setAttackspeed(1.25);
                 }
         }
         public static class Kurzschwert extends Schwert {
@@ -64,6 +66,7 @@ public abstract class Schwert extends Waffe {
 
                 public Zweihänder() {
                         super("Zweihänder", 8, 6, 7,10);
+                        setAttackspeed(0.8);
                 }
         }
 

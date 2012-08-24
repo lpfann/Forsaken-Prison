@@ -3,18 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0">
         <file>
-            <url>src/Spiel/model/Main.java</url>
-            <bookmark id="0">
-                <name/>
-                <line>62</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
             <url>src/testpaint/Controller.java</url>
             <bookmark id="0">
                 <name/>
                 <line>22</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/Spiel/model/Main.java</url>
+            <bookmark id="0">
+                <name/>
+                <line>62</line>
                 <key/>
             </bookmark>
         </file>

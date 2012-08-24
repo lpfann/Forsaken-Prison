@@ -4,13 +4,10 @@
  */
 package Spiel.model.Entities;
 
-import Spiel.View.Observer;
 import Spiel.model.MainModel;
 import Spiel.model.MainModel.Richtung;
 import Spiel.model.Room;
 import Spiel.model.Utilites;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -66,7 +63,6 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     
      @Override
      public void move() {
-          delay+=main.getDelta()/1e6;
 
           if (walking  && movex==0 && movey==0 && getMain().map[fieldinFront(1)[1]][fieldinFront(1)[0]] == ' ') {
           main.map[targety/FIELDSIZE][targetx/FIELDSIZE] = ' ';       
@@ -147,6 +143,8 @@ public abstract class NPC implements Drawable,Movable,Serializable{
     
         @Override
     public void doLogic(long delta) {
+           delay+=main.getDelta()/1e6;
+
             if    (hit) {
                     if (internalCounter>9) {
                      internalCounter=0;
@@ -338,6 +336,7 @@ public boolean notinFrontofDoor(){
                 } else {
                     d.setHp(d.getHp() - schaden);
                     System.out.println(a.getName()+" hat dem "+d.getName()+ " "+ schaden + " Schaden zugefügt");
+                    main.effects.add(new Effect(d.getX()/FIELDSIZE, d.getY()/FIELDSIZE, main, String.valueOf(schaden)));
                     d.setHit(true);
 
                 }

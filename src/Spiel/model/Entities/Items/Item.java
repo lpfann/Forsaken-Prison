@@ -23,6 +23,8 @@ public abstract class Item implements Usable,Serializable,Comparable<Item> {
           this.droprate=0;
         
       }
+    abstract public String showStat();
+
 
     public void setName(String name) {
         this.name = name;

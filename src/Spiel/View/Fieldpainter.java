@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 public class Fieldpainter extends JPanel implements Observer {
 
      private BufferedImage[][] playerimage;
+     private BufferedImage[][] attackingplayerimage;
      private BufferedImage[] orkimage;
      private BufferedImage[] trollimage;
      private BufferedImage[] chestimage;
@@ -70,6 +71,7 @@ public class Fieldpainter extends JPanel implements Observer {
                groundimage = ImageIO.read(getClass().getResource("/resources/groundDun.png"));
                wallimage = ImageIO.read(getClass().getResource("/resources/HBlockDun.png"));
                playerimage= enlargePic(loadPic("/resources/new-player.png", 64, 64),10,15);
+               attackingplayerimage= enlargePic(loadPic("/resources/new-player-attack.png", 64, 64),10,15);
                orkimage = loadPic("/resources/ork.png", 38);
                trollimage = loadPic("/resources/troll.png", 20);
                doorimage = loadPic("/resources/new-door.png", 24);
@@ -87,17 +89,19 @@ public class Fieldpainter extends JPanel implements Observer {
      @Override
      protected void paintComponent(Graphics g) {
           super.paintComponent(g);
+          g.setColor(Color.red);
           updateViewportCoord(player);
           compoImage = createImage(viewportwidth * FIELDSIZE, viewportheight * FIELDSIZE);
-
+            Graphics cg = compoImage.getGraphics();
+         
           //Dungeon Zeichnen
           paintDungeon(g);
           //Entities Zeichnen
-          paintallEntities(g);
+          paintallEntities(cg);
           //Fog of War zeichnen
           paintFogofWar(g);
 
-
+          cg.dispose();
 
 
           try {
@@ -169,7 +173,8 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
      //Zeichnen der Entities
-     private void paintallEntities(Graphics g) {
+     private void paintallEntities(Graphics cg) {
+         
           if (!entities.isEmpty()) {
 
                for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
@@ -184,98 +189,114 @@ public class Fieldpainter extends JPanel implements Observer {
                                         switch (e.getOrientierung()) {
                                              case DOWN:
                                                   if (player.isWalking()) {
-                                                      animateWalking(Richtung.DOWN,x1,y1); 
-                                                  } else {
-                                                  compoImage.getGraphics().drawImage(playerimage[0][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                      animateWalking(cg,Richtung.DOWN,x1,y1);
+                                                  } else if (player.isAttacking()){
+                                                      animateAttack(cg, Richtung.DOWN, x1, y1);
+                                                  }else {
+                                                  cg.drawImage(playerimage[0][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   }
                                                   break;
                                              case LEFT:
                                                   if (player.isWalking()) {
-                                                      animateWalking(Richtung.LEFT,x1,y1); 
-                                                  } else {
-                                                  compoImage.getGraphics().drawImage(playerimage[0][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                      animateWalking(cg,Richtung.LEFT,x1,y1);
+                                                  } else if (player.isAttacking()){
+                                                      animateAttack(cg, Richtung.LEFT, x1, y1);
+                                                  }else {
+                                                  cg.drawImage(playerimage[0][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   }
                                                   break;
                                              case UP:
                                                   if (player.isWalking()) {
-                                                      animateWalking(Richtung.UP,x1,y1); 
-                                                  } else {
-                                                  compoImage.getGraphics().drawImage(playerimage[0][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                      animateWalking(cg,Richtung.UP,x1,y1);
+                                                  } else if (player.isAttacking()){
+                                                      animateAttack(cg, Richtung.UP, x1, y1);
+                                                  }else {
+                                                  cg.drawImage(playerimage[0][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   }
                                                   break;
                                              case RIGHT:
                                                   if (player.isWalking()) {
-                                                      animateWalking(Richtung.RIGHT,x1,y1); 
-                                                  } else {
-                                                  compoImage.getGraphics().drawImage(playerimage[0][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                      animateWalking(cg,Richtung.RIGHT,x1,y1);
+                                                  } else if (player.isAttacking()){
+                                                      animateAttack(cg, Richtung.RIGHT, x1, y1);
+                                                  }else {
+                                                  cg.drawImage(playerimage[0][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   }
                                                   break;
                                         }
                                         break;
                                    case "Door":
                                         if (((Door) e).getOpen()) {
-                                             compoImage.getGraphics().drawImage(doorimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                             cg.drawImage(doorimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         } else {
-                                             compoImage.getGraphics().drawImage(doorimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                             cg.drawImage(doorimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         }
                                         break;
                                    case "Chest":
                                         if (((Chest) e).isOpened()) {
-                                             compoImage.getGraphics().drawImage(chestimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                             cg.drawImage(chestimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         } else {
-                                             compoImage.getGraphics().drawImage(chestimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                             cg.drawImage(chestimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         }
                                         break;
                                    case "Ork":
                                         switch (e.getOrientierung()) {
                                              case DOWN:
-                                                  compoImage.getGraphics().drawImage(orkimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                  cg.drawImage(orkimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case LEFT:
-                                                  compoImage.getGraphics().drawImage(orkimage[3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                  cg.drawImage(orkimage[3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case UP:
-                                                  compoImage.getGraphics().drawImage(orkimage[2], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                  cg.drawImage(orkimage[2], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case RIGHT:
-                                                  compoImage.getGraphics().drawImage(orkimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                  cg.drawImage(orkimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                         }
                                         break;
                                    case "Knight":
                                         switch (e.getOrientierung()) {
                                              case DOWN:
-                                                  compoImage.getGraphics().drawImage(knightimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                  cg.drawImage(knightimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case LEFT:
-                                                  compoImage.getGraphics().drawImage(knightimage[3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                  cg.drawImage(knightimage[3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case UP:
-                                                  compoImage.getGraphics().drawImage(knightimage[2], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                  cg.drawImage(knightimage[2], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                              case RIGHT:
-                                                  compoImage.getGraphics().drawImage(knightimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                                  cg.drawImage(knightimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
                                                   break;
                                         }
                                         break;
                                    case "Troll":
                                         if (((Monster) e).isHit()) {
-                                             compoImage.getGraphics().drawImage(trollimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                             cg.drawImage(trollimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         } else {
-                                             compoImage.getGraphics().drawImage(trollimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                             cg.drawImage(trollimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                                         }
                                         break;
                                    case "Stairs":
-                                             compoImage.getGraphics().drawImage(stairsimage[0], x1 , y1, FIELDSIZE, FIELDSIZE, this);
+                                             cg.drawImage(stairsimage[0], x1 , y1, FIELDSIZE, FIELDSIZE, this);
 
 
                                         break;
+                                   case "Effect":
+                                             cg.setFont(new Font("Monospaced", Font.BOLD, 20));
+                                             cg.setColor(Color.RED);
+                                             cg.drawString(((Effect) e).getContent(), x1+FIELDSIZE/2, y1);
+
+
+                                        break;
+
 
 
                               }
@@ -283,7 +304,7 @@ public class Fieldpainter extends JPanel implements Observer {
 
                               if (e.isHit()) {
 
-                                   compoImage.getGraphics().drawImage(bloodimage[e.getCounter()], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                                   cg.drawImage(bloodimage[e.getCounter()], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                               }
 
@@ -311,7 +332,7 @@ public class Fieldpainter extends JPanel implements Observer {
                this.fps = (int) mm.getFps();
                this.delta=mm.getDelta();
                animationdelay+=this.delta/1e6;
-               if (animationdelay>20) {
+               if (animationdelay>80) {
                     animationdelay=0;
                     animcounter++;
                }
@@ -436,31 +457,58 @@ public class Fieldpainter extends JPanel implements Observer {
      public void setFogofwarrepaint(boolean fogofwarrepaint) {
           this.fogofwarrepaint = fogofwarrepaint;
      }
-     private void animateWalking(Richtung dir,int x1,int y1){
+     private void animateWalking(Graphics cg,Richtung dir,int x1,int y1){
      
                if (animcounter>=8) {
                     animcounter=0;
                }
           switch (dir) {
                case DOWN:
-                    compoImage.getGraphics().drawImage(playerimage[animcounter][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(playerimage[animcounter][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
                     
                     break;
                case LEFT:
 
-                    compoImage.getGraphics().drawImage(playerimage[animcounter][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(playerimage[animcounter][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
                case UP:
 
-                    compoImage.getGraphics().drawImage(playerimage[animcounter][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(playerimage[animcounter][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
                case RIGHT:
 
-                    compoImage.getGraphics().drawImage(playerimage[animcounter][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(playerimage[animcounter][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
      
      
+          }
+     }
+     private void animateAttack(Graphics cg,Richtung dir,int x1,int y1){
+
+               if (animcounter>=5) {
+                    animcounter=0;
+               }
+          switch (dir) {
+               case DOWN:
+                    cg.drawImage(attackingplayerimage[animcounter][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
+
+
+                    break;
+               case LEFT:
+
+                    cg.drawImage(attackingplayerimage[animcounter][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    break;
+               case UP:
+
+                    cg.drawImage(attackingplayerimage[animcounter][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    break;
+               case RIGHT:
+
+                    cg.drawImage(attackingplayerimage[animcounter][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    break;
+
+
           }
      }
      

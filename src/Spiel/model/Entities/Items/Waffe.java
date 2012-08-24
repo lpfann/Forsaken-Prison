@@ -10,7 +10,8 @@ package Spiel.model.Entities.Items;
  */
 public class Waffe extends Item {
       
-private int damage;  
+private int damage;
+private double attackspeed;
 
       Waffe(String name,int dmg) {
             super();
@@ -18,7 +19,11 @@ private int damage;
             this.damage=dmg;
             
       }
+      @Override
+      public String showStat(){
+        return Integer.toString(this.damage);
 
+      }
     public int getDamage() {
         return damage;
     }
@@ -35,6 +40,14 @@ private int damage;
                         getPlayer().setWeapon(this);
                         getPlayer().getInventar().remove(this);
         }
+
+    public double getAttackspeed() {
+        return attackspeed;
+    }
+
+    public void setAttackspeed(double attackspeed) {
+        this.attackspeed = attackspeed;
+    }
         
       
 }

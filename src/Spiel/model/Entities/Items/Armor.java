@@ -20,6 +20,11 @@ public abstract class Armor extends Item {
               
               
       }
+      @Override
+      public String showStat(){
+        return Integer.toString(this.defence);
+
+      }
 
         public int getDefence() {
                 return defence;

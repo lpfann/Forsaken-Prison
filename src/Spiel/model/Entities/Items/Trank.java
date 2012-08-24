@@ -51,7 +51,12 @@ public abstract class Trank extends Item {
           
       }
       
-      
+            @Override
+      public String showStat(){
+        return null;
+
+
+      }
       private void potionSizeRenamer() {
             if (size == Size.KLEIN) {
               setName("Kleiner "+getName());
