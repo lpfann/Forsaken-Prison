@@ -97,7 +97,7 @@ public class Utilites {
             
             for (ListIterator<NPC> it = main.getEntities().listIterator(); it.hasNext();) {
                 NPC e = it.next();
-                if (e.getX()/e.getFIELDSIZE()==x && e.getY()/e.getFIELDSIZE()==y) {
+                if (e.getX()/ e.getFIELDSIZE() ==x && e.getY()/e.getFIELDSIZE()==y) {
                     return e;
                 } else {
                     

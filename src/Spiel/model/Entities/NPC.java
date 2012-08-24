@@ -164,6 +164,10 @@ public abstract class NPC implements Drawable,Movable,Serializable{
              } else {
             gametick++;
              }
+
+
+
+             setRoom(findRoomLocation());
     }
             
 
@@ -335,6 +339,7 @@ public boolean notinFrontofDoor(){
                     d.setHp(d.getHp() - schaden);
                     System.out.println(a.getName()+" hat dem "+d.getName()+ " "+ schaden + " Schaden zugefügt");
                     d.setHit(true);
+
                 }
             }
            
@@ -344,7 +349,19 @@ public boolean notinFrontofDoor(){
        
        
        
-   } 
+   }
+
+    public NPC enemyInFront(){
+        NPC defender=null;
+        for (NPC e : main.getEntities()) {
+            if (e.getX()/FIELDSIZE == fieldinFront(1)[0] && e.getY()/FIELDSIZE ==fieldinFront(1)[1] &&( e instanceof Monster || e instanceof Player) ) {
+                defender=e;
+            }
+        }
+        
+       return defender;
+
+    }
     
     
     

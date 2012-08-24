@@ -69,8 +69,9 @@ public final class Player extends NPC {
     
     
     public void attackmonster() {
-        if (objectinFront() instanceof Monster) {
-            NPC monster = objectinFront();
+
+        if (enemyInFront()!= null) {
+            NPC monster = enemyInFront();
 
             attack(monster);
             if (monster.getHp() <= 0) {

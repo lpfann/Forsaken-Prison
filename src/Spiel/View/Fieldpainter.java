@@ -333,51 +333,53 @@ public class Fieldpainter extends JPanel implements Observer {
 
      }
 
-     private void updateViewportCoord(Player p) {
-         
-          if (p != null && map != null) {
-               if (p.getX()/FIELDSIZE < radiusx) {
-                    this.viewportx = 0;
-               } else {
-                    this.viewportx = p.getX() - radiusx*FIELDSIZE;
+    private void updateViewportCoord(Player p) {
 
-               }
-               if (p.getY()/FIELDSIZE < radiusy) {
-                    this.viewporty = 0;
-               } else {
-                    this.viewporty = p.getY() - radiusy*FIELDSIZE;
+        if (p != null && map != null) {
+            if (p.getX() / FIELDSIZE < radiusx) {
+                this.viewportx = 0;
+            } else {
+                this.viewportx = p.getX() - radiusx * FIELDSIZE;
 
-               }
-               if (map[0].length*FIELDSIZE - p.getX() < radiusx*FIELDSIZE) {
-                    this.viewportx = p.getX() - radiusx*FIELDSIZE - (radiusx*FIELDSIZE - (map[0].length*FIELDSIZE - p.getX()));
-               } else {
-               }
-               if (map.length*FIELDSIZE - p.getY() < radiusy*FIELDSIZE) {
-                    this.viewporty = p.getY() - radiusy*FIELDSIZE - (radiusy*FIELDSIZE - (map.length*FIELDSIZE - p.getY()));
-               } else {
-               }
- if (viewportx<FIELDSIZE) {
-               minimumx=0;
-          } else {
-              minimumx = viewportx/FIELDSIZE-1;
-          }
-          if (viewporty<FIELDSIZE) {
-               minimumy=0;
-          } else {
-              minimumy = viewporty/FIELDSIZE-1;
-          }
-          if (viewporty/FIELDSIZE + viewportheight+1>=map.length) {
-               maximumy = viewporty/FIELDSIZE + viewportheight;
-          } else {
-               maximumy = viewporty/FIELDSIZE + viewportheight+1;
-          }
-          if (viewportx/FIELDSIZE + viewportwidth+1>=map[0].length) {
-               maximumx = viewportx/FIELDSIZE + viewportwidth;
-          } else {
-               maximumx=viewportx/FIELDSIZE + viewportwidth+1;
-          }
-          }
-     }
+            }
+            if (p.getY() / FIELDSIZE < radiusy) {
+                this.viewporty = 0;
+            } else {
+                this.viewporty = p.getY() - radiusy * FIELDSIZE;
+
+            }
+            if (map[0].length * FIELDSIZE - p.getX() < radiusx * FIELDSIZE) {
+                this.viewportx = p.getX() - radiusx * FIELDSIZE - (radiusx * FIELDSIZE - (map[0].length * FIELDSIZE - p.getX()));
+            } else {
+            }
+            if (map.length * FIELDSIZE - p.getY() < radiusy * FIELDSIZE) {
+                this.viewporty = p.getY() - radiusy * FIELDSIZE - (radiusy * FIELDSIZE - (map.length * FIELDSIZE - p.getY()));
+            } else {
+            }
+
+            //Bestimmen des Minimum und es Maximums für den Rahmen um den Viewport damit das SubPixel Verschieben ohne Bildartefakte geht
+            if (viewportx < FIELDSIZE) {
+                minimumx = 0;
+            } else {
+                minimumx = viewportx / FIELDSIZE - 1;
+            }
+            if (viewporty < FIELDSIZE) {
+                minimumy = 0;
+            } else {
+                minimumy = viewporty / FIELDSIZE - 1;
+            }
+            if (viewporty / FIELDSIZE + viewportheight + 1 > map.length) {
+                maximumy = viewporty / FIELDSIZE + viewportheight;
+            } else {
+                maximumy = viewporty / FIELDSIZE + viewportheight + 1;
+            }
+            if (viewportx / FIELDSIZE + viewportwidth + 1 > map[0].length) {
+                maximumx = viewportx / FIELDSIZE + viewportwidth;
+            } else {
+                maximumx = viewportx / FIELDSIZE + viewportwidth + 1;
+            }
+        }
+    }
 
      private BufferedImage[] loadPic(String path, int width) {
 
