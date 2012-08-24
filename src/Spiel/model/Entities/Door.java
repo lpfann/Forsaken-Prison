@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  *
  * @author Gamer
  */
-public class Door extends NPC {
+public class Door extends NPC implements Usable {
     
     private boolean open;
     public Door(int x, int y,MainModel main){
@@ -42,5 +42,15 @@ public class Door extends NPC {
      public void move() {
               
          }
+
+    @Override
+    public void use(Player p) {
+
+          opencloseDoorSwitch();
+          changeMapforObject(this);
+          p.getMain().getVisitedRooms().add(findRoomLocationatXY(fieldinFront(2)[0],fieldinFront(2)[1]));
+          p.getMain().setFogofwarrepaint(true);
+
+    }
 
 }

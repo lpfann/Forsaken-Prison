@@ -4,7 +4,9 @@
  */
 package Spiel.model.Entities;
 
+import Spiel.model.Entities.Items.Heiltrank;
 import Spiel.model.Entities.Items.Item;
+import Spiel.model.Entities.Items.Trank;
 import Spiel.model.MainModel;
 import Spiel.model.Utilites;
 import java.util.ArrayList;
@@ -13,10 +15,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class Chest extends NPC {
+public class Chest extends NPC implements Usable {
 private LinkedList items;
 private boolean opened;
-private ArrayList<Item> allitems;      
+private ArrayList<Item> allitems;
+private MainModel main;
 
       public Chest(int x, int y,char icon,MainModel main,List<Item> allitems) {
             super(x,y,icon,main);
@@ -24,7 +27,7 @@ private ArrayList<Item> allitems;
             this.allitems=(ArrayList<Item>) allitems;
             //Nach Seltenheit sortieren
             Collections.sort(allitems);
-            
+            this.main=main;
             this.items=generatecontent();
             this.opened=false;
             
@@ -51,17 +54,20 @@ private ArrayList<Item> allitems;
            }
             
             //Würfeln vom seltensten bis zum häufigsten Item bis maximale Anzahl erreicht ist
-           while (loot.size() < 10) {
+           while (loot.size() < maxitems) {
                 for (int i = 0; i < allitems.size(); i++) {
 
                      Item item = allitems.get(i);
-                     double d = item.getDroprate();
-                     int rand = Utilites.randomizer(1, 100000);
-                     if (rand < d) {
-                          loot.add(item);
-                          break;
+                     if (item.getItemlvl()<=main.getCurrentDungeonLevel()) {
+                         double d = item.getDroprate();
+                         int rand = Utilites.randomizer(1, 100000);
+                         if (rand < d) {
+                              loot.add(item);
+                              break;
 
-                     }
+                         }
+                        
+                    }
 
                 }
             
@@ -88,6 +94,40 @@ private ArrayList<Item> allitems;
 
     public boolean isOpened() {
         return opened;
+    }
+
+    @Override
+    public void use(Player p) {
+
+            if (isOpened()) {
+
+            } else {
+            setOpened(true);
+            LinkedList<Item> inhalt = getItems();
+                    for (Item item : inhalt) {
+                            item.setPlayer(p);
+                            if (item instanceof Heiltrank) {
+                                 switch (((Trank)item).getSize()){
+                                         case KLEIN:
+                                                 p.setSmallpotions(p.getSmallpotions()+1);
+                                                 break;
+                                         case MITTEL:
+                                                 p.setMediumpotions(p.getMediumpotions()+1);
+                                                 break;
+                                         case GROß:
+                                                 p.setBigpotions(p.getBigpotions()+1);
+                                                 break;
+                                 }
+                            } else {
+                               p.getInventar().add(item);
+
+                            }
+                             System.out.println("Du hast: " + item.getName() + " gefunden");
+
+                    }
+            setItems(null);
+            }
+
     }
     
         

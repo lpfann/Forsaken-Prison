@@ -8,7 +8,7 @@ package Spiel.model.Entities.Items;
  *
  * @author Gamer
  */
-public interface Usable {
+public interface UsableItem {
         
         
    void useItem();

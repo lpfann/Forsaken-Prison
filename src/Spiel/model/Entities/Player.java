@@ -112,71 +112,14 @@ public final class Player extends NPC {
 
     
 
-    public void openChest() {
-        if (objectinFront() instanceof Chest) {
-            
-            Chest chest = (Chest) objectinFront();
-            if (chest.isOpened()) {
-                
-            } else {
-            chest.setOpened(true);
-            LinkedList<Item> inhalt = chest.getItems();
-                    for (Item item : inhalt) {
-                            item.setPlayer(this);
-                            if (item instanceof Heiltrank) {
-                                 switch (((Trank)item).getSize()){
-                                         case KLEIN:
-                                                 smallpotions++;
-                                                 break;
-                                         case MITTEL:
-                                                 mediumpotions++;
-                                                 break;
-                                         case GROß:
-                                                 bigpotions++;
-                                                 break;
-                                 } 
-                            } else {
-                               inventar.add(item);     
-                                    
-                            }
-                             System.out.println("Du hast: " + item.getName() + " gefunden");
-                            
-                    }
-            chest.setItems(null);
-            }
+ 
 
-
-        }
-
-
-
-
-    }
-
-    public void openDoor() {
-        if (objectinFront() instanceof Door) {
-          Door door = (Door)objectinFront();
-          door.opencloseDoorSwitch();
-          changeMapforObject(door);
-          getMain().getVisitedRooms().add(findRoomLocationatXY(fieldinFront(2)[0],fieldinFront(2)[1]));
-          getMain().setFogofwarrepaint(true);
-          
-        }
-        
-       
-    }
 
 
     public void action() {
-        if (objectinFront() instanceof Door) {
-            openDoor();
-            
-            } else if (objectinFront() instanceof Chest) {
-                openChest();
-            } else if (objectinFront() instanceof Stairs) {
-                getMain().changeLevel();
-            }
-        
+        if (objectinFront()!=null) {
+            ((Usable) objectinFront()).use(this);
+        }
     }
     
     

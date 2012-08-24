@@ -27,6 +27,7 @@ public class DungeonGenerator implements Serializable {
         private Room level;
         private MainModel main;
         private LinkedList entitiesinLevel= new LinkedList<>();
+        private Stairs stairs;
 
 
         public DungeonGenerator(int w, int h, MainModel main) {
@@ -41,7 +42,8 @@ public class DungeonGenerator implements Serializable {
                 entitiesinLevel.addAll(new ChestFactory(main).populateDungeon(rooms));
                 int rand = Utilites.randomizer(0, rooms.size()-1);
                 Room stairRoom =(Room)rooms.get(rand);
-                entitiesinLevel.add(new Stairs(stairRoom.getX1(), stairRoom.getY1(), stairRoom.getBreite(), stairRoom.getHoehe(), main));
+                stairs = new Stairs(stairRoom.getX1(), stairRoom.getY1(), stairRoom.getBreite(), stairRoom.getHoehe(), main);
+                entitiesinLevel.add(stairs);
 
 
         }
@@ -226,6 +228,10 @@ public class DungeonGenerator implements Serializable {
 
     public LinkedList getEntitiesinLevel() {
         return entitiesinLevel;
+    }
+
+    public Stairs getStairs() {
+        return stairs;
     }
 
 }

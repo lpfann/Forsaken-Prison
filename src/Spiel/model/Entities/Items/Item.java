@@ -8,7 +8,7 @@ import Spiel.model.Entities.Player;
 import java.io.Serializable;
 
 
-public abstract class Item implements Usable,Serializable,Comparable<Item> {
+public abstract class Item implements UsableItem,Serializable,Comparable<Item> {
 
       private String name;
       private double droprate;

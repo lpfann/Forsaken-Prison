@@ -3,10 +3,13 @@
  * and open the template in the editor.
  */
 package Spiel.model.Entities;
-import java.awt.Graphics;
+
 /**
  *
- * @author Gamer
+ * @author Lukas
  */
-public interface Drawable {
+public interface Usable {
+
+
+    public void use(Player p);
 }

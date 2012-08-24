@@ -88,6 +88,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 dungeon = new DungeonGenerator(breite, hoehe, this);
                 map = dungeon.getMap();
                 dungeon.addEntities();
+                
                 entities.addAll(dungeon.getEntitiesinLevel());
 
                 //Player Erstellung
@@ -105,12 +106,13 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
         public void changeLevel(){
            dungeon = new DungeonGenerator(breite, hoehe, this);
+           currentDungeonLevel++;
            map = dungeon.getMap();
            entities.clear();
            visitedRooms.clear();
            dungeon.addEntities();
            entities.addAll(dungeon.getEntitiesinLevel());
-           player.setstartposition(1, 1, breite-1, hoehe-1);
+           player.setstartposition(2, 2, breite-2, hoehe-2);
            entities.add(player);
            visitedRooms.add(player.findRoomLocation());
            this.setFogofwarrepaint(true);

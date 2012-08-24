@@ -15,7 +15,7 @@ import java.util.LinkedList;
  *
  * @author lukas
  */
-public abstract class NPC implements Drawable,Movable,Serializable{
+public abstract class NPC implements Movable,Serializable{
     private int x;
     private int y;
     private char icon;
