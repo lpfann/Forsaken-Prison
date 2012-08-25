@@ -10,6 +10,7 @@ import Spiel.model.Room;
 import Spiel.model.Utilites;
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  *
@@ -35,7 +36,7 @@ public abstract class NPC implements Movable,Serializable{
     private int movey=0;
     private int targetx=0;
     private int targety;
-    private double walkspeed=3e8;
+    private double walkspeed=2e8;
     private boolean walking;
     private final int FIELDSIZE;
     private boolean hit=false;
@@ -93,14 +94,14 @@ public abstract class NPC implements Movable,Serializable{
 
          if (movex != 0) {
              if (movex > 0) {
-                 this.x = (int) (this.x + (movex * main.getDelta() / walkspeed * 2));
+                 this.x = (int) (Math.ceil(this.x + (movex * main.getDelta() / walkspeed )));
                  if (x >= targetx) {
                      this.x = targetx;
                      movex = 0;
                  }
              }
              if (movex < 0) {
-                 this.x = (int) (this.x + (movex * main.getDelta() / walkspeed));
+                 this.x = (int) (Math.floor(this.x + (movex * main.getDelta() / walkspeed)));
                  if (x <= targetx) {
                      this.x = targetx;
                      movex = 0;
@@ -115,14 +116,14 @@ public abstract class NPC implements Movable,Serializable{
 
              if (movey != 0) {
               if (movey > 0) {
-                  this.y = (int) (this.y + (movey * main.getDelta() / walkspeed * 2));
+                  this.y = (int) (Math.ceil(this.y + (movey * main.getDelta() / walkspeed)));
                   if (y >= targety) {
                       this.y = targety;
                       movey = 0;
                   }
               }
               if (movey < 0) {
-                  this.y = (int) (this.y + (movey * main.getDelta() / walkspeed));
+                  this.y = (int) (Math.floor(this.y + (movey * main.getDelta() / walkspeed)));
                   if ( y <= targety) {
                       this.y = targety;
                       movey = 0;
@@ -188,7 +189,8 @@ public abstract class NPC implements Movable,Serializable{
           int x=  Spiel.model.Utilites.randomizer(x1,(x1+w));
           int y=  Spiel.model.Utilites.randomizer(y1,(y1+h));
                 try {
-                if (main.map[y][x]== ' ' && notinFrontofDoor()) {
+                    //TODO OutofBound Exception Fixens
+                if (main.map[y][x]== ' ' && notinFrontofDoor() && noOtheNpcs()) {
                       this.x=x*FIELDSIZE;
                       this.y=y*FIELDSIZE;
                       this.targetx=this.x;
@@ -207,7 +209,20 @@ public abstract class NPC implements Movable,Serializable{
     }
     
     
-    
+    private boolean noOtheNpcs(){
+
+        if (findEntitieonMap(x/FIELDSIZE-1, y/FIELDSIZE-1) == null && findEntitieonMap(x/FIELDSIZE, y/FIELDSIZE-1) == null && findEntitieonMap(x/FIELDSIZE-1, y/FIELDSIZE) == null &&
+                findEntitieonMap(x/FIELDSIZE+1, y/FIELDSIZE-1) == null && findEntitieonMap(x/FIELDSIZE+1, y/FIELDSIZE) == null && findEntitieonMap(x/FIELDSIZE+1, y/FIELDSIZE+1) == null &&
+                findEntitieonMap(x/FIELDSIZE-1, y/FIELDSIZE+1) == null && findEntitieonMap(x/FIELDSIZE, y/FIELDSIZE+1) == null    )
+        {
+           return true;
+
+
+        } else {
+            return false;
+        }
+
+    }
 
 
  
@@ -248,19 +263,39 @@ public abstract class NPC implements Movable,Serializable{
     public NPC objectinFront() {
          switch (getOrientierung()) {
             case RIGHT:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()/FIELDSIZE+1, getY()/FIELDSIZE);
+                return findEntitieonMap( getX()/FIELDSIZE+1, getY()/FIELDSIZE);
             case LEFT:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()/FIELDSIZE-1, getY()/FIELDSIZE);
+                return findEntitieonMap( getX()/FIELDSIZE-1, getY()/FIELDSIZE);
             case UP:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()/FIELDSIZE, getY()/FIELDSIZE-1);
+                return findEntitieonMap(getX()/FIELDSIZE, getY()/FIELDSIZE-1);
             case DOWN:
-                return Spiel.model.Utilites.findEntitieonMap(getMain(), getX()/FIELDSIZE, getY()/FIELDSIZE+1);
+                return findEntitieonMap( getX()/FIELDSIZE, getY()/FIELDSIZE+1);
             default:
                 return null;
             
         }
         
         
+    }
+        private  NPC findEntitieonMap(int x,int y) {
+        if (main.getEntities()!=null) {
+
+            for (ListIterator<NPC> it = main.getEntities().listIterator(); it.hasNext();) {
+                NPC e = it.next();
+                if (e.getX()/ e.getFIELDSIZE() ==x && e.getY()/e.getFIELDSIZE()==y) {
+                    return e;
+                } else {
+
+                }
+            }
+
+        } else {
+            return null;
+        }
+        return null;
+
+
+
     }
    
 public int[] fieldinFront(int n){
@@ -291,22 +326,22 @@ public int[] fieldinFront(int n){
         
 }
 public boolean notinFrontofDoor(){
-    if ( Utilites.findEntitieonMap(getMain(), (getX()/FIELDSIZE)+1, getY()) instanceof Door) {
+    if ( findEntitieonMap( (getX()/FIELDSIZE)+1, getY()) instanceof Door) {
         return false;
 
     }
 
-    if ( Utilites.findEntitieonMap(getMain(), (getX()/FIELDSIZE)-1, getY()) instanceof Door) {
+    if ( findEntitieonMap( (getX()/FIELDSIZE)-1, getY()) instanceof Door) {
         return false;
 
     }
 
-    if ( Utilites.findEntitieonMap(getMain(), getX(), (getY()/FIELDSIZE)+1) instanceof Door) {
+    if ( findEntitieonMap( getX(), (getY()/FIELDSIZE)+1) instanceof Door) {
         return false;
 
     }
 
-    if ( Utilites.findEntitieonMap(getMain(), getX(), (getY()/FIELDSIZE)-1) instanceof Door) {
+    if ( findEntitieonMap( getX(), (getY()/FIELDSIZE)-1) instanceof Door) {
         return false;
 
     }

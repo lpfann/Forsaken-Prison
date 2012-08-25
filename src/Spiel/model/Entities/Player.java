@@ -117,7 +117,7 @@ public final class Player extends NPC {
 
 
     public void action() {
-        if (objectinFront()!=null) {
+        if (objectinFront() instanceof Usable) {
             ((Usable) objectinFront()).use(this);
         }
     }

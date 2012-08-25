@@ -25,6 +25,7 @@ public class Fieldpainter extends JPanel implements Observer {
      private BufferedImage[] bloodimage;
      private BufferedImage groundimage;
      private BufferedImage wallimage;
+     private BufferedImage keyimage;
      private BufferedImage[] knightimage;
      private  BufferedImage[] stairsimage;
      private Image dungeonoffscreenImage;
@@ -70,6 +71,7 @@ public class Fieldpainter extends JPanel implements Observer {
           try {
                groundimage = ImageIO.read(getClass().getResource("/resources/groundDun.png"));
                wallimage = ImageIO.read(getClass().getResource("/resources/HBlockDun.png"));
+               keyimage = ImageIO.read(getClass().getResource("/resources/key.png"));
                playerimage= enlargePic(loadPic("/resources/new-player.png", 64, 64),10,15);
                attackingplayerimage= enlargePic(loadPic("/resources/new-player-attack.png", 64, 64),10,15);
                orkimage = loadPic("/resources/ork.png", 38);
@@ -90,7 +92,7 @@ public class Fieldpainter extends JPanel implements Observer {
      protected void paintComponent(Graphics g) {
           super.paintComponent(g);
           g.setColor(Color.red);
-          updateViewportCoord(player);
+          
           compoImage = createImage(viewportwidth * FIELDSIZE, viewportheight * FIELDSIZE);
             Graphics cg = compoImage.getGraphics();
          
@@ -180,7 +182,7 @@ public class Fieldpainter extends JPanel implements Observer {
                for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
                     NPC e = it.next();
                     try {
-                         if (e.getX() < viewportx || e.getX()> viewportx + viewportwidth*FIELDSIZE || e.getY() < viewporty || e.getY()> viewporty + viewportheight*FIELDSIZE) {
+                         if (e.getX() < viewportx-FIELDSIZE || e.getX()> viewportx+FIELDSIZE + viewportwidth*FIELDSIZE || e.getY() < viewporty-FIELDSIZE || e.getY()> viewporty+FIELDSIZE + viewportheight*FIELDSIZE) {
                          } else {
                               int x1 = e.getX() - viewportx;
                               int y1 = e.getY() - viewporty;
@@ -289,6 +291,11 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
                                         break;
+                                   case "Key":
+                                             cg.drawImage(keyimage, x1 , y1, FIELDSIZE, FIELDSIZE, this);
+
+
+                                        break;
                                    case "Effect":
                                              cg.setFont(new Font("Monospaced", Font.BOLD, 20));
                                              cg.setColor(Color.RED);
@@ -338,6 +345,7 @@ public class Fieldpainter extends JPanel implements Observer {
                }
           } else if (enu == transEnum.playerstats) {
                this.player = mm.getPlayer();
+               updateViewportCoord(player);
                this.gameover=mm.isGameover();
 
           } else if (enu == transEnum.fogofwar) {

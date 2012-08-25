@@ -13,7 +13,7 @@ import Spiel.model.MainModel;
  */
 public class Knight extends Monster{
          public Knight(int x1,int y1,int w, int h,MainModel main){
-        super(0, 0, 60, 5, "Ritter", 'O',main);
+        super(0, 0, 40, 5, "Ritter", 'O',main);
         this.setstartposition(x1, y1, w, h);
         setFilename("knight.png");
     }

@@ -15,11 +15,12 @@ public abstract class Monster extends NPC {
     private int abstand=0;
     private int counter1=0;
     private int counter2=0;
+    private double statmultiplier=0.2;
     
     public Monster(int x, int y, int hp, int dmg, String name, char icon, MainModel main) {
         super(x, y, icon, main);
-        setHp(hp);
-        setDmg(dmg);
+        setHp((int)(hp+(hp*main.getCurrentDungeonLevel()*statmultiplier)));
+        setDmg((int)(dmg+(dmg*main.getCurrentDungeonLevel()*statmultiplier)));
         setName(name);
         
 

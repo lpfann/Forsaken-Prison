@@ -20,7 +20,7 @@ public class Ork extends Monster{
    
     
     public Ork(int x1,int y1,int w, int h,MainModel main){
-        super(0, 0, 20, 3, "Ork", 'O',main);
+        super(0, 0, 25, 4, "Ork", 'O',main);
         this.setstartposition(x1, y1, w, h);
         setFilename("ork.png");
     }

@@ -48,7 +48,7 @@ public class Door extends NPC implements Usable {
 
           opencloseDoorSwitch();
           changeMapforObject(this);
-          p.getMain().getVisitedRooms().add(findRoomLocationatXY(fieldinFront(2)[0],fieldinFront(2)[1]));
+          p.getMain().getVisitedRooms().add(findRoomLocationatXY(p.fieldinFront(2)[0],p.fieldinFront(2)[1]));
           p.getMain().setFogofwarrepaint(true);
 
     }

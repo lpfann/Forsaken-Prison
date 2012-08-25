@@ -6,6 +6,7 @@ package Spiel.model;
  */
 import Spiel.model.Entities.ChestFactory;
 import Spiel.model.Entities.Door;
+import Spiel.model.Entities.Key;
 import Spiel.model.Entities.MonsterFactory;
 import Spiel.model.Entities.Stairs;
 import java.io.Serializable;
@@ -28,6 +29,7 @@ public class DungeonGenerator implements Serializable {
         private MainModel main;
         private LinkedList entitiesinLevel= new LinkedList<>();
         private Stairs stairs;
+        private Key key;
 
 
         public DungeonGenerator(int w, int h, MainModel main) {
@@ -40,12 +42,28 @@ public class DungeonGenerator implements Serializable {
                 entitiesinLevel.addAll(doorEntities);
                 entitiesinLevel.addAll(new MonsterFactory(main).populateDungeon(rooms));
                 entitiesinLevel.addAll(new ChestFactory(main).populateDungeon(rooms));
-                int rand = Utilites.randomizer(0, rooms.size()-1);
-                Room stairRoom =(Room)rooms.get(rand);
-                stairs = new Stairs(stairRoom.getX1(), stairRoom.getY1(), stairRoom.getBreite(), stairRoom.getHoehe(), main);
+                generateStairsAndKey();
                 entitiesinLevel.add(stairs);
+                entitiesinLevel.add(key);
 
 
+
+        }
+
+        private void generateStairsAndKey(){
+
+
+
+                int rand1 = Utilites.randomizer(0, rooms.size()-1);
+                Room stairRoom =(Room)rooms.get(rand1);
+                stairs = new Stairs(stairRoom.getX1(), stairRoom.getY1(), stairRoom.getBreite(), stairRoom.getHoehe(), main);
+
+                int rand2 = Utilites.randomizer(0, rooms.size()-1);
+                while (rand2==rand1) {
+                rand2= Utilites.randomizer(0, rooms.size()-1);
+                }
+                Room keyRoom =(Room)rooms.get(rand2);
+                key= new Key(keyRoom.getX1(), keyRoom.getY1(), keyRoom.getBreite(), keyRoom.getHoehe(), main);
         }
 
         public char[][] generate(int width, int heigth) {

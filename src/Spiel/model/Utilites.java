@@ -92,26 +92,7 @@ public class Utilites {
        
        
    } 
-    public static NPC findEntitieonMap(MainModel main,int x,int y) {
-        if (main.getEntities()!=null) {
-            
-            for (ListIterator<NPC> it = main.getEntities().listIterator(); it.hasNext();) {
-                NPC e = it.next();
-                if (e.getX()/ e.getFIELDSIZE() ==x && e.getY()/e.getFIELDSIZE()==y) {
-                    return e;
-                } else {
-                    
-                }
-            }
-        
-        } else {
-            return null;
-        }
-        return null;
-        
-        
-        
-    } 
+
     
         public static Boolean inthesameRoom(NPC a, NPC b){
         if (a.getRoom() == b.getRoom()) {

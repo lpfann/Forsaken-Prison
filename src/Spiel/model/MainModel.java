@@ -105,8 +105,8 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         public void changeLevel(){
-           dungeon = new DungeonGenerator(breite, hoehe, this);
            currentDungeonLevel++;
+           dungeon = new DungeonGenerator(breite, hoehe, this);
            map = dungeon.getMap();
            entities.clear();
            visitedRooms.clear();

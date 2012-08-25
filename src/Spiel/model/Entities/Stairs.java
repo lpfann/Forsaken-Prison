@@ -28,7 +28,12 @@ public class Stairs extends NPC implements Usable{
 
     @Override
     public void use(Player p) {
-        getMain().changeLevel();
+        if (locked) {
+            System.out.println("Der Weg ist verschlossen.");
+        } else {
+           getMain().changeLevel();
+
+        }
     }
     
 }
