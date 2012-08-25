@@ -16,58 +16,60 @@ import javax.swing.JPanel;
 
 public class Fieldpainter extends JPanel implements Observer {
 
-     private BufferedImage[][] playerimage;
-     private BufferedImage[][] attackingplayerimage;
-     private BufferedImage[] orkimage;
-     private BufferedImage[] trollimage;
-     private BufferedImage[] chestimage;
-     private BufferedImage[] doorimage;
-     private BufferedImage[] bloodimage;
-     private BufferedImage groundimage;
-     private BufferedImage wallimage;
-     private BufferedImage keyimage;
-     private BufferedImage[] knightimage;
-     private  BufferedImage[] stairsimage;
-     private Image dungeonoffscreenImage;
-     BufferedImage transpImg;
-     private Image fowoffscreenImage;
-     private Image compoImage;
-     private Graphics offscreenGraph;
-     private boolean fogofwarrepaint = true;
-     private int FIELDSIZE;
-     private int viewportx;
-     private int viewporty;
-     private int radiusy = 5;
-     private int radiusx = 8;
-     private int viewportwidth = 2 * radiusx;
-     private int viewportheight = 2 * radiusy;
-     private int animcounter=0;
-     private Player player;
-     private char[][] map;
-     private boolean[][] fogofwar;
-     private LinkedList<NPC> entities = new LinkedList();
-     private LinkedList<NPC> entcopy = new LinkedList();
-     public final int BLOCKSIZE = 50;
-     public static final int RESOLUTIONX = 800;
-     public static final int RESOLUTIONY = 600;
-     private int fps;
-     private boolean gameover;
-     private double delta;
-     private int animationdelay;
-               int maximumx;
-          int maximumy;
-          int minimumx;
-          int minimumy;
+    private static BufferedImage[][] playerimage;
+    private static BufferedImage[][] attackingplayerimage;
+    private static BufferedImage[] orkimage;
+    private static BufferedImage[] trollimage;
+    private static BufferedImage[] chestimage;
+    private static BufferedImage[] doorimage;
+    private static BufferedImage[] bloodimage;
+    private static BufferedImage groundimage;
+    private static BufferedImage wallimage;
+    private static BufferedImage keyimage;
+    private static BufferedImage[] knightimage;
+    private static BufferedImage[] stairsimage;
+    private static Image dungeonoffscreenImage;
+    private static BufferedImage transpImg;
+    private static Image fowoffscreenImage;
+    private static Image compoImage;
+    private static Graphics offscreenGraph;
+    private boolean fogofwarrepaint = true;
+    private int FIELDSIZE;
+    private int viewportx;
+    private int viewporty;
+    private final int radiusy = 5;
+    private final int radiusx = 8;
+    private final int VIEWPORTWIDTH = 2 * radiusx;
+    private final int VIEWPORTHEIGHT = 2 * radiusy;
+    private int animcounter = 0;
+    private Player player;
+    private char[][] map;
+    private boolean[][] fogofwar;
+    private LinkedList<NPC> entities = new LinkedList();
+    private LinkedList<NPC> entcopy = new LinkedList();
+    public final int BLOCKSIZE = 50;
+    public static final int RESOLUTIONX = 800;
+    public static final int RESOLUTIONY = 600;
+    private int fps;
+    private boolean gameover;
+    private double delta;
+    private int animationdelay;
+    int maximumx;
+    int maximumy;
+    int minimumx;
+    int minimumy;
+    private boolean dungeonreapaint=true;
 
 
      public Fieldpainter(int breite, int hoehe, Player p,int fieldsize) {
 
 
-          this.setPreferredSize(new Dimension(BLOCKSIZE * viewportwidth, BLOCKSIZE * viewportheight));
+          this.setPreferredSize(new Dimension(BLOCKSIZE * VIEWPORTWIDTH, BLOCKSIZE * VIEWPORTHEIGHT));
           this.setDoubleBuffered(true);
           this.FIELDSIZE=fieldsize;
           player = p;
           updateViewportCoord(p);
+          dungeonoffscreenImage = createImage((2+VIEWPORTWIDTH)*FIELDSIZE, (2+VIEWPORTHEIGHT)*FIELDSIZE);
           try {
                groundimage = ImageIO.read(getClass().getResource("/resources/groundDun.png"));
                wallimage = ImageIO.read(getClass().getResource("/resources/HBlockDun.png"));
@@ -93,7 +95,7 @@ public class Fieldpainter extends JPanel implements Observer {
           super.paintComponent(g);
           g.setColor(Color.red);
           
-          compoImage = createImage(viewportwidth * FIELDSIZE, viewportheight * FIELDSIZE);
+          compoImage = createImage(VIEWPORTWIDTH * FIELDSIZE, VIEWPORTHEIGHT * FIELDSIZE);
             Graphics cg = compoImage.getGraphics();
          
           //Dungeon Zeichnen
@@ -107,7 +109,7 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
           try {
-               g.drawImage(compoImage, 0, 0, viewportwidth * BLOCKSIZE, viewportheight * BLOCKSIZE, this);
+               g.drawImage(compoImage, 0, 0, VIEWPORTWIDTH * BLOCKSIZE, VIEWPORTHEIGHT * BLOCKSIZE, this);
 
           } catch (Exception e) {
                e.printStackTrace();
@@ -122,36 +124,43 @@ public class Fieldpainter extends JPanel implements Observer {
           if (gameover) {
                g.setColor(Color.red);
                g.setFont(new Font("Monospaced", Font.BOLD, 100));
-               g.drawString("GAME OVER", viewportwidth*BLOCKSIZE/2-300, viewportheight*BLOCKSIZE/2);
+               g.drawString("GAME OVER", VIEWPORTWIDTH*BLOCKSIZE/2-300, VIEWPORTHEIGHT*BLOCKSIZE/2);
           }
 
      }
 
      private void paintDungeon(Graphics g) {
 
-          //Erstellen eines DungeonImages. Der Viewport wird verbreitert um genug "Verschiebefläche" zu haben. siehe Kommentar unten
-          dungeonoffscreenImage = createImage((2+viewportwidth)*FIELDSIZE, (2+viewportheight)*FIELDSIZE);
-          offscreenGraph = dungeonoffscreenImage.getGraphics();
+
+
+             dungeonoffscreenImage = createImage((2+VIEWPORTWIDTH)*FIELDSIZE, (2+VIEWPORTHEIGHT)*FIELDSIZE);
+              offscreenGraph = dungeonoffscreenImage.getGraphics();
+
+              for (int y = minimumy; y < maximumy; y++) {
+                   for (int x = minimumx; x < maximumx; x++) {
+                        if (map[y][x] == '*') {
+                             offscreenGraph.drawImage(wallimage, (x - viewportx/FIELDSIZE)*FIELDSIZE,
+                                     (y - viewporty/FIELDSIZE)*FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                        } else {
+                             offscreenGraph.drawImage(groundimage, (x - viewportx/FIELDSIZE)*FIELDSIZE,
+                                     (y - viewporty/FIELDSIZE)*FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                        }
+                   }
+              }
+
          
-          for (int y = minimumy; y < maximumy; y++) {
-               for (int x = minimumx; x < maximumx; x++) {
-                    if (map[y][x] == '*') {
-                         offscreenGraph.drawImage(wallimage, (x - viewportx/FIELDSIZE)*FIELDSIZE, (y - viewporty/FIELDSIZE)*FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-                    } else {
-                         offscreenGraph.drawImage(groundimage, (x - viewportx/FIELDSIZE)*FIELDSIZE, (y - viewporty/FIELDSIZE)*FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
-                    }
-               }
-          }
           //Zeichen des Dungeon Bildes
           //wichtig ist hierbei die Verschiebung um %FIELDSIZE. dadurch wird der Hintergrund weich verschoben genau wie sich der Spieler bewegt.
           compoImage.getGraphics().drawImage(dungeonoffscreenImage, -viewportx%FIELDSIZE, -viewporty%FIELDSIZE, this);
 
      }
+
+
           private void paintFogofWar(Graphics g) {
           //if (fogofwarrepaint) {
           fogofwarrepaint = false;
           //erstellt ein transparentes Bild
-          transpImg = new BufferedImage((viewportwidth+2) * FIELDSIZE, (viewportheight+2) * FIELDSIZE, BufferedImage.TRANSLUCENT);
+          transpImg = new BufferedImage((VIEWPORTWIDTH+2) * FIELDSIZE, (VIEWPORTHEIGHT+2) * FIELDSIZE, BufferedImage.TRANSLUCENT);
           fowoffscreenImage = transpImg;
           Graphics2D q = transpImg.createGraphics();
 
@@ -182,7 +191,10 @@ public class Fieldpainter extends JPanel implements Observer {
                for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
                     NPC e = it.next();
                     try {
-                         if (e.getX() < viewportx-FIELDSIZE || e.getX()> viewportx+FIELDSIZE + viewportwidth*FIELDSIZE || e.getY() < viewporty-FIELDSIZE || e.getY()> viewporty+FIELDSIZE + viewportheight*FIELDSIZE) {
+                         if (e.getX() < viewportx-FIELDSIZE || e.getX()> viewportx+FIELDSIZE + VIEWPORTWIDTH*FIELDSIZE ||
+                                 e.getY() < viewporty-FIELDSIZE || e.getY()> viewporty+FIELDSIZE + VIEWPORTHEIGHT*FIELDSIZE)
+                         {
+
                          } else {
                               int x1 = e.getX() - viewportx;
                               int y1 = e.getY() - viewporty;
@@ -339,12 +351,13 @@ public class Fieldpainter extends JPanel implements Observer {
                this.fps = (int) mm.getFps();
                this.delta=mm.getDelta();
                animationdelay+=this.delta/1e6;
-               if (animationdelay>80) {
+               if (animationdelay>100) {
                     animationdelay=0;
                     animcounter++;
                }
           } else if (enu == transEnum.playerstats) {
                this.player = mm.getPlayer();
+               this.dungeonreapaint=mm.isDungeonrepaint();
                updateViewportCoord(player);
                this.gameover=mm.isGameover();
 
@@ -397,15 +410,15 @@ public class Fieldpainter extends JPanel implements Observer {
             } else {
                 minimumy = viewporty / FIELDSIZE - 1;
             }
-            if (viewporty / FIELDSIZE + viewportheight + 1 > map.length) {
-                maximumy = viewporty / FIELDSIZE + viewportheight;
+            if (viewporty / FIELDSIZE + VIEWPORTHEIGHT + 1 > map.length) {
+                maximumy = viewporty / FIELDSIZE + VIEWPORTHEIGHT;
             } else {
-                maximumy = viewporty / FIELDSIZE + viewportheight + 1;
+                maximumy = viewporty / FIELDSIZE + VIEWPORTHEIGHT + 1;
             }
-            if (viewportx / FIELDSIZE + viewportwidth + 1 > map[0].length) {
-                maximumx = viewportx / FIELDSIZE + viewportwidth;
+            if (viewportx / FIELDSIZE + VIEWPORTWIDTH + 1 > map[0].length) {
+                maximumx = viewportx / FIELDSIZE + VIEWPORTWIDTH;
             } else {
-                maximumx = viewportx / FIELDSIZE + viewportwidth + 1;
+                maximumx = viewportx / FIELDSIZE + VIEWPORTWIDTH + 1;
             }
         }
     }

@@ -48,18 +48,15 @@ public class MonsterFactory {
                       int random= Spiel.model.Utilites.randomizer(0, 10);
                           if (random>=0 && random <=8) {
                                     monster= new Troll(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
-                                    monster.setRoom(room);
-                                    monsters.add(monster);   
                           } else if (random >8 && random<10) {
                                     monster= new Ork(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
-                                    monster.setRoom(room);
-                                    monsters.add(monster);   
                       
                           } else if (random ==10) {
                                     monster= new Knight(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
-                                    monster.setRoom(room);
-                                    monsters.add(monster);   
                       }
+                    room.getEntities().add(monster);
+                    monster.setRoom(room);
+                    monsters.add(monster);
                   
                   }
                   

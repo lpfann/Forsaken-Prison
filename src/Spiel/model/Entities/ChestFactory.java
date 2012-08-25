@@ -97,7 +97,7 @@ public class ChestFactory {
 
         for (Room room : rooms) {
             int size = room.getBreite() * room.getHoehe();
-            int anzahl = (int)(size*0.01);
+            int anzahl = (int)(Math.ceil(size*0.01));
 
             for (int i = 0; i <= anzahl; i++) {
                 //  Chance das Chest gespawnt wird.
@@ -108,6 +108,7 @@ public class ChestFactory {
                     chest.setstartposition(room.getX1() + 1, room.getY1() + 1, room.getBreite() - 2, room.getHoehe() - 2);
 
                     chests.add(chest);
+                    room.getEntities().add(chest);
                 }
             }
         }

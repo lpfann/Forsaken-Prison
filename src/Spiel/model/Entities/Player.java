@@ -6,11 +6,6 @@ import Spiel.model.MainModel;
 import java.util.LinkedList;
 import Spiel.model.Entities.Items.Armor.Armor;
 import Spiel.model.Entities.Items.Armor.Armor.Armortype;
-import Spiel.model.Entities.Items.Armor.BodyArmor;
-import Spiel.model.Entities.Items.Armor.Gloves;
-import Spiel.model.Entities.Items.Armor.Helmet;
-import Spiel.model.Entities.Items.Armor.Shield;
-import Spiel.model.Entities.Items.Armor.Shoes;
 
 public final class Player extends NPC {
 
@@ -39,7 +34,7 @@ public final class Player extends NPC {
         setDefence(0);
         lvl=1;
         setXp(0);
-        setstartposition(1, 1, main.getBreite()-2, main.getHoehe()-2);
+        setstartposition(2, 2, main.getBreite()-2, main.getHoehe()-2);
         findRoomLocation();
         getMain().getVisitedRooms().add(getRoom());
 
@@ -56,8 +51,10 @@ public final class Player extends NPC {
 
         if (up || down || left || right) {
             setWalking(true);
+            getMain().setDungeonrepaint(true);
         } else {
             setWalking(false);
+            getMain().setDungeonrepaint(false);
         }
 
         if (up) {
@@ -78,14 +75,14 @@ public final class Player extends NPC {
             setOrientierung(MainModel.Richtung.RIGHT);
         }
 
-
+    setRoom(findRoomLocation());
     }
     
     
     public void attackmonster() {
 
         if (enemyInFront()!= null) {
-            NPC monster = enemyInFront();
+            Monster monster = (Monster)enemyInFront();
             double attackspeed= (getWeapon()!=null) ? getWeapon().getAttackspeed() : 1;
 
             if (getDelay()*attackspeed >500) {
@@ -93,7 +90,8 @@ public final class Player extends NPC {
                 attack(monster);
 
                 if (monster.getHp() <= 0) {
-                    setXp(getXp() + 10);
+                    setXp(getXp() + monster.getXp());
+                    getMain().effects.add(new Effect(getX()/getFIELDSIZE(), getY()/getFIELDSIZE(), getMain(), "+"+monster.getXp()+" XP"));
                     }
                 setDelay(0);
             }

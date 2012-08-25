@@ -166,7 +166,7 @@ public abstract class NPC implements Movable,Serializable{
 
 
 
-             setRoom(findRoomLocation());
+             
     }
             
 
@@ -186,8 +186,8 @@ public abstract class NPC implements Movable,Serializable{
      */
     public void setstartposition(int x1, int y1,int w, int h) {
           for (int i = 0; i < main.getBreite()*main.getHoehe(); i++) {
-          int x=  Spiel.model.Utilites.randomizer(x1,(x1+w));
-          int y=  Spiel.model.Utilites.randomizer(y1,(y1+h));
+          int x=  Spiel.model.Utilites.randomizer(x1,(x1+w-1));
+          int y=  Spiel.model.Utilites.randomizer(y1,(y1+h-1));
                 try {
                     //TODO OutofBound Exception Fixens
                 if (main.map[y][x]== ' ' && notinFrontofDoor() && noOtheNpcs()) {
@@ -385,16 +385,17 @@ public boolean notinFrontofDoor(){
        
    }
 
-    public NPC enemyInFront(){
-        NPC defender=null;
-        for (NPC e : main.getEntities()) {
+    public NPC enemyInFront() {
+
+        for (int i = 0 ;i< getRoom().getEntities().size();i++) {
+            NPC e = getRoom().getEntities().get(i);
             if (e.getX()/FIELDSIZE == fieldinFront(1)[0] && e.getY()/FIELDSIZE ==fieldinFront(1)[1] &&( e instanceof Monster || e instanceof Player) ) {
-                defender=e;
+                return e;
             }
         }
         
-       return defender;
-
+       return null;
+        
     }
     
     

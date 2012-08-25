@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 public class MainModel implements Subject, Serializable, Cloneable {
 
 
-        int breite = 20;
-        int hoehe = 20;
+        int breite = 100;
+        int hoehe = 100;
 
 
         long delta = 0;
@@ -54,6 +54,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         private static ArrayList<Observer> observer = new ArrayList<>();
         private boolean gameover;
         private boolean fogofwarrepaint=true;
+        private boolean dungeonrepaint=true;
         private int currentDungeonLevel=1;
 
 
@@ -456,6 +457,16 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
     public void setCurrentDungeonLevel(int currentDungeonLevel) {
         this.currentDungeonLevel = currentDungeonLevel;
+    }
+
+
+    public boolean isDungeonrepaint() {
+        return dungeonrepaint;
+    }
+
+
+    public void setDungeonrepaint(boolean dungeonrepaint) {
+        this.dungeonrepaint = dungeonrepaint;
     }
 
 }

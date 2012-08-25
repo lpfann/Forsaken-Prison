@@ -16,6 +16,7 @@ public abstract class Monster extends NPC {
     private int counter1=0;
     private int counter2=0;
     private double statmultiplier=0.2;
+    private int xp;
     
     public Monster(int x, int y, int hp, int dmg, String name, char icon, MainModel main) {
         super(x, y, icon, main);
@@ -67,25 +68,25 @@ public abstract class Monster extends NPC {
 
         } else {
         
-        if (counter1>=100) {
-            int rand2 = Spiel.model.Utilites.randomizer(0, 3);
-            switch (rand2) {
-                case 0:
-                     setOrientierung(MainModel.Richtung.LEFT);
-                     break;
-                case 1:
-                     setOrientierung(MainModel.Richtung.RIGHT);
-                    break;
-                case 2:
-                     setOrientierung(MainModel.Richtung.UP);
-                    break;
-                case 3:
-                     setOrientierung(MainModel.Richtung.DOWN);
-                    break;
-            }
-            counter1=0;
-
-        }
+//        if (counter1>=100) {
+//            int rand2 = Spiel.model.Utilites.randomizer(0, 3);
+//            switch (rand2) {
+//                case 0:
+//                     setOrientierung(MainModel.Richtung.LEFT);
+//                     break;
+//                case 1:
+//                     setOrientierung(MainModel.Richtung.RIGHT);
+//                    break;
+//                case 2:
+//                     setOrientierung(MainModel.Richtung.UP);
+//                    break;
+//                case 3:
+//                     setOrientierung(MainModel.Richtung.DOWN);
+//                    break;
+//            }
+//            counter1=0;
+//
+//        }
 
 
     }
@@ -100,5 +101,13 @@ public abstract class Monster extends NPC {
             setWalking(false);
 
      }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
       
 }

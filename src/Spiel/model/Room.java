@@ -6,7 +6,9 @@ package Spiel.model;
  */
 
 
+import Spiel.model.Entities.NPC;
 import java.io.Serializable;
+import java.util.LinkedList;
 
 /**
  *
@@ -19,6 +21,7 @@ public class Room implements Serializable {
     private Room rchild;
     private Room parent;
     private DungeonGenerator dg;
+    private LinkedList<NPC> entities= new LinkedList<>();
 
 
     public Room(Room lc, Room rc) {
@@ -172,6 +175,14 @@ public class Room implements Serializable {
 
     public void setParent(Room parent) {
         this.parent = parent;
+    }
+
+    public LinkedList<NPC> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(LinkedList entities) {
+        this.entities = entities;
     }
 
 }
