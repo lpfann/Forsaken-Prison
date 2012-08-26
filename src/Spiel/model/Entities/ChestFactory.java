@@ -105,7 +105,7 @@ public class ChestFactory {
                     
                     Chest chest = new Chest(0, 0, 'C', main,items);
 
-                    chest.setstartposition(room.getX1() + 1, room.getY1() + 1, room.getBreite() - 2, room.getHoehe() - 2);
+                    chest.setstartpositionWithNPCcheck(room.getX1() + 1, room.getY1() + 1, room.getBreite() - 2, room.getHoehe() - 2, room.getEntities());
 
                     chests.add(chest);
                     room.getEntities().add(chest);

@@ -137,6 +137,10 @@ public class DungeonGenerator implements Serializable {
 
                                                 r.setDoory(y1);
                                         } else {
+                                            map[y1][x1] = TÜR;
+                                            door = new Door(x1, y1, this.main);
+                                            doorEntities.add(door);
+                                            door.setRoom(r);
                                                 fertig = true;
                                         }
 
@@ -156,17 +160,17 @@ public class DungeonGenerator implements Serializable {
                                                 }
                                                 r.setDoorx(x1);
                                         } else {
-                                                
+                                            map[y1][x1] = TÜR;
+                                            door = new Door(x1, y1, this.main);
+                                            doorEntities.add(door);
+                                            door.setRoom(r);
                                                 fertig = true;
                                                         
                                         }
                                 }
 
                         } while (fertig == false);
-                        map[y1][x1] = TÜR;
-                        door= new Door(x1, y1, this.main);
-                        doorEntities.add(door);
-                        door.setRoom(r);
+
                 }
 
                 roomswithDoors.clear();

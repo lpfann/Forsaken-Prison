@@ -191,7 +191,7 @@ public abstract class NPC implements Movable,Serializable{
             int yy = Spiel.model.Utilites.randomizer(y1, (y1 + h - 1));
             try {
                     //TODO OutofBound Exception Fixens
-                    if (main.map[yy][xx] == ' ' && notinFrontofDoor() && noOtheNpcs()) {
+                    if (main.map[yy][xx] == ' ' && notinFrontofDoor()) {
                         this.x = xx * FIELDSIZE;
                         this.y = yy * FIELDSIZE;
                         this.targetx = this.x;
@@ -209,13 +209,38 @@ public abstract class NPC implements Movable,Serializable{
          
     }
 
-    
-    
-    private boolean noOtheNpcs(){
+    public void setstartpositionWithNPCcheck(int x1, int y1, int w, int h,LinkedList<NPC> ent) {
+        boolean fertig = false;
+        while (!fertig) {
+            int xx = Spiel.model.Utilites.randomizer(x1, (x1 + w - 1));
+            int yy = Spiel.model.Utilites.randomizer(y1, (y1 + h - 1));
+            try {
+                    //TODO OutofBound Exception Fixens
+                    if (main.map[yy][xx] == ' ' && notinFrontofDoor() && noOtheNpcs(ent)) {
+                        this.x = xx * FIELDSIZE;
+                        this.y = yy * FIELDSIZE;
+                        this.targetx = this.x;
+                        this.targety = this.y;
 
-        if (findEntitieonMap(x/FIELDSIZE-1, y/FIELDSIZE-1) == null && findEntitieonMap(x/FIELDSIZE, y/FIELDSIZE-1) == null && findEntitieonMap(x/FIELDSIZE-1, y/FIELDSIZE) == null &&
-                findEntitieonMap(x/FIELDSIZE+1, y/FIELDSIZE-1) == null && findEntitieonMap(x/FIELDSIZE+1, y/FIELDSIZE) == null && findEntitieonMap(x/FIELDSIZE+1, y/FIELDSIZE+1) == null &&
-                findEntitieonMap(x/FIELDSIZE-1, y/FIELDSIZE+1) == null && findEntitieonMap(x/FIELDSIZE, y/FIELDSIZE+1) == null    )
+                        main.map[yy][xx] = this.icon;
+                        fertig = true;
+                    }
+
+                }  catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+
+    }
+
+    
+    
+    private boolean noOtheNpcs(LinkedList<NPC> ent){
+
+        if (findEntitieonMap(x/FIELDSIZE-1, y/FIELDSIZE-1,ent) == null && findEntitieonMap(x/FIELDSIZE, y/FIELDSIZE-1,ent) == null && findEntitieonMap(x/FIELDSIZE-1, y/FIELDSIZE,ent) == null &&
+                findEntitieonMap(x/FIELDSIZE+1, y/FIELDSIZE-1,ent) == null && findEntitieonMap(x/FIELDSIZE+1, y/FIELDSIZE,ent) == null && findEntitieonMap(x/FIELDSIZE+1, y/FIELDSIZE+1,ent) == null &&
+                findEntitieonMap(x/FIELDSIZE-1, y/FIELDSIZE+1,ent) == null && findEntitieonMap(x/FIELDSIZE, y/FIELDSIZE+1,ent) == null    )
         {
            return true;
 
@@ -281,6 +306,26 @@ public abstract class NPC implements Movable,Serializable{
         if (main.getEntities()!=null) {
 
             for (ListIterator<NPC> it = main.getEntities().listIterator(); it.hasNext();) {
+                NPC e = it.next();
+                if (e.getX()/ e.getFIELDSIZE() ==x && e.getY()/e.getFIELDSIZE()==y) {
+                    return e;
+                } else {
+
+                }
+            }
+
+        } else {
+            return null;
+        }
+        return null;
+
+
+
+    }
+        private  NPC findEntitieonMap(int x,int y,LinkedList<NPC> ents) {
+        if (ents!=null) {
+
+            for (ListIterator<NPC> it = ents.listIterator(); it.hasNext();) {
                 NPC e = it.next();
                 if (e.getX()/ e.getFIELDSIZE() ==x && e.getY()/e.getFIELDSIZE()==y) {
                     return e;

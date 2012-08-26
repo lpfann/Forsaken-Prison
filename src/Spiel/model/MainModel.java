@@ -22,25 +22,16 @@ import java.util.logging.Logger;
  */
 public class MainModel implements Subject, Serializable, Cloneable, Runnable {
 
-    int breite = 100;
-    int hoehe = 100;
+    int breite = 20;
+    int hoehe = 20;
     long delta = 0;
     long last = 0;
     long fps = 0;
     private final int FIELDSIZE = 40;
-    /**
-     * Hauptspielfeld
-     */
     public char[][] map;
     private boolean[][] fogofwar = new boolean[hoehe][breite];
-    /**
-     * Spieler
-     */
     public Player player;
     private DungeonGenerator dungeon;
-    /**
-     * Liste aller erstellten Objekte im Spiel
-     */
     public LinkedList<NPC> entities = new LinkedList<>();
     public LinkedList<Effect> effects = new LinkedList<>();
     private Stack<Room> visitedRooms = new Stack<>();
@@ -49,7 +40,7 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
     public static boolean fogofwarrepaint = true;
     private boolean dungeonrepaint = true;
     private int currentDungeonLevel = 1;
-    private Thread thread;
+    private transient Thread thread;
     boolean wait = true;
     final int MAXFPS = 60;
     final int GAME_TICK = 1000 / MAXFPS;
@@ -162,6 +153,8 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
            visitedRooms.add(player.findRoomLocation());
            this.setFogofwarrepaint(true);
            initFogofwar();
+           updateFogofWar();
+           notifyAllObservers();
 
 
 
@@ -203,7 +196,6 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
          * Ausführung der Spiellogik für alle Objekte und Funktionen. Bei jedem Durchlauf eines Threads
          */
         public void doSpiellogik() {
-            //TODO Entities liste auf raumliste umstellen!!!!!!!!!!!!
             if (!gameover) {
                 LinkedList<NPC> toberemoved = new LinkedList<>(); //Liste der Objekte die gelöscht werden
                 for (NPC e : entities) { //Durchlauf aller Objekte und ausführung der Spiellogik
@@ -332,16 +324,18 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
                 }
 
         }
-            public synchronized void pauseGame(){
-            wait=true;
+
+        
+    public synchronized void pauseGame() {
+        wait = true;
 
 
     }
-    public synchronized void resumeGame(){
-            wait=false;
-            notifyAll();
-            visitedRooms.add(player.findRoomLocation());
-            this.dungeonrepaint=true;
+
+    public synchronized void resumeGame() {
+        wait = false;
+        notifyAll();
+
 
 
     }
@@ -428,9 +422,6 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
                 return delta;
         }
 
-
-
-
         /**
          * 
          * @return
@@ -438,9 +429,6 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
         public long getFps() {
                 return fps;
         }
-
-
-
         /**
          * 
          * @return Zeitpunkt des letzten Thread-Durchlaufs in Nanosekunden
@@ -448,11 +436,6 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
         public long getLast() {
                 return last;
         }
-
-
-
-
-
         /**
          * 
          * @return Ein Array welches Festlegt wo er FogofWar noch ist, bzw wo der Spieler noch nicht war.
@@ -529,5 +512,8 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
     public Thread getThread() {
         return thread;
     }
+    public void newThread(){
+        thread= new Thread();
 
+    }
 }

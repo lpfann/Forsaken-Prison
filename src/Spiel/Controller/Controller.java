@@ -57,7 +57,7 @@ public MainModel getMain() {
     }
 
     public void load() {
-//        pauseThread();
+        
         FileInputStream fileIn;
         try {
             fileIn = new FileInputStream("save.ser");
@@ -68,12 +68,15 @@ public MainModel getMain() {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
             in.close();
+            model.newThread();
+
             model.clearObservers();
             model.addObserver(view.getSpielfeld());
             model.addObserver(view.getStatusbar());
 
             model.notifyAllObservers();
-//            resumeThread();
+
+            //model.resumeGame();
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
