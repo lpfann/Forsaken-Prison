@@ -18,10 +18,10 @@ import javax.swing.ListSelectionModel;
  * @author Gamer
  */
 public class ItemList extends JList implements KeyListener {
-private GameFrame gameframe;
+private MainFrame gameframe;
 private Item selected;
 
-        public ItemList(GameFrame gameframe) {
+        public ItemList(MainFrame gameframe) {
                 super();
                 this.gameframe=gameframe;
                 setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -49,12 +49,12 @@ private Item selected;
                                 
                                 selected=(Item)this.getSelectedValue();
                                 if (selected!=null) {
-                                gameframe.getMain().player.useItem(selected);
+                                gameframe.getModel().player.useItem(selected);
                                         
                                 }
                                 break;
                         case KeyEvent.VK_R:
-                                gameframe.getMain().player.usePotion();
+                                gameframe.getModel().player.usePotion();
                                 break;
                                 
 

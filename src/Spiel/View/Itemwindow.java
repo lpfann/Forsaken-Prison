@@ -36,11 +36,11 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         private BufferedImage bg;
         public static ImageIcon[][] singleitem= new ImageIcon[8][8];
         public static ImageIcon[][] armoritem= new ImageIcon[5][20];
-        private GameFrame gameframe;
+        private MainFrame gameframe;
         /**
          * Creates new form Itemwindow
          */
-        public Itemwindow(GameFrame gameframe) {
+        public Itemwindow(MainFrame gameframe) {
                 this.gameframe=gameframe;
                 initComponents();
                 try {

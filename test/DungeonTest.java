@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-import Spiel.Controller.Game;
+import Main.Main;
 import Spiel.model.Room;
 import Spiel.model.DungeonGenerator;
 import Spiel.model.Entities.Door;
@@ -26,7 +26,7 @@ public class DungeonTest {
         public void testdungeon() {
                 boolean pass = true;
                 int counter = 0;
-                Game game = new Game();
+                Main game = new Main();
                 
                 game.pauseThread();
 

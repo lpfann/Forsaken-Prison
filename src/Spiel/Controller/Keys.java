@@ -60,7 +60,7 @@ public class Keys implements KeyListener {
                                 game.getMainFr().openGameMenu();
                                 break;
                         case KeyEvent.VK_I:
-                                game.getMainFr().getGamepanel().openItemWindow();
+                                game.getMainFr().openItemWindow();
                                 break;
                         case KeyEvent.VK_R:
                                 game.getMain().player.usePotion();

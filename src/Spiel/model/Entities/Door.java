@@ -18,7 +18,6 @@ public class Door extends NPC implements Usable {
     public Door(int x, int y,MainModel main){
         super(x, y, 'D', main);
         this.open=false;
-        setFilename("door.png");
       
     }
 
@@ -49,6 +48,7 @@ public class Door extends NPC implements Usable {
           opencloseDoorSwitch();
           changeMapforObject(this);
           p.getMain().getVisitedRooms().add(findRoomLocationatXY(p.fieldinFront(2)[0],p.fieldinFront(2)[1]));
+
           p.getMain().setFogofwarrepaint(true);
 
     }

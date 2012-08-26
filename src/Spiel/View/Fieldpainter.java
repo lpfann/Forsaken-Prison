@@ -104,13 +104,14 @@ public class Fieldpainter extends JPanel implements Observer {
                }
           } else if (enu == transEnum.playerstats) {
                this.player = mm.getPlayer();
-               //this.dungeonreapaint=mm.isDungeonrepaint();
+//             this.dungeonreapaint=mm.isDungeonrepaint();
                updateViewportCoord(player);
                this.gameover=mm.isGameover();
 
           } else if (enu == transEnum.fogofwar) {
                this.fogofwar = mm.getFogofwar();
-               this.fogofwarrepaint = mm.isFogofwarrepaint();
+               
+              
 
           }
           repaint();
@@ -126,6 +127,7 @@ public class Fieldpainter extends JPanel implements Observer {
      @Override
      protected void paintComponent(Graphics g) {
           super.paintComponent(g);
+          if (map!=null) {
 
           g.setColor(Color.red);
           
@@ -161,6 +163,7 @@ public class Fieldpainter extends JPanel implements Observer {
                g.drawString("GAME OVER", VIEWPORTWIDTH*BLOCKSIZE/2-300, VIEWPORTHEIGHT*BLOCKSIZE/2);
           }
 
+         }
      }
 
      private void paintDungeon(Graphics g) {
@@ -187,15 +190,14 @@ public class Fieldpainter extends JPanel implements Observer {
 
          
           //Zeichen des Dungeon Bildes
-          //wichtig ist hierbei die Verschiebung um %FIELDSIZE. dadurch wird der Hintergrund weich verschoben genau wie sich der Spieler bewegt.
           compoImage.getGraphics().drawImage(dungeonoffscreenImage, -viewportx, -viewporty, this);
 
      }
 
 
           private void paintFogofWar(Graphics g) {
-          if (fogofwarrepaint) {
-          fogofwarrepaint = false;
+          if (MainModel.fogofwarrepaint ) {
+          MainModel.fogofwarrepaint = false;
           //erstellt ein transparentes Bild
           transpImg = new BufferedImage(map[0].length*FIELDSIZE, map.length*FIELDSIZE, BufferedImage.TRANSLUCENT);
           fowoffscreenImage = transpImg;
@@ -560,6 +562,6 @@ public class Fieldpainter extends JPanel implements Observer {
           
           
      }
-             
-             
+ 
+
 }

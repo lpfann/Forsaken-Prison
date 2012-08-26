@@ -47,7 +47,7 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
     private Stack<Room> visitedRooms = new Stack<>();
     private static ArrayList<Observer> observer = new ArrayList<>();
     private boolean gameover;
-    private boolean fogofwarrepaint = true;
+    public static boolean fogofwarrepaint = true;
     private boolean dungeonrepaint = true;
     private int currentDungeonLevel = 1;
     private Thread thread;
@@ -98,7 +98,7 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
                 initFogofwar();
                 setLast(System.nanoTime());
                 thread = new Thread(this);
-                thread.start();
+//                thread.start();
                 
 
 
@@ -180,15 +180,17 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
                 
         }
         private void updateFogofWar(){
-               Room r = visitedRooms.pop();
-                
+            if (!visitedRooms.empty()) {
+                Room r = visitedRooms.pop();
                 for (int i = r.getY1(); i <= r.getY1()+r.getHoehe(); i++) {
                         for (int j = r.getX1(); j <= r.getX1()+r.getBreite(); j++) {
                                 fogofwar[i][j]=false;
                         }
                 }
-                
-                
+
+                setFogofwarrepaint(true);
+            }
+
                 
         }
 
@@ -198,36 +200,22 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
         public void doSpiellogik() {
             //TODO Entities liste auf raumliste umstellen!!!!!!!!!!!!
             if (!gameover) {
-
-             
-             
-             
-                //Liste der Objekte die gelöscht werden
-                LinkedList<NPC> toberemoved = new LinkedList<>();
-                
-                //Durchlauf aller Objekte und ausführung der Spiellogik
-                for (NPC e : entities) {
+                LinkedList<NPC> toberemoved = new LinkedList<>(); //Liste der Objekte die gelöscht werden
+                for (NPC e : entities) { //Durchlauf aller Objekte und ausführung der Spiellogik
                         e.doLogic(delta);
-                        
                         //Markieren zum Löschen
                         if (e.isRemovethis()) {
                                 toberemoved.add(e);
                         }
-                        
                 }
                 entities.addAll(effects);
-                effects.clear();
-
-
-
-                //Löschen der "toten" Objekte
-                for (NPC e : toberemoved) {
-                        
+                effects.clear(); 
+                for (NPC e : toberemoved) {  //Löschen der "toten" Objekte
                         //GAME OVER
                         if (e instanceof Player) {
                                 this.gameover = true;
                         }
-                        
+
                        entities.remove(e);
                        if (e instanceof Effect) {
                        } else {
@@ -235,17 +223,16 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
                            map[e.getY() / FIELDSIZE][e.getX() / FIELDSIZE] = ' ';
                        }
                    }
-                
-                
+
                 //Neuzeichnen des Fog-of-War wenn Flag auf True gesetzt ist
-                if (isFogofwarrepaint()) {
+                if (fogofwarrepaint) {
                         updateFogofWar();
-                        
+    
                 }
-                
                 //Benachrichtigen aller Observer
-                notifyAllObservers();
-                this.fogofwarrepaint=false;
+                if (!observer.isEmpty()) {
+                    notifyAllObservers();
+                }
                }
         }
 
@@ -348,6 +335,8 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
     public synchronized void resumeGame(){
             wait=false;
             notifyAll();
+            visitedRooms.add(player.findRoomLocation());
+            this.dungeonrepaint=true;
 
 
     }
@@ -525,6 +514,15 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
 
     public void setDungeonrepaint(boolean dungeonrepaint) {
         this.dungeonrepaint = dungeonrepaint;
+    }
+
+    public boolean isWait() {
+        return wait;
+    }
+
+
+    public Thread getThread() {
+        return thread;
     }
 
 }
