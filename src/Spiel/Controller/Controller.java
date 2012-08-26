@@ -22,16 +22,19 @@ import java.util.logging.Logger;
  *
  * @author Lukas
  */
-public class Controller implements EventListener{
+public class Controller implements EventListener,Runnable{
     private MainModel model;
     private MainFrame view;
     private Keys keylistener;
+    private Thread thread;
 
     public Controller(MainModel model, MainFrame view){
         keylistener = new Keys(this);
         this.model=model;
         this.view=view;
         view.setController(this);
+        thread = new Thread(this);
+        thread.start();
 
         
 
@@ -59,6 +62,7 @@ public MainModel getMain() {
     }
 
     public void load() {
+        pauseGame();
         FileInputStream fileIn;
         try {
             fileIn = new FileInputStream("save.ser");
@@ -74,11 +78,11 @@ public MainModel getMain() {
             model.addObserver(view.getSpielfeld());
             model.addObserver(view.getStatusbar());
             model.addObserver(view.getItemwindow());
-            model.newThread();
+            
             
             model.notifyAllObservers();
 
-            //model.resumeGame();
+            resumeGame();
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -97,6 +101,59 @@ public MainModel getMain() {
 
 
 
+//Gameloop
+ @Override
+    public void run() {
 
 
+
+        while  (true) {
+
+
+
+                model.computeDelta();
+                model.doSpiellogik();
+                model.moveNPCs();
+
+
+                synchronized (this) {
+
+                    while (model.isWait()) {
+                    try {
+                        wait();
+                    } catch (Exception e) {
+                    }
+
+
+            }
+
+
+                if (model.getDelta() / 1e6 < model.GAME_TICK) {
+
+                    try {
+                        Thread.sleep((long) (model.GAME_TICK - (model.getDelta() / 1e6)));
+
+                    } catch (InterruptedException e) {
+                    }
+                } else {
+                    Thread.yield();
+                }
+            }
+    }
+    }
+
+
+    public synchronized void pauseGame() {
+        model.setWait(true);
+
+
+    }
+
+    public synchronized void resumeGame() {
+        model.setWait(false);
+        notifyAll();
+
+
+
+    }
 }

@@ -142,7 +142,7 @@ MainFrame mainfr;
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
         
         mainfr.openGameFrame();
-        mainfr.getModel().resumeGame();
+        mainfr.getController().resumeGame();
 
 
     }//GEN-LAST:event_newGameButtonActionPerformed

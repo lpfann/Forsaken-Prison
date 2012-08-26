@@ -91,7 +91,7 @@ public class MainFrame extends JFrame {
         gamepanel.add(spielfeld, BorderLayout.NORTH);
         gamepanel.add(statusbar, BorderLayout.CENTER);
         statusbar.setPreferredSize(new Dimension(spielfeld.getPreferredSize().width, statusbar.getPreferredSize().height));
-        model.resumeGame();
+        controller.resumeGame();
         pack();
         gamepanel.setVisible(true);
         gamepanel.requestFocus();
@@ -105,14 +105,14 @@ public class MainFrame extends JFrame {
             
             menu.getSaveGameButton().setEnabled(true);
             menu.setVisible(true);
-            model.pauseGame();
+            controller.pauseGame();
             menu.requestFocus();
             open=true;
             
         } else {
             menu.setVisible(false);
             gamepanel.requestFocus();
-            model.resumeGame();
+            controller.resumeGame();
             open=false;
             
             
@@ -133,12 +133,12 @@ public class MainFrame extends JFrame {
         public void openItemWindow() {
                 if (!open) {
                         itemwindow.setVisible(true);
-                        model.pauseGame();
+                        controller.pauseGame();
                         itemwindow.focustoItemList();
                         open = true;
                 } else {
                         itemwindow.setVisible(false);
-                        model.resumeGame();
+                        controller.resumeGame();
                         gamepanel.requestFocus();
                         open = false;
                 }

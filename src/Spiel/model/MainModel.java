@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author Lukas
  */
-public class MainModel implements Subject, Serializable, Cloneable, Runnable {
+public class MainModel implements Subject, Serializable, Cloneable {
 
     int breite = 20;
     int hoehe = 20;
@@ -42,8 +42,8 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
     private int currentDungeonLevel = 1;
     private transient Thread thread;
     boolean wait = true;
-    final int MAXFPS = 60;
-    final int GAME_TICK = 1000 / MAXFPS;
+    public final int MAXFPS = 60;
+    public final int GAME_TICK = 1000 / MAXFPS;
 
 
 
@@ -87,9 +87,7 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
                 //Fog of War
                 initFogofwar();
                 setLast(System.nanoTime());
-                thread = new Thread(this);
-                thread.start();
-                
+
 
 
 
@@ -97,46 +95,6 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
         }
 
         
-//Gameloop
- @Override
-    public void run() {
-
-
-
-        while  (true) {
-
-
-
-                computeDelta();
-                doSpiellogik();
-                moveNPCs();
-
-
-                synchronized (this) {
-
-                    while (wait) {
-                    try {
-                        wait();
-                    } catch (Exception e) {
-                    }
-
-
-            }
-
-
-                if (getDelta() / 1e6 < GAME_TICK) {
-
-                    try {
-                        Thread.sleep((long) (GAME_TICK - (getDelta() / 1e6)));
-
-                    } catch (InterruptedException e) {
-                    }
-                } else {
-                    Thread.yield();
-                }
-            }
-    }
-    }
 
 
 
@@ -325,20 +283,7 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
 
         }
 
-        
-    public synchronized void pauseGame() {
-        wait = true;
 
-
-    }
-
-    public synchronized void resumeGame() {
-        wait = false;
-        notifyAll();
-
-
-
-    }
 
         /**
          * 
@@ -512,10 +457,7 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
     public Thread getThread() {
         return thread;
     }
-    public void newThread(){
-        thread= new Thread(this);
 
-    }
 
     public ArrayList<Observer> getObserver() {
         return observer;
@@ -523,6 +465,10 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
 
     public void setObserver(ArrayList<Observer> observer) {
         this.observer = observer;
+    }
+
+    public void setWait(boolean wait) {
+        this.wait = wait;
     }
     
 }
