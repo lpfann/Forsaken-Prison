@@ -4,22 +4,17 @@
  */
 package Spiel.View;
 
-import Main.Main;
-import Spiel.model.Entities.Items.Armor.Armor;
 import Spiel.model.Entities.Items.Armor.Armor.Armortype;
 import Spiel.model.Entities.Items.Item;
 import Spiel.model.Entities.Items.Waffe;
 import Spiel.model.Entities.Player;
 import Spiel.model.MainModel;
-import com.sun.media.sound.JARSoundbankReader;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.jar.Attributes;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,7 +26,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
 
         private Player player;
         private int i;
-        private Item[] items=new Item[1000];
+        private Item[] items;
         private BufferedImage allitems;
         private BufferedImage bg;
         public static ImageIcon[][] singleitem= new ImageIcon[8][8];
@@ -55,7 +50,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                                 }
                         }
                     for (Armortype ar : Armortype.values()) {
-                       boolean nextFile; 
+                       boolean nextFile;
                         String name = ar.name();
                         int i = 1;
                         do {
@@ -78,12 +73,12 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                             }
 
                         } while (nextFile);
-                        
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                
+
                 setVisible(false);
         }
 
@@ -365,8 +360,8 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         public void update(transEnum enu, MainModel mm) {
                 if (enu==transEnum.playerstats) {
                         this.player=mm.getPlayer();
-                        
-                        
+
+
                         //Aktualisieren der Labels im Fenster
                         if (player.getWeapon()!=null) {
                         this.weaponLabel.setText(player.getWeapon().getName()) ;
@@ -374,7 +369,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                         int weapony=player.getWeapon().getSubimagey();
                         this.weaponLabel.setIcon(singleitem[weaponx][weapony]);
                         this.damageLabel.setText(Integer.toString(((Waffe)player.getWeapon()).getDamage()));
-                          
+
                      }
 
 
@@ -404,18 +399,18 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                         this.smallhealthPotionLabel.setText(Integer.toString(player.getSmallpotions()));
                         this.mediumhealthPotionLabel.setText(Integer.toString(player.getMediumpotions()));
                         this.bighealthPotionLabel.setText(Integer.toString(player.getBigpotions()));
-                        
+
                         //Festlegen des Inhalts für die Inventarliste
                         i = itemList.getSelectedIndex();
-                        items= (Item[]) player.getInventar().toArray(new Item[0]);
+                        items= (Item[]) player.getInventar().toArray(new Item[player.getInventar().size()]);
                         this.itemList.setListData(items);
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+
+
+
+
+
+
+
                 }
         }
 
@@ -423,13 +418,13 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         public void update(char[][] map) {
         }
 
-     
-        
-        
+
+
+
         public void focustoItemList(){
                 itemList.requestFocus();
-                
-                
+
+
         }
 
         public Player getPlayer() {
@@ -439,5 +434,5 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
         public JLabel getWeaponLabel() {
                 return weaponLabel;
         }
-        
+
 }

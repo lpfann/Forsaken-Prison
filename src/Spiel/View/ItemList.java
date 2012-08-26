@@ -4,7 +4,6 @@
  */
 package Spiel.View;
 
-import Main.Main;
 import Spiel.model.Entities.Items.Item;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -46,21 +45,21 @@ private Item selected;
                                 gameframe.openItemWindow();
                                 break;
                         case KeyEvent.VK_E:
-                                
+
                                 selected=(Item)this.getSelectedValue();
                                 if (selected!=null) {
                                 gameframe.getModel().getPlayer().useItem(selected);
-                                        
+
                                 }
                                 break;
                         case KeyEvent.VK_R:
                                 gameframe.getModel().getPlayer().usePotion();
                                 break;
-                                
 
-                                        
-                                
-                                
+
+
+
+
 
 
     }

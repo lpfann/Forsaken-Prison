@@ -4,9 +4,6 @@ package Spiel.Controller;
  * To change this template, choose Tools | Templates and open the template in
  * the editor.
  */
-import Main.Main;
-import Spiel.View.MainFrame;
-import Spiel.model.MainModel.Richtung;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -85,7 +82,7 @@ public class Keys implements KeyListener {
                                 break;
                         case KeyEvent.VK_DOWN:
                                 game.getMain().getPlayer().setDown(false);
-                                break;   
+                                break;
                       }
     }
 }

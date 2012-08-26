@@ -104,14 +104,14 @@ public class Fieldpainter extends JPanel implements Observer {
                }
           } else if (enu == transEnum.playerstats) {
                this.player = mm.getPlayer();
-//             this.dungeonreapaint=mm.isDungeonrepaint();
+//             this.dungeonrepaint=mm.isDungeonrepaint();
                updateViewportCoord(player);
                this.gameover=mm.isGameover();
 
           } else if (enu == transEnum.fogofwar) {
                this.fogofwar = mm.getFogofwar();
-               
-              
+
+
 
           }
           repaint();
@@ -130,10 +130,10 @@ public class Fieldpainter extends JPanel implements Observer {
           if (map!=null) {
 
           g.setColor(Color.red);
-          
+
           compoImage = createImage(VIEWPORTWIDTH * FIELDSIZE, VIEWPORTHEIGHT * FIELDSIZE);
             Graphics cg = compoImage.getGraphics();
-         
+
           //Dungeon Zeichnen
           paintDungeon(g);
           //Entities Zeichnen
@@ -155,7 +155,7 @@ public class Fieldpainter extends JPanel implements Observer {
           //Hilfe text zeichnen
           g.setColor(Color.white);
           g.drawString("ESC - Menü", 10, 10);
-          
+
           //GAME OVER Text
           if (gameover) {
                g.setColor(Color.red);
@@ -169,8 +169,9 @@ public class Fieldpainter extends JPanel implements Observer {
      private void paintDungeon(Graphics g) {
 
 
-         if (dungeonrepaint) {
-             dungeonrepaint=false;
+         if (MainModel.dungeonrepaint) {
+             MainModel.dungeonrepaint=false;
+             System.err.println("repaint");
              dungeonoffscreenImage = createImage(map[0].length*FIELDSIZE, map.length*FIELDSIZE);
               offscreenGraph = dungeonoffscreenImage.getGraphics();
 
@@ -188,7 +189,7 @@ public class Fieldpainter extends JPanel implements Observer {
 
          }
 
-         
+
           //Zeichen des Dungeon Bildes
           compoImage.getGraphics().drawImage(dungeonoffscreenImage, -viewportx, -viewporty, this);
 
@@ -224,7 +225,7 @@ public class Fieldpainter extends JPanel implements Observer {
 
      //Zeichnen der Entities
      private void paintallEntities(Graphics cg) {
-         
+
           if (!entities.isEmpty()) {
 
                for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
@@ -381,7 +382,7 @@ public class Fieldpainter extends JPanel implements Observer {
      }
 
 
- 
+
 
     private void updateViewportCoord(Player p) {
 
@@ -452,7 +453,7 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
      }
-     
+
      private BufferedImage[][] loadPic(String path, int width,int height) {
 
           BufferedImage pic = null;
@@ -470,7 +471,7 @@ public class Fieldpainter extends JPanel implements Observer {
           for (int i = 0; i < anzahlx; i++) {
                for (int j = 0; j < anzahly; j++) {
                     pics[i][j] = pic.getSubimage(i * width, j*height, width, height);
-                    
+
                }
           }
           return pics;
@@ -487,7 +488,7 @@ public class Fieldpainter extends JPanel implements Observer {
           this.fogofwarrepaint = fogofwarrepaint;
      }
      private void animateWalking(Graphics cg,Richtung dir,int x1,int y1){
-     
+
                if (animcounter>=8) {
                     animcounter=0;
                }
@@ -495,7 +496,7 @@ public class Fieldpainter extends JPanel implements Observer {
                case DOWN:
                     cg.drawImage(playerimage[animcounter][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
-                    
+
                     break;
                case LEFT:
 
@@ -509,8 +510,8 @@ public class Fieldpainter extends JPanel implements Observer {
 
                     cg.drawImage(playerimage[animcounter][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
-     
-     
+
+
           }
      }
      private void animateAttack(Graphics cg,Richtung dir,int x1,int y1){
@@ -540,28 +541,28 @@ public class Fieldpainter extends JPanel implements Observer {
 
           }
      }
-     
-     
+
+
      private BufferedImage [][] enlargePic(BufferedImage img[][],int cropx,int cropy){
           BufferedImage biggerimg[][]= new BufferedImage [img.length][img[0].length];
           for (int i = 0; i < img.length; i++) {
                for (int j = 0; j < img[0].length; j++) {
                     try {
                     biggerimg[i][j]= img[i][j].getSubimage(cropx, cropy, img[i][j].getWidth()-2*cropx, img[i][j].getHeight()-cropy);
-                         
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                   
+
                }
           }
-          
+
           return biggerimg;
-          
-          
-          
-          
+
+
+
+
      }
- 
+
 
 }

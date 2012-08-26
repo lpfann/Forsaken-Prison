@@ -6,7 +6,6 @@ package Spiel.View;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.swing.ButtonModel;
 import javax.swing.JButton;
 
 /**
@@ -140,7 +139,7 @@ MainFrame mainfr;
     }// </editor-fold>//GEN-END:initComponents
 
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
-        
+
         mainfr.openGameFrame();
         mainfr.getController().resumeGame();
 
@@ -150,15 +149,15 @@ MainFrame mainfr;
     private void newGameButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newGameButtonKeyPressed
         if (evt.getKeyCode()== KeyEvent.VK_ENTER) {
             mainfr.openGameFrame();
-            
+
         }
-        
+
     }//GEN-LAST:event_newGameButtonKeyPressed
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         mainfr.getController().load();
         mainfr.openGameFrame();
-        
+
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void saveGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGameButtonActionPerformed

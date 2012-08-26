@@ -6,20 +6,18 @@ package Spiel.model.Entities;
 
 import Spiel.model.MainModel;
 import Spiel.model.Room;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
 /**
  *
  * @author Gamer
  */
 public class Door extends NPC implements Usable {
-    
+
     private boolean open;
     public Door(int x, int y,MainModel main){
         super(x, y, 'D', main);
         this.open=false;
-      
+
     }
 
     public boolean getOpen() {
@@ -40,7 +38,7 @@ public class Door extends NPC implements Usable {
     }
          @Override
      public void move() {
-              
+
          }
 
     @Override

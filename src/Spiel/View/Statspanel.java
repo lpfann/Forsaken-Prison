@@ -7,15 +7,12 @@ package Spiel.View;
 import Spiel.model.Entities.Player;
 import Spiel.model.MainModel;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.security.Policy;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 
 /**
@@ -31,7 +28,7 @@ private String health;
     private String playername;
     private String damage;
     private String defence;
-    
+
     private MainModel main;
     private Statsfield healthlabel;
     private Statsfield namelabel;
@@ -45,8 +42,8 @@ private String health;
     public static ImageIcon tome;
     public static ImageIcon dagger;
     public static ImageIcon shield;
-    
-    
+
+
 //TODO Statspanel vereinfachen mit for schleife etc...
     public Statspanel() {
             try {
@@ -66,8 +63,8 @@ private String health;
     level = "0";
     damage="0";
     defence="0";
-    
-    
+
+
     this.setLayout(new BorderLayout(5,5));
     JPanel stats = new JPanel();
     stats.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -80,7 +77,7 @@ private String health;
     lvllabel = new Statsfield(level);
     damagelabel = new Statsfield(damage);
     defencelabel = new Statsfield(defence);
-    
+
     console= new JTextPane();
     console.setPreferredSize(new Dimension(200,50));
     console.setEditable(false);
@@ -92,7 +89,7 @@ private String health;
     consolescroller.setPreferredSize(new Dimension(200,50));
     consolescroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     consolescroller.setFocusable(false);
-    redirectSystemStreams();        
+    redirectSystemStreams();
 
     healthlabel.setIcon(heart);
     xplabel.setIcon(tome);
@@ -112,7 +109,7 @@ private String health;
     this.setPreferredSize(new Dimension(200,160));
 
     }
-    
+
   private void updateTextPane(final String text) {
   SwingUtilities.invokeLater(new Runnable() {
     public void run() {
@@ -126,25 +123,25 @@ private String health;
     }
   });
 }
- 
+
 private void redirectSystemStreams() {
   OutputStream out = new OutputStream() {
     @Override
     public void write(final int b) throws IOException {
       updateTextPane(String.valueOf((char) b));
     }
- 
+
     @Override
     public void write(byte[] b, int off, int len) throws IOException {
       updateTextPane(new String(b, off, len));
     }
- 
+
     @Override
     public void write(byte[] b) throws IOException {
       write(b, 0, b.length);
     }
   };
- 
+
   System.setOut(new PrintStream(out, true));
   //System.setErr(new PrintStream(out, true));
 }
@@ -162,7 +159,7 @@ private void redirectSystemStreams() {
             level = "LVL: " + String.valueOf(main.getPlayer().getLvl());
             damage = "DMG: " + String.valueOf(main.getPlayer().getDmg());
             defence = "DEF: " + String.valueOf(main.getPlayer().getDefence());
-            
+
             healthlabel.setText(health);
             namelabel.setText(playername);
             //manalabel.setText(mana);
@@ -175,7 +172,7 @@ private void redirectSystemStreams() {
 
     @Override
     public void update(char[][] map) {
-        
+
     }
 
 

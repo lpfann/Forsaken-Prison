@@ -4,7 +4,6 @@
  */
 
 import Main.Main;
-import Spiel.model.Room;
 import Spiel.model.DungeonGenerator;
 import Spiel.model.Entities.Door;
 import java.util.LinkedList;
@@ -16,7 +15,7 @@ import static org.junit.Assert.*;
  * @author Lukas
  */
 public class DungeonTest {
-    
+
     public DungeonTest() {
     }
 
@@ -27,7 +26,7 @@ public class DungeonTest {
                 boolean pass = true;
                 int counter = 0;
                 Main game = new Main();
-                
+
                 game.pauseThread();
 
                 //mehrmaliger Testlauf
@@ -85,7 +84,7 @@ public class DungeonTest {
 //            return true;
 //
 //      }
-      
+
       //Prüft jede Tür ob sie begehbar ist
       private boolean doortester(LinkedList<Door> list,char[][] map) {
               boolean allestrue=true;
@@ -93,7 +92,7 @@ public class DungeonTest {
                       int x = d.getX();
                       int y = d.getY();
                           if ((map[y - 1][x] == '*' && map[y + 1][x] == '*') && (map[y][x - 1] == '*' || map[y][x + 1] == '*')) {
-                              //Von rechts oder links blockiert    
+                              //Von rechts oder links blockiert
                               allestrue=false;
                       } else {
                               if ((map[y][x - 1] == '*' && map[y][x + 1] == '*') && (map[y - 1][x] == '*' || map[y + 1][x] == '*')) {
@@ -102,20 +101,20 @@ public class DungeonTest {
                               } else {
                               }
                       }
-                      
-                      
-                      
-                      
+
+
+
+
               }
               if (allestrue) {
                       return true;
               } else {
                       return false;
               }
-              
-              
-              
-              
+
+
+
+
       }
 
 }

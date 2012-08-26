@@ -38,7 +38,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
     private transient ArrayList<Observer> observer = new ArrayList<>();
     private boolean gameover;
     public static boolean fogofwarrepaint = true;
-    private boolean dungeonrepaint = true;
+    public static boolean dungeonrepaint = true;
     private int currentDungeonLevel = 1;
     private transient Thread thread;
     boolean wait = true;
@@ -56,8 +56,8 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 UP,
                 DOWN;
         }
-        
-        
+
+
 
         /**
          * Konstruktor des MainModels
@@ -68,22 +68,22 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
 
         }
-        
-        
-        
-        
+
+
+
+
         private void init(){
         //Dungeonerstellung
                 dungeon = new DungeonGenerator(breite, hoehe, this);
                 map = dungeon.getMap();
                 dungeon.addEntities();
-                
+
                 entities.addAll(dungeon.getEntitiesinLevel());
 
                 //Player Erstellung
                 player = new Player(this);
                 entities.add(player);
-                
+
                 //Fog of War
                 initFogofwar();
                 setLast(System.nanoTime());
@@ -91,10 +91,10 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
 
 
-                
+
         }
 
-        
+
 
 
 
@@ -109,29 +109,30 @@ public class MainModel implements Subject, Serializable, Cloneable {
            player.setstartposition(2, 2, breite-2, hoehe-2);
            entities.add(player);
            visitedRooms.add(player.findRoomLocation());
-           this.setFogofwarrepaint(true);
            initFogofwar();
            updateFogofWar();
+           this.setFogofwarrepaint(true);
+           dungeonrepaint=true;
            notifyAllObservers();
 
 
 
         }
-        
-        
-        
+
+
+
         private void initFogofwar() {
                 for (int i = 0; i < fogofwar.length; i++) {
                         for (int j = 0; j < fogofwar[0].length; j++) {
                                 fogofwar[i][j]=true;
                         }
                 }
-  
-                
+
+
         }
     public void updateFogofWar() {
         while ( !visitedRooms.isEmpty()){
-        
+
             Room r = visitedRooms.pop();
             for (int i = r.getY1(); i <= r.getY1() + r.getHoehe(); i++) {
                 for (int j = r.getX1(); j <= r.getX1() + r.getBreite(); j++) {
@@ -139,7 +140,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 }
             }
         }
-      
+
 
 
 
@@ -164,7 +165,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
                         }
                 }
                 entities.addAll(effects);
-                effects.clear(); 
+                effects.clear();
                 for (NPC e : toberemoved) {  //Löschen der "toten" Objekte
                         //GAME OVER
                         if (e instanceof Player) {
@@ -182,7 +183,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 //Neuzeichnen des Fog-of-War wenn Flag auf True gesetzt ist
                 if (fogofwarrepaint) {
                             updateFogofWar();
-    
+
                 }
                 //Benachrichtigen aller Observer
                 if (!observer.isEmpty()) {
@@ -192,8 +193,8 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         *       Bewegen der Objekte auf der Karte        
-         * 
+         *       Bewegen der Objekte auf der Karte
+         *
          */
         public void moveNPCs() {
                 for (NPC e : entities) {
@@ -203,9 +204,9 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 }
 
         }
-        
+
         /**
-         * Benachrichtigen aller Observer für alle möglichen Daten 
+         * Benachrichtigen aller Observer für alle möglichen Daten
          */
         public void notifyAllObservers() {
                 notifyObserver(map);
@@ -226,7 +227,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         * 
+         *
          * @param o Observer
          */
         @Override
@@ -235,7 +236,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         * 
+         *
          * @param o Observer
          */
         @Override
@@ -249,7 +250,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
          */
         @Override
         public void notifyObserver(transEnum enu) {
-                
+
                 //Kopie von main erstellen
                 MainModel maincopy = null;
                 try {
@@ -259,7 +260,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 }
 
 
-                
+
                 for (Observer ob : observer) {
                         ob.update(enu, maincopy);
                 }
@@ -286,7 +287,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
 
         /**
-         * 
+         *
          * @return Liste aller NPCs im Spiel
          */
         public LinkedList<NPC> getEntities() {
@@ -295,13 +296,13 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
 
         /**
-         * 
+         *
          * @return Ausgabe des Spielers
          */
         public Player getPlayer() {
                 return player;
         }
-        
+
         /**
          *     Berechnung von Werten für die Spiellogik und Animation
          */
@@ -313,7 +314,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         * 
+         *
          * @return Ausgabe des generierten Dungeons
          */
         public DungeonGenerator getDungeon() {
@@ -328,7 +329,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         * 
+         *
          * @return Ausgabe der Breite des momentanen Spielfelds
          */
         public int getBreite() {
@@ -336,7 +337,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         * 
+         *
          * @param breite Bestimmen der Breite des Spielfelds
          */
         public void setBreite(int breite) {
@@ -344,7 +345,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         * 
+         *
          * @return Ausgabe der Höhe des Spielfelds
          */
         public int getHoehe() {
@@ -352,7 +353,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         * 
+         *
          * @param hoehe Ausgabe der Höhe des Spielfelds
          */
         public void setHoehe(int hoehe) {
@@ -360,7 +361,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         * 
+         *
          * @return Ausgabe der Zeit zwischen dem letzten Thread-Durchlauf und dem jetzigen in nanosekunden
          */
         public long getDelta() {
@@ -368,21 +369,21 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         * 
+         *
          * @return
          */
         public long getFps() {
                 return fps;
         }
         /**
-         * 
+         *
          * @return Zeitpunkt des letzten Thread-Durchlaufs in Nanosekunden
          */
         public long getLast() {
                 return last;
         }
         /**
-         * 
+         *
          * @return Ein Array welches Festlegt wo er FogofWar noch ist, bzw wo der Spieler noch nicht war.
          */
         public boolean[][] getFogofwar() {
@@ -392,7 +393,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
 
         /**
-         * 
+         *
          * @return Gibt aus ob der Fog-of-War sich geändert hat
          */
         public boolean isFogofwarrepaint() {
@@ -400,7 +401,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         * 
+         *
          * @param fogofwarrepaint Legt fest ob Fog-of-War neugezeichnet werden muss
          */
         public void setFogofwarrepaint(boolean fogofwarrepaint) {
@@ -408,7 +409,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
         }
 
         /**
-         * 
+         *
          * @return Gibt den Stack der besuchten Räume aus.
          */
         public Stack<Room> getVisitedRooms() {
@@ -470,5 +471,5 @@ public class MainModel implements Subject, Serializable, Cloneable {
     public void setWait(boolean wait) {
         this.wait = wait;
     }
-    
+
 }

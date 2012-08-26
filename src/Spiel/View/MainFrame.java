@@ -31,19 +31,19 @@ public class MainFrame extends JFrame {
     private boolean open = false;
     private Controller controller;
 
-    
-    
+
+
     public MainFrame(MainModel model) {
         super("Spiel");
         this.model = model;
-        
+
         spielfeld = new Fieldpainter(model.getBreite(), model.getHoehe(), model.getPlayer(), model.getFIELDSIZE());
         statusbar = new Statspanel();
         menu = new Menu(this);
         itemwindow= new Itemwindow(this);
         helpwindow = new Help(this);
         model.addObserver(itemwindow);
-        
+
         this.setResizable(false);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocation(screensize.width / 4, screensize.height / 4);
@@ -59,7 +59,7 @@ public class MainFrame extends JFrame {
         menu.setBounds(this.getPreferredSize().width/2-menu.getPreferredSize().width/2,0,menu.getPreferredSize().width,menu.getPreferredSize().height);
         itemwindow.setBounds(this.getPreferredSize().width/2-itemwindow.getPreferredSize().width/2,0,itemwindow.getPreferredSize().width,itemwindow.getPreferredSize().height);
         helpwindow.setBounds(this.getPreferredSize().width/2-helpwindow.getPreferredSize().width/2,0,helpwindow.getPreferredSize().width,helpwindow.getPreferredSize().height);
-        
+
         itemwindow.setOpaque(true);
         menu.setOpaque(true);
         helpwindow.setOpaque(true);
@@ -78,11 +78,11 @@ public class MainFrame extends JFrame {
     }
 
     public void openGameFrame() {
-        
+
 
 
         menu.setVisible(false);
-        
+
         model.addObserver(statusbar);
         model.addObserver(spielfeld);
 
@@ -99,24 +99,24 @@ public class MainFrame extends JFrame {
     }
 
     public void openGameMenu() {
-        
+
         if (!open) {
             this.menu.setNewGameButtonText("Weiterspielen");
-            
+
             menu.getSaveGameButton().setEnabled(true);
             menu.setVisible(true);
             controller.pauseGame();
             menu.requestFocus();
             open=true;
-            
+
         } else {
             menu.setVisible(false);
             gamepanel.requestFocus();
             controller.resumeGame();
             open=false;
-            
-            
-            
+
+
+
         }
 
 

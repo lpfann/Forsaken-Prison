@@ -1,13 +1,8 @@
 package Main;
 
 import Spiel.Controller.Controller;
-import Spiel.View.Fieldpainter;
 import Spiel.View.MainFrame;
 import Spiel.model.MainModel;
-import java.awt.event.KeyListener;
-import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this template, choose Tools | Templates
@@ -21,7 +16,7 @@ import java.util.logging.Logger;
  * @author Lukas Pfannschmidt
  */
 public class Main {
-    
+
 
 
 public Main (){
@@ -39,7 +34,7 @@ public Main (){
 
 
 
-   
 
-    
+
+
 }

@@ -19,7 +19,7 @@ public final class Player extends NPC {
     private final int[] levelups= { 100,200,300,400,500,650,850,1100,1300,1500,1800,2100};
     private boolean up,down,left,right;
     private int attackanim=0;
-         
+
 
 
 
@@ -51,10 +51,8 @@ public final class Player extends NPC {
 
         if (up || down || left || right) {
             setWalking(true);
-            getMain().setDungeonrepaint(true);
         } else {
             setWalking(false);
-            getMain().setDungeonrepaint(false);
         }
 
         if (up) {
@@ -77,8 +75,8 @@ public final class Player extends NPC {
 
     setRoom(findRoomLocation());
     }
-    
-    
+
+
     public void attackmonster() {
 
         if (enemyInFront()!= null) {
@@ -108,9 +106,9 @@ public final class Player extends NPC {
 
     }
 
-    
 
- 
+
+
 
 
 
@@ -119,17 +117,17 @@ public final class Player extends NPC {
             ((Usable) objectinFront()).use(this);
         }
     }
-    
-    
-    
-    
+
+
+
+
     //Getter und Setter
     public int getLvl() {
         return lvl;
     }
 
     public void setLvl(int lvl) {
-        
+
         this.lvl = lvl;
     }
     public void increaseLevel(){
@@ -138,10 +136,10 @@ public final class Player extends NPC {
         updateDmg();
         setMaxhp(maxhp+10);
          System.out.println("Du bist ein Level aufgestiegen! Dein Schaden und deine max. Lebenspunkte haben sich erhöht!");
-         
-         
-         
-         
+
+
+
+
     }
 
     public boolean isAttacking() {
@@ -151,7 +149,7 @@ public final class Player extends NPC {
     public void setAttacking(boolean attacking) {
         this.attacking = attacking;
     }
-    
+
     public int getMana() {
         return mana;
     }
@@ -166,11 +164,11 @@ public final class Player extends NPC {
 
     public void setXp(int xp) {
         this.xp = xp;
-        
+
             if (xp>=levelups[getLvl()-1]) {
-                    increaseLevel();     
+                    increaseLevel();
             }
-                    
+
     }
 
         public LinkedList<Item> getInventar() {
@@ -208,7 +206,7 @@ public final class Player extends NPC {
 
                 return weapon;
 
-            
+
         }
 
         public void setWeapon(Waffe weapon) {
@@ -217,9 +215,9 @@ public final class Player extends NPC {
         }
 
         public void useItem(Item selected) {
-          selected.useItem();      
+          selected.useItem();
           getMain().notifyObserver(Observer.transEnum.playerstats);
-                
+
         }
 
         public int getBigpotions() {
@@ -261,9 +259,9 @@ public final class Player extends NPC {
                 } else {
                         System.out.println("Du hast keine Tränke");
                 }
-                
-                
-                
+
+
+
         }
 
      public int getBasedamage() {
@@ -283,10 +281,10 @@ public final class Player extends NPC {
             }
             if (hp>maxhp) {
              super.setHp(maxhp);
-               
+
           } else {
              super.setHp(hp);
-                 
+
             }
     }
 
@@ -305,21 +303,21 @@ public final class Player extends NPC {
      public void  updateDmg(){
           if (getWeapon()!=null) {
           setDmg(getWeapon().getDamage()+getBasedamage());
-               
+
           } else {
-               
+
                setDmg(getBasedamage());
           }
      }
-     
+
      public void debugPrintObjectinFront(){
           NPC n = objectinFront();
           if (n!=null) {
           System.err.println(n.getClass().getSimpleName());
-               
+
           }
           System.err.println(getMain().map[fieldinFront(1)[1]][fieldinFront(1)[0]]);
-          
+
 
      }
 
@@ -354,5 +352,5 @@ public final class Player extends NPC {
     public void setRight(boolean right) {
         this.right = right;
     }
-        
+
 }
