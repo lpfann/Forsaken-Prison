@@ -155,13 +155,13 @@ private void redirectSystemStreams() {
     public void update(transEnum enu, MainModel mm) {
         if (enu == transEnum.playerstats) {
             main = mm;
-            health = "HP: " + String.valueOf(main.player.getHp());
-            playername = "Name: " + String.valueOf(main.player.getName());
+            health = "HP: " + String.valueOf(main.getPlayer().getHp());
+            playername = "Name: " + String.valueOf(main.getPlayer().getName());
             //mana = "Mana: " + String.valueOf(main.player.getMana());
-            xp = "XP: " + String.valueOf(main.player.getXp());
-            level = "LVL: " + String.valueOf(main.player.getLvl());
-            damage = "DMG: " + String.valueOf(main.player.getDmg());
-            defence = "DEF: " + String.valueOf(main.player.getDefence());
+            xp = "XP: " + String.valueOf(main.getPlayer().getXp());
+            level = "LVL: " + String.valueOf(main.getPlayer().getLvl());
+            damage = "DMG: " + String.valueOf(main.getPlayer().getDmg());
+            defence = "DEF: " + String.valueOf(main.getPlayer().getDefence());
             
             healthlabel.setText(health);
             namelabel.setText(playername);

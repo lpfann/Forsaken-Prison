@@ -156,13 +156,13 @@ MainFrame mainfr;
     }//GEN-LAST:event_newGameButtonKeyPressed
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-     //mainfr.getGame().load();
+        mainfr.getController().load();
         mainfr.openGameFrame();
         
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void saveGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGameButtonActionPerformed
-      //mainfr.getGame().save();
+      mainfr.getController().save();
       mainfr.getGamepanel().requestFocus();
     }//GEN-LAST:event_saveGameButtonActionPerformed
 

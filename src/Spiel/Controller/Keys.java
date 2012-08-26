@@ -30,25 +30,25 @@ public class Keys implements KeyListener {
         public void keyPressed(KeyEvent ke) {
                 switch (ke.getKeyCode()) {
                         case KeyEvent.VK_LEFT:
-                                game.getMain().player.setLeft(true);
+                                game.getMain().getPlayer().setLeft(true);
                                 break;
                         case KeyEvent.VK_RIGHT:
-                                game.getMain().player.setRight(true);
+                                game.getMain().getPlayer().setRight(true);
                                 break;
                         case KeyEvent.VK_UP:
-                                game.getMain().player.setUp(true);
+                                game.getMain().getPlayer().setUp(true);
                                 break;
                         case KeyEvent.VK_DOWN:
-                                game.getMain().player.setDown(true);
+                                game.getMain().getPlayer().setDown(true);
                                 break;
                         case KeyEvent.VK_Q:
                                 System.exit(0);
                                 break;
                         case KeyEvent.VK_SPACE:
-                                game.getMain().player.attackmonster();
+                                game.getMain().getPlayer().attackmonster();
                                 break;
                         case KeyEvent.VK_E:
-                                game.getMain().player.action();
+                                game.getMain().getPlayer().action();
                                 break;
                         case KeyEvent.VK_F5:
                                 game.save();
@@ -63,10 +63,10 @@ public class Keys implements KeyListener {
                                 game.getMainFr().openItemWindow();
                                 break;
                         case KeyEvent.VK_R:
-                                game.getMain().player.usePotion();
+                                game.getMain().getPlayer().usePotion();
                                 break;
                         case KeyEvent.VK_L:
-                                game.getMain().player.debugPrintObjectinFront();
+                                game.getMain().getPlayer().debugPrintObjectinFront();
                                 break;
                 }
         }
@@ -75,16 +75,16 @@ public class Keys implements KeyListener {
     public void keyReleased(KeyEvent ke) {
                       switch (ke.getKeyCode()) {
                         case KeyEvent.VK_LEFT:
-                                game.getMain().player.setLeft(false);
+                                game.getMain().getPlayer().setLeft(false);
                                 break;
                         case KeyEvent.VK_RIGHT:
-                                game.getMain().player.setRight(false);
+                                game.getMain().getPlayer().setRight(false);
                                 break;
                         case KeyEvent.VK_UP:
-                                game.getMain().player.setUp(false);
+                                game.getMain().getPlayer().setUp(false);
                                 break;
                         case KeyEvent.VK_DOWN:
-                                game.getMain().player.setDown(false);
+                                game.getMain().getPlayer().setDown(false);
                                 break;   
                       }
     }

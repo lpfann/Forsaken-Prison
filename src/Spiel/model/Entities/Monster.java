@@ -36,9 +36,9 @@ public abstract class Monster extends NPC {
           
             
         counter1++;
-        if (Spiel.model.Utilites.inthesameRoom(this, getMain().player)) {
+        if (Spiel.model.Utilites.inthesameRoom(this, getMain().getPlayer())) {
             if (counter1 >=50) {
-                Player pl = getMain().player;
+                Player pl = getMain().getPlayer();
                     if (Spiel.model.Utilites.distance(this, pl)==1 && objectinFront() instanceof Player) {
                             setWalking(false);
                             attack(objectinFront());

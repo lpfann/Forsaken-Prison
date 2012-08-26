@@ -49,12 +49,12 @@ private Item selected;
                                 
                                 selected=(Item)this.getSelectedValue();
                                 if (selected!=null) {
-                                gameframe.getModel().player.useItem(selected);
+                                gameframe.getModel().getPlayer().useItem(selected);
                                         
                                 }
                                 break;
                         case KeyEvent.VK_R:
-                                gameframe.getModel().player.usePotion();
+                                gameframe.getModel().getPlayer().usePotion();
                                 break;
                                 
 

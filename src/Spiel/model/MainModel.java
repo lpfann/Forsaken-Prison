@@ -30,12 +30,12 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
     private final int FIELDSIZE = 40;
     public char[][] map;
     private boolean[][] fogofwar = new boolean[hoehe][breite];
-    public Player player;
+    private Player player;
     private DungeonGenerator dungeon;
     public LinkedList<NPC> entities = new LinkedList<>();
     public LinkedList<Effect> effects = new LinkedList<>();
     private Stack<Room> visitedRooms = new Stack<>();
-    private static ArrayList<Observer> observer = new ArrayList<>();
+    private transient ArrayList<Observer> observer = new ArrayList<>();
     private boolean gameover;
     public static boolean fogofwarrepaint = true;
     private boolean dungeonrepaint = true;
@@ -88,7 +88,7 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
                 initFogofwar();
                 setLast(System.nanoTime());
                 thread = new Thread(this);
-//                thread.start();
+                thread.start();
                 
 
 
@@ -513,7 +513,16 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
         return thread;
     }
     public void newThread(){
-        thread= new Thread();
+        thread= new Thread(this);
 
     }
+
+    public ArrayList<Observer> getObserver() {
+        return observer;
+    }
+
+    public void setObserver(ArrayList<Observer> observer) {
+        this.observer = observer;
+    }
+    
 }

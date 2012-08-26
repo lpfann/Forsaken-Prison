@@ -6,12 +6,14 @@ package Spiel.Controller;
 
 import Main.Main;
 import Spiel.View.MainFrame;
+import Spiel.View.Observer;
 import Spiel.model.MainModel;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,23 +59,23 @@ public MainModel getMain() {
     }
 
     public void load() {
-        
         FileInputStream fileIn;
         try {
             fileIn = new FileInputStream("save.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             try {
                 model = (MainModel) in.readObject();
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
             in.close();
-            model.newThread();
-
-            model.clearObservers();
+            model.setDungeonrepaint(true);
+            model.setObserver(new ArrayList<Observer>());
             model.addObserver(view.getSpielfeld());
             model.addObserver(view.getStatusbar());
-
+            model.addObserver(view.getItemwindow());
+            model.newThread();
+            
             model.notifyAllObservers();
 
             //model.resumeGame();

@@ -29,7 +29,6 @@ public class MainFrame extends JFrame {
     private Itemwindow itemwindow;
     private Help helpwindow;
     private boolean open = false;
-    private Fieldpainter fieldPanel;
     private Controller controller;
 
     
@@ -38,7 +37,7 @@ public class MainFrame extends JFrame {
         super("Spiel");
         this.model = model;
         
-        fieldPanel = new Fieldpainter(model.getBreite(), model.getHoehe(), model.getPlayer(), model.getFIELDSIZE());
+        spielfeld = new Fieldpainter(model.getBreite(), model.getHoehe(), model.getPlayer(), model.getFIELDSIZE());
         statusbar = new Statspanel();
         menu = new Menu(this);
         itemwindow= new Itemwindow(this);
@@ -48,7 +47,7 @@ public class MainFrame extends JFrame {
         this.setResizable(false);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocation(screensize.width / 4, screensize.height / 4);
-        this.setPreferredSize(new Dimension(fieldPanel.getPreferredSize().width,fieldPanel.getPreferredSize().height+statusbar.getPreferredSize().height));
+        this.setPreferredSize(new Dimension(spielfeld.getPreferredSize().width,spielfeld.getPreferredSize().height+statusbar.getPreferredSize().height));
         this.setLayout(new BorderLayout(5, 5));
         gamepanel.setBackground(menu.getBackground());
         statusbar.setBackground(menu.getBackground());
@@ -83,7 +82,7 @@ public class MainFrame extends JFrame {
 
 
         menu.setVisible(false);
-        spielfeld = fieldPanel;
+        
         model.addObserver(statusbar);
         model.addObserver(spielfeld);
 
@@ -92,7 +91,7 @@ public class MainFrame extends JFrame {
         gamepanel.add(spielfeld, BorderLayout.NORTH);
         gamepanel.add(statusbar, BorderLayout.CENTER);
         statusbar.setPreferredSize(new Dimension(spielfeld.getPreferredSize().width, statusbar.getPreferredSize().height));
-        model.getThread().start();
+        model.resumeGame();
         pack();
         gamepanel.setVisible(true);
         gamepanel.requestFocus();
@@ -182,6 +181,10 @@ public class MainFrame extends JFrame {
 
     public void setController(Controller controller) {
         this.controller = controller;
+    }
+
+    public void setModel(MainModel model) {
+        this.model = model;
     }
 
 
