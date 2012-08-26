@@ -15,7 +15,6 @@ import java.util.LinkedList;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//TODO Spieler spawnt in Türen
 
 /**
  *
@@ -179,20 +178,26 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
   
                 
         }
-        private void updateFogofWar(){
-            if (!visitedRooms.empty()) {
-                Room r = visitedRooms.pop();
-                for (int i = r.getY1(); i <= r.getY1()+r.getHoehe(); i++) {
-                        for (int j = r.getX1(); j <= r.getX1()+r.getBreite(); j++) {
-                                fogofwar[i][j]=false;
-                        }
+    public void updateFogofWar() {
+        while ( !visitedRooms.isEmpty()){
+        
+            Room r = visitedRooms.pop();
+            for (int i = r.getY1(); i <= r.getY1() + r.getHoehe(); i++) {
+                for (int j = r.getX1(); j <= r.getX1() + r.getBreite(); j++) {
+                    fogofwar[i][j] = false;
                 }
-
-                setFogofwarrepaint(true);
             }
-
-                
         }
+      
+
+
+
+
+
+
+
+
+    }
 
         /**
          * Ausführung der Spiellogik für alle Objekte und Funktionen. Bei jedem Durchlauf eines Threads
@@ -226,7 +231,7 @@ public class MainModel implements Subject, Serializable, Cloneable, Runnable {
 
                 //Neuzeichnen des Fog-of-War wenn Flag auf True gesetzt ist
                 if (fogofwarrepaint) {
-                        updateFogofWar();
+                            updateFogofWar();
     
                 }
                 //Benachrichtigen aller Observer
