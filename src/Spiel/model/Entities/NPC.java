@@ -479,7 +479,7 @@ public abstract class NPC implements Movable, Serializable {
       this.hp = hp;
       if (hp < 1) {
          this.removethis = true;
-         //TODO bug: monster sind tot können aber noch angegriffen werden. und geben auch noch XP
+         this.room.getEntities().remove(this);
       }
    }
 

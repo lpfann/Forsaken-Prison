@@ -40,7 +40,7 @@ public class DungeonGenerator implements Serializable {
         }
         public void addEntities(){
                 entitiesinLevel.addAll(doorEntities);
-//                entitiesinLevel.addAll(new MonsterFactory(main).populateDungeon(rooms));
+                entitiesinLevel.addAll(new MonsterFactory(main).populateDungeon(rooms));
                 entitiesinLevel.addAll(new ChestFactory(main).populateDungeon(rooms));
                 generateStairsAndKey();
                 entitiesinLevel.add(stairs);
