@@ -4,7 +4,7 @@
  */
 package Spiel.View;
 
-import Spiel.Controller.Game;
+import Main.Main;
 import Spiel.model.Entities.Items.Item;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -18,12 +18,12 @@ import javax.swing.ListSelectionModel;
  * @author Gamer
  */
 public class ItemList extends JList implements KeyListener {
-private Game game;
+private GameFrame gameframe;
 private Item selected;
 
-        public ItemList(Game game) {
+        public ItemList(GameFrame gameframe) {
                 super();
-                this.game=game;
+                this.gameframe=gameframe;
                 setLayoutOrientation(JList.HORIZONTAL_WRAP);
                 setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
                 setVisibleRowCount(-1);
@@ -43,18 +43,18 @@ private Item selected;
         public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
                         case KeyEvent.VK_I:
-                                game.getMainFr().openItemWindow();
+                                gameframe.openItemWindow();
                                 break;
                         case KeyEvent.VK_E:
                                 
                                 selected=(Item)this.getSelectedValue();
                                 if (selected!=null) {
-                                game.getMain().player.useItem(selected);
+                                gameframe.getMain().player.useItem(selected);
                                         
                                 }
                                 break;
                         case KeyEvent.VK_R:
-                                game.getMain().player.usePotion();
+                                gameframe.getMain().player.usePotion();
                                 break;
                                 
 

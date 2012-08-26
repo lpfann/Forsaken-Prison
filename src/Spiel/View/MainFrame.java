@@ -4,16 +4,13 @@ package Spiel.View;
  * To change this template, choose Tools | Templates and open the template in
  * the editor.
  */
-import Spiel.Controller.Game;
+import Spiel.Controller.Controller;
+import Spiel.model.MainModel;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 
 /**
  *
@@ -21,78 +18,49 @@ import javax.swing.JPanel;
  */
 public class MainFrame extends JFrame {
 
-    private Fieldpainter spielfeld;
     private Statspanel statusbar;
     private Menu menu;
-    private Game game;
+    private MainModel model;
     private Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
     private JLayeredPane lpanel = new JLayeredPane();
-    private JPanel gamepanel = new JPanel();
+    private GameFrame gameframe;
     private Itemwindow itemwindow;
     private Help helpwindow;
     private boolean open = false;
 
     
     
-    public MainFrame(Game game) {
+    public MainFrame(MainModel model) {
         super("Spiel");
-        this.game = game;
-        statusbar = new Statspanel();
-        menu = new Menu(this);
-        itemwindow= new Itemwindow(game);
-        helpwindow = new Help(this);
-        game.getMain().addObserver(itemwindow);
-        
+        this.model=model;
         this.setResizable(false);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocation(screensize.width / 4, screensize.height / 4);
-        this.setPreferredSize(new Dimension(game.getPainter().getPreferredSize().width,game.getPainter().getPreferredSize().height+statusbar.getPreferredSize().height));
+        this.setPreferredSize(new Dimension(400,300));
         this.setLayout(new BorderLayout(5, 5));
-        gamepanel.setBackground(menu.getBackground());
-        statusbar.setBackground(menu.getBackground());
+        menu = new Menu(this);
         this.add(lpanel,BorderLayout.CENTER);
         lpanel.setBounds(0,0,this.getPreferredSize().width,this.getPreferredSize().height);
-        gamepanel.setBounds(0,0,this.getPreferredSize().width,this.getPreferredSize().height);
-        gamepanel.setLayout(new BorderLayout(5,5));
-        gamepanel.setDoubleBuffered(true);
         menu.setBounds(this.getPreferredSize().width/2-menu.getPreferredSize().width/2,0,menu.getPreferredSize().width,menu.getPreferredSize().height);
-        itemwindow.setBounds(this.getPreferredSize().width/2-itemwindow.getPreferredSize().width/2,0,itemwindow.getPreferredSize().width,itemwindow.getPreferredSize().height);
-        helpwindow.setBounds(this.getPreferredSize().width/2-helpwindow.getPreferredSize().width/2,0,helpwindow.getPreferredSize().width,helpwindow.getPreferredSize().height);
-        
-        itemwindow.setOpaque(true);
         menu.setOpaque(true);
+        lpanel.add(menu, new Integer(10));
+        helpwindow = new Help(this);
+        helpwindow.setBounds(this.getPreferredSize().width / 2 - helpwindow.getPreferredSize().width / 2, 0, helpwindow.getPreferredSize().width, helpwindow.getPreferredSize().height);
         helpwindow.setOpaque(true);
         helpwindow.setVisible(false);
-        lpanel.add(gamepanel,new Integer(0));
-        lpanel.add(menu, new Integer(10));
-        lpanel.add(itemwindow, new Integer(10));
-        lpanel.add(helpwindow,new Integer(11));
+        lpanel.add(helpwindow, new Integer(11));
         pack();
         menu.requestFocus();
         setVisible(true);
     }
 
-    public Observer getStatusbar() {
-        return (Observer) statusbar;
-    }
+
 
     public void openGameFrame() {
-        Fieldpainter fieldPanel = game.getPainter();
-
-
+        gameframe= new GameFrame(model);
         menu.setVisible(false);
-        spielfeld = fieldPanel;
-        game.getMain().addObserver(statusbar);
+        gameframe.setVisible(true);
 
-        gamepanel.addKeyListener(new Keys(game));
-
-        gamepanel.add(spielfeld, BorderLayout.NORTH);
-        gamepanel.add(statusbar, BorderLayout.CENTER);
-        statusbar.setPreferredSize(new Dimension(spielfeld.getPreferredSize().width, statusbar.getPreferredSize().height));
-        game.resumeThread();
-        pack();
-        gamepanel.setVisible(true);
-        gamepanel.requestFocus();
 
     }
 
@@ -103,14 +71,14 @@ public class MainFrame extends JFrame {
             
             menu.getSaveGameButton().setEnabled(true);
             menu.setVisible(true);
-            game.pauseThread();
+            model.pauseGame();
             menu.requestFocus();
             open=true;
             
         } else {
             menu.setVisible(false);
-            gamepanel.requestFocus();
-            game.resumeThread();
+            gameframe.requestFocus();
+            model.resumeGame();
             open=false;
             
             
@@ -123,31 +91,13 @@ public class MainFrame extends JFrame {
 
     }
 
-    public JPanel getGamepanel() {
-        return gamepanel;
+    public GameFrame getGamepanel() {
+        return gameframe;
     }
 
-    public Game getGame() {
-        return game;
-    }
-
-        public void openItemWindow() {
-                if (!open) {
-                        itemwindow.setVisible(true);
-                        game.pauseThread();
-                        itemwindow.focustoItemList();
-                        open = true;
-                } else {
-                        itemwindow.setVisible(false);
-                        game.resumeThread();
-                        gamepanel.requestFocus();
-                        open = false;
-                }
 
 
-
-
-        }
+ 
         public void openHelp() {
                 helpwindow.setVisible(true);
 
@@ -168,9 +118,10 @@ public class MainFrame extends JFrame {
           return menu;
      }
 
-     public Fieldpainter getSpielfeld() {
-          return spielfeld;
-     }
+    public MainModel getModel() {
+        return model;
+    }
+
 
 
 

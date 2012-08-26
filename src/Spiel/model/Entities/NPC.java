@@ -184,29 +184,31 @@ public abstract class NPC implements Movable,Serializable{
      * @param w Breite des Bereichs wo NPC platziert werden soll
      * @param h Höhe des Bereichs wo NPC platziert werden soll
      */
-    public void setstartposition(int x1, int y1,int w, int h) {
-          for (int i = 0; i < main.getBreite()*main.getHoehe(); i++) {
-          int x=  Spiel.model.Utilites.randomizer(x1,(x1+w-1));
-          int y=  Spiel.model.Utilites.randomizer(y1,(y1+h-1));
-                try {
+    public void setstartposition(int x1, int y1, int w, int h) {
+        boolean fertig = false;
+        while (!fertig) {
+            int xx = Spiel.model.Utilites.randomizer(x1, (x1 + w - 1));
+            int yy = Spiel.model.Utilites.randomizer(y1, (y1 + h - 1));
+            try {
                     //TODO OutofBound Exception Fixens
-                if (main.map[y][x]== ' ' && notinFrontofDoor() && noOtheNpcs()) {
-                      this.x=x*FIELDSIZE;
-                      this.y=y*FIELDSIZE;
-                      this.targetx=this.x;
-                      this.targety=this.y;
-                      
-                      main.map[y][x]=this.icon;
-                      break;
-                } else {
-                }
-            } catch (ArrayIndexOutOfBoundsException ex) {
+                    if (main.map[yy][xx] == ' ' && notinFrontofDoor() && noOtheNpcs()) {
+                        this.x = xx * FIELDSIZE;
+                        this.y = yy * FIELDSIZE;
+                        this.targetx = this.x;
+                        this.targety = this.y;
+
+                        main.map[yy][xx] = this.icon;
+                        fertig = true;
+                    }
+
+                }  catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
 
-
+         
     }
+
     
     
     private boolean noOtheNpcs(){
@@ -250,9 +252,7 @@ public abstract class NPC implements Movable,Serializable{
                 foundroom=r;
                 return foundroom;
             }
-             else {
-                
-            }
+
             
         }
      return foundroom;   
@@ -365,7 +365,9 @@ public boolean notinFrontofDoor(){
                 System.out.println("Ausser Reichweite");
             } else {
 
+                if (d.getHp()<1) {
 
+                } else {
                 if (schaden <= 0) {
                     System.out.println(d.getName()+" hat den Angriff abgeblockt");
                 } else {
@@ -377,7 +379,7 @@ public boolean notinFrontofDoor(){
                 }
             }
            
-       
+            }
        
        
        

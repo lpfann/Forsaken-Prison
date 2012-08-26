@@ -142,7 +142,7 @@ MainFrame mainfr;
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
         
         mainfr.openGameFrame();
-        mainfr.getGame().resumeThread();
+        mainfr.getModel().resumeGame();
 
 
     }//GEN-LAST:event_newGameButtonActionPerformed
@@ -156,13 +156,13 @@ MainFrame mainfr;
     }//GEN-LAST:event_newGameButtonKeyPressed
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-     mainfr.getGame().load();
+     //mainfr.getGame().load();
         mainfr.openGameFrame();
         
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void saveGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGameButtonActionPerformed
-      mainfr.getGame().save();
+      //mainfr.getGame().save();
       mainfr.getGamepanel().requestFocus();
     }//GEN-LAST:event_saveGameButtonActionPerformed
 

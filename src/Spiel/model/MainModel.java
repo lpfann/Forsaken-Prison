@@ -21,41 +21,39 @@ import java.util.logging.Logger;
  *
  * @author Lukas
  */
-public class MainModel implements Subject, Serializable, Cloneable {
+public class MainModel implements Subject, Serializable, Cloneable, Runnable {
 
-
-        int breite = 100;
-        int hoehe = 100;
-
-
-        long delta = 0;
-        long last = 0;
-        long fps = 0;
-        private final int FIELDSIZE=40;
-        /**
-         * Hauptspielfeld
-         */
-        public char[][] map;
-        private boolean[][] fogofwar= new boolean[hoehe][breite];
-
-        /**
-         * Spieler
-         */
-        public Player player;
-        private DungeonGenerator dungeon;
-
-        /**
-         * Liste aller erstellten Objekte im Spiel
-         */
-        public LinkedList<NPC> entities= new LinkedList<>();
-        public LinkedList<Effect> effects= new LinkedList<>();
-
-        private Stack<Room> visitedRooms= new Stack<>();
-        private static ArrayList<Observer> observer = new ArrayList<>();
-        private boolean gameover;
-        private boolean fogofwarrepaint=true;
-        private boolean dungeonrepaint=true;
-        private int currentDungeonLevel=1;
+    int breite = 100;
+    int hoehe = 100;
+    long delta = 0;
+    long last = 0;
+    long fps = 0;
+    private final int FIELDSIZE = 40;
+    /**
+     * Hauptspielfeld
+     */
+    public char[][] map;
+    private boolean[][] fogofwar = new boolean[hoehe][breite];
+    /**
+     * Spieler
+     */
+    public Player player;
+    private DungeonGenerator dungeon;
+    /**
+     * Liste aller erstellten Objekte im Spiel
+     */
+    public LinkedList<NPC> entities = new LinkedList<>();
+    public LinkedList<Effect> effects = new LinkedList<>();
+    private Stack<Room> visitedRooms = new Stack<>();
+    private static ArrayList<Observer> observer = new ArrayList<>();
+    private boolean gameover;
+    private boolean fogofwarrepaint = true;
+    private boolean dungeonrepaint = true;
+    private int currentDungeonLevel = 1;
+    private Thread thread;
+    boolean wait = true;
+    final int MAXFPS = 60;
+    final int GAME_TICK = 1000 / MAXFPS;
 
 
 
@@ -98,6 +96,9 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 
                 //Fog of War
                 initFogofwar();
+                setLast(System.nanoTime());
+                thread = new Thread(this);
+                thread.start();
                 
 
 
@@ -105,7 +106,51 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 
         }
 
-        public void changeLevel(){
+        
+//Gameloop
+ @Override
+    public void run() {
+
+
+
+        while  (true) {
+
+
+
+                computeDelta();
+                doSpiellogik();
+                moveNPCs();
+
+
+                synchronized (this) {
+
+                    while (wait) {
+                    try {
+                        wait();
+                    } catch (Exception e) {
+                    }
+
+
+            }
+
+
+                if (getDelta() / 1e6 < GAME_TICK) {
+
+                    try {
+                        Thread.sleep((long) (GAME_TICK - (getDelta() / 1e6)));
+
+                    } catch (InterruptedException e) {
+                    }
+                } else {
+                    Thread.yield();
+                }
+            }
+    }
+    }
+
+
+
+ public void changeLevel(){
            currentDungeonLevel++;
            dungeon = new DungeonGenerator(breite, hoehe, this);
            map = dungeon.getMap();
@@ -142,7 +187,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
                                 fogofwar[i][j]=false;
                         }
                 }
-                this.fogofwarrepaint=false;
+                
                 
                 
         }
@@ -151,7 +196,8 @@ public class MainModel implements Subject, Serializable, Cloneable {
          * Ausführung der Spiellogik für alle Objekte und Funktionen. Bei jedem Durchlauf eines Threads
          */
         public void doSpiellogik() {
-               if (!gameover) {
+            //TODO Entities liste auf raumliste umstellen!!!!!!!!!!!!
+            if (!gameover) {
 
              
              
@@ -199,6 +245,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 
                 //Benachrichtigen aller Observer
                 notifyAllObservers();
+                this.fogofwarrepaint=false;
                }
         }
 
@@ -293,6 +340,17 @@ public class MainModel implements Subject, Serializable, Cloneable {
                 }
 
         }
+            public synchronized void pauseGame(){
+            wait=true;
+
+
+    }
+    public synchronized void resumeGame(){
+            wait=false;
+            notifyAll();
+
+
+    }
 
         /**
          * 

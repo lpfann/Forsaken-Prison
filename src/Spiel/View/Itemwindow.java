@@ -4,7 +4,7 @@
  */
 package Spiel.View;
 
-import Spiel.Controller.Game;
+import Main.Main;
 import Spiel.model.Entities.Items.Armor.Armor;
 import Spiel.model.Entities.Items.Armor.Armor.Armortype;
 import Spiel.model.Entities.Items.Item;
@@ -31,17 +31,17 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
 
         private Player player;
         private int i;
-        private final Game game;
         private Item[] items=new Item[1000];
         private BufferedImage allitems;
         private BufferedImage bg;
         public static ImageIcon[][] singleitem= new ImageIcon[8][8];
         public static ImageIcon[][] armoritem= new ImageIcon[5][20];
+        private GameFrame gameframe;
         /**
          * Creates new form Itemwindow
          */
-        public Itemwindow(Game game) {
-                this.game=game;
+        public Itemwindow(GameFrame gameframe) {
+                this.gameframe=gameframe;
                 initComponents();
                 try {
                      bg= ImageIO.read(getClass().getResource("/resources/inventorybg.png"));
@@ -98,7 +98,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
 
         headLineLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        itemList = new ItemList(game);
+        itemList = new ItemList(gameframe);
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         smallhealthPotionLabel = new javax.swing.JLabel();
@@ -325,14 +325,13 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(damageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(defenceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(damageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(defenceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

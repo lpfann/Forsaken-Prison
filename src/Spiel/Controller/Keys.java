@@ -1,10 +1,10 @@
-package Spiel.View;
+package Spiel.Controller;
 
 /*
  * To change this template, choose Tools | Templates and open the template in
  * the editor.
  */
-import Spiel.Controller.Game;
+import Main.Main;
 import Spiel.View.MainFrame;
 import Spiel.model.MainModel.Richtung;
 import java.awt.event.KeyEvent;
@@ -16,9 +16,9 @@ import java.awt.event.KeyListener;
  */
 public class Keys implements KeyListener {
 
-    private Game game;
+    private Controller game;
 
-    public Keys(Game game) {
+    public Keys(Controller game) {
         this.game = game;
     }
 
@@ -60,7 +60,7 @@ public class Keys implements KeyListener {
                                 game.getMainFr().openGameMenu();
                                 break;
                         case KeyEvent.VK_I:
-                                game.getMainFr().openItemWindow();
+                                game.getMainFr().getGamepanel().openItemWindow();
                                 break;
                         case KeyEvent.VK_R:
                                 game.getMain().player.usePotion();

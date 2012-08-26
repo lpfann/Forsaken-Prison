@@ -4,7 +4,7 @@
  */
 package Spiel.model;
 
-import Spiel.Controller.Game;
+import Main.Main;
 import Spiel.model.Entities.*;
 import java.util.ListIterator;
 import java.util.Random;

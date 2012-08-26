@@ -33,7 +33,6 @@ public class Fieldpainter extends JPanel implements Observer {
     private static Image fowoffscreenImage;
     private static Image compoImage;
     private static Graphics offscreenGraph;
-    private boolean fogofwarrepaint = true;
     private int FIELDSIZE;
     private int viewportx;
     private int viewporty;
@@ -58,7 +57,8 @@ public class Fieldpainter extends JPanel implements Observer {
     int maximumy;
     int minimumx;
     int minimumy;
-    private boolean dungeonreapaint=true;
+    private boolean dungeonrepaint=true;
+    private boolean fogofwarrepaint = true;
 
 
      public Fieldpainter(int breite, int hoehe, Player p,int fieldsize) {
@@ -69,7 +69,6 @@ public class Fieldpainter extends JPanel implements Observer {
           this.FIELDSIZE=fieldsize;
           player = p;
           updateViewportCoord(p);
-          dungeonoffscreenImage = createImage((2+VIEWPORTWIDTH)*FIELDSIZE, (2+VIEWPORTHEIGHT)*FIELDSIZE);
           try {
                groundimage = ImageIO.read(getClass().getResource("/resources/groundDun.png"));
                wallimage = ImageIO.read(getClass().getResource("/resources/HBlockDun.png"));
@@ -90,9 +89,44 @@ public class Fieldpainter extends JPanel implements Observer {
 
      }
 
+         @Override
+     public void update(transEnum enu, MainModel mm) {
+          if (enu == transEnum.entities) {
+               entities = mm.getEntities();
+               entcopy = (LinkedList<NPC>) entities.clone();
+          } else if (enu == transEnum.fps) {
+               this.fps = (int) mm.getFps();
+               this.delta=mm.getDelta();
+               animationdelay+=this.delta/1e6;
+               if (animationdelay>100) {
+                    animationdelay=0;
+                    animcounter++;
+               }
+          } else if (enu == transEnum.playerstats) {
+               this.player = mm.getPlayer();
+               //this.dungeonreapaint=mm.isDungeonrepaint();
+               updateViewportCoord(player);
+               this.gameover=mm.isGameover();
+
+          } else if (enu == transEnum.fogofwar) {
+               this.fogofwar = mm.getFogofwar();
+               this.fogofwarrepaint = mm.isFogofwarrepaint();
+
+          }
+          repaint();
+     }
+
+     @Override
+     public void update(char[][] map) {
+          this.map = map;
+          repaint();
+
+     }
+
      @Override
      protected void paintComponent(Graphics g) {
           super.paintComponent(g);
+
           g.setColor(Color.red);
           
           compoImage = createImage(VIEWPORTWIDTH * FIELDSIZE, VIEWPORTHEIGHT * FIELDSIZE);
@@ -132,51 +166,54 @@ public class Fieldpainter extends JPanel implements Observer {
      private void paintDungeon(Graphics g) {
 
 
-
-             dungeonoffscreenImage = createImage((2+VIEWPORTWIDTH)*FIELDSIZE, (2+VIEWPORTHEIGHT)*FIELDSIZE);
+         if (dungeonrepaint) {
+             dungeonrepaint=false;
+             dungeonoffscreenImage = createImage(map[0].length*FIELDSIZE, map.length*FIELDSIZE);
               offscreenGraph = dungeonoffscreenImage.getGraphics();
 
-              for (int y = minimumy; y < maximumy; y++) {
-                   for (int x = minimumx; x < maximumx; x++) {
+              for (int y = 0; y < map.length; y++) {
+                   for (int x = 0; x < map[0].length; x++) {
                         if (map[y][x] == '*') {
-                             offscreenGraph.drawImage(wallimage, (x - viewportx/FIELDSIZE)*FIELDSIZE,
-                                     (y - viewporty/FIELDSIZE)*FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                             offscreenGraph.drawImage(wallimage, x*FIELDSIZE,
+                                     y*FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
                         } else {
-                             offscreenGraph.drawImage(groundimage, (x - viewportx/FIELDSIZE)*FIELDSIZE,
-                                     (y - viewporty/FIELDSIZE)*FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
+                             offscreenGraph.drawImage(groundimage, x*FIELDSIZE,
+                                     y*FIELDSIZE, FIELDSIZE, FIELDSIZE, this);
                         }
                    }
               }
 
+         }
+
          
           //Zeichen des Dungeon Bildes
           //wichtig ist hierbei die Verschiebung um %FIELDSIZE. dadurch wird der Hintergrund weich verschoben genau wie sich der Spieler bewegt.
-          compoImage.getGraphics().drawImage(dungeonoffscreenImage, -viewportx%FIELDSIZE, -viewporty%FIELDSIZE, this);
+          compoImage.getGraphics().drawImage(dungeonoffscreenImage, -viewportx, -viewporty, this);
 
      }
 
 
           private void paintFogofWar(Graphics g) {
-          //if (fogofwarrepaint) {
+          if (fogofwarrepaint) {
           fogofwarrepaint = false;
           //erstellt ein transparentes Bild
-          transpImg = new BufferedImage((VIEWPORTWIDTH+2) * FIELDSIZE, (VIEWPORTHEIGHT+2) * FIELDSIZE, BufferedImage.TRANSLUCENT);
+          transpImg = new BufferedImage(map[0].length*FIELDSIZE, map.length*FIELDSIZE, BufferedImage.TRANSLUCENT);
           fowoffscreenImage = transpImg;
           Graphics2D q = transpImg.createGraphics();
 
-                    for (int y = minimumy; y < maximumy; y++) {
-               for (int x = minimumx; x < maximumx; x++) {
+              for (int y = 0; y < map.length; y++) {
+                   for (int x = 0; x < map[0].length; x++) {
                     if (fogofwar[y][x] == true) {
                          q.setColor(Color.black);
-                         q.fillRect((x - viewportx/FIELDSIZE) * FIELDSIZE, (y - viewporty/FIELDSIZE) * FIELDSIZE, FIELDSIZE, FIELDSIZE);
+                         q.fillRect(x * FIELDSIZE, y * FIELDSIZE, FIELDSIZE, FIELDSIZE);
                     } else {
                     }
                }
           }
           q.dispose();
-          //}
+          }
 
-          compoImage.getGraphics().drawImage(fowoffscreenImage, -viewportx%FIELDSIZE, -viewporty%FIELDSIZE, this);
+          compoImage.getGraphics().drawImage(fowoffscreenImage, -viewportx, -viewporty, this);
 
 
 
@@ -342,38 +379,7 @@ public class Fieldpainter extends JPanel implements Observer {
      }
 
 
-     @Override
-     public void update(transEnum enu, MainModel mm) {
-          if (enu == transEnum.entities) {
-               entities = mm.getEntities();
-               entcopy = (LinkedList<NPC>) entities.clone();
-          } else if (enu == transEnum.fps) {
-               this.fps = (int) mm.getFps();
-               this.delta=mm.getDelta();
-               animationdelay+=this.delta/1e6;
-               if (animationdelay>100) {
-                    animationdelay=0;
-                    animcounter++;
-               }
-          } else if (enu == transEnum.playerstats) {
-               this.player = mm.getPlayer();
-               this.dungeonreapaint=mm.isDungeonrepaint();
-               updateViewportCoord(player);
-               this.gameover=mm.isGameover();
-
-          } else if (enu == transEnum.fogofwar) {
-               this.fogofwar = mm.getFogofwar();
-               this.fogofwarrepaint = true;
-          }
-          repaint();
-     }
-
-     @Override
-     public void update(char[][] map) {
-          this.map = map;
-          repaint();
-
-     }
+ 
 
     private void updateViewportCoord(Player p) {
 
