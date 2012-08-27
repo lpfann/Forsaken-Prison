@@ -8,6 +8,7 @@ import Spiel.Controller.Controller;
 import Spiel.model.MainModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -30,6 +31,7 @@ public class MainFrame extends JFrame {
     private Help helpwindow;
     private boolean open = false;
     private Controller controller;
+    private Sounds sounds;
 
 
 
@@ -37,12 +39,16 @@ public class MainFrame extends JFrame {
         super("Spiel");
         this.model = model;
 
+
         spielfeld = new Fieldpainter(model.getBreite(), model.getHoehe(), model.getPlayer(), model.getFIELDSIZE());
         statusbar = new Statspanel();
+
         menu = new Menu(this);
         itemwindow= new Itemwindow(this);
         helpwindow = new Help(this);
+        sounds= new Sounds();
         model.addObserver(itemwindow);
+        model.addObserver(sounds);
 
         this.setResizable(false);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);

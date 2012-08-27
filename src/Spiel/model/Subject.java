@@ -5,6 +5,7 @@
 package Spiel.model;
 
 import Spiel.View.Observer;
+import Spiel.View.Observer.sounds;
 import Spiel.View.Observer.transEnum;
 
 
@@ -17,4 +18,6 @@ public interface Subject {
     void notifyObserver(transEnum enu);
 
     void notifyObserver(char[][] map);
+    
+    void notifyObserver(sounds s);
 }

@@ -46,6 +46,7 @@ public class Fieldpainter extends JPanel implements Observer {
     private boolean[][] fogofwar;
     private LinkedList<NPC> entities = new LinkedList();
     private LinkedList<NPC> entcopy = new LinkedList();
+    private LinkedList<Effect> effects = new LinkedList();
     public final int BLOCKSIZE = 50;
     public static final int RESOLUTIONX = 800;
     public static final int RESOLUTIONY = 600;
@@ -95,6 +96,7 @@ public class Fieldpainter extends JPanel implements Observer {
           if (enu == transEnum.entities) {
                entities = mm.getEntities();
                entcopy = (LinkedList<NPC>) entities.clone();
+               effects= (LinkedList<Effect>)mm.getEffects().clone();
           } else if (enu == transEnum.fps) {
                this.fps = (int) mm.getFps();
                this.delta=mm.getDelta();
@@ -133,14 +135,20 @@ public class Fieldpainter extends JPanel implements Observer {
           g.setColor(Color.red);
           compoImage = createImage(VIEWPORTWIDTH * FIELDSIZE, VIEWPORTHEIGHT * FIELDSIZE);
 
-            Graphics cg = compoImage.getGraphics();
+            Graphics2D cg = (Graphics2D) compoImage.getGraphics();
+            cg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            cg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            cg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
 
           //Dungeon Zeichnen
-          paintDungeon(g);
+          paintDungeon(cg);
           //Entities Zeichnen
           paintallEntities(cg);
           //Fog of War zeichnen
-          paintFogofWar(g);
+          paintFogofWar(cg);
+
+          paintEffects(cg);
 
           cg.dispose();
 
@@ -167,7 +175,34 @@ public class Fieldpainter extends JPanel implements Observer {
          }
      }
 
-     private void paintDungeon(Graphics g) {
+   private void paintEffects(Graphics2D cg) {
+      if (!effects.isEmpty()) {
+         for (Effect e : effects) {
+            if (e.getX() < viewportx - FIELDSIZE || e.getX() > viewportx + FIELDSIZE + VIEWPORTWIDTH * FIELDSIZE
+                    || e.getY() < viewporty - FIELDSIZE || e.getY() > viewporty + FIELDSIZE + VIEWPORTHEIGHT * FIELDSIZE) {
+            } else {
+               int x1 = e.getX() - viewportx;
+               int y1 = e.getY() - viewporty;
+
+               cg.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+               cg.setColor(((Effect) e).getColor());
+
+               cg.drawString(((Effect) e).getContent(), x1 + FIELDSIZE / 2, y1);
+
+
+
+            }
+
+
+
+         }
+
+      }
+
+
+
+      }
+     private void paintDungeon(Graphics2D g) {
 
 
          if (MainModel.dungeonrepaint) {
@@ -197,7 +232,7 @@ public class Fieldpainter extends JPanel implements Observer {
      }
 
 
-          private void paintFogofWar(Graphics g) {
+          private void paintFogofWar(Graphics2D g) {
           if (MainModel.fogofwarrepaint ) {
           MainModel.fogofwarrepaint = false;
           //erstellt ein transparentes Bild
@@ -225,7 +260,7 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
      //Zeichnen der Entities
-     private void paintallEntities(Graphics cg) {
+     private void paintallEntities(Graphics2D cg) {
 
           if (!entities.isEmpty()) {
 
@@ -349,14 +384,7 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
                                         break;
-                                   case "Effect":
-                                             cg.setFont(new Font("Monospaced", Font.BOLD, 20));
-                                             cg.setColor(((Effect)e).getColor());
 
-                                             cg.drawString(((Effect) e).getContent(), x1+FIELDSIZE/2, y1);
-
-
-                                        break;
 
 
 
@@ -489,7 +517,7 @@ public class Fieldpainter extends JPanel implements Observer {
      public void setFogofwarrepaint(boolean fogofwarrepaint) {
           this.fogofwarrepaint = fogofwarrepaint;
      }
-     private void animateWalking(Graphics cg,Richtung dir,int x1,int y1){
+     private void animateWalking(Graphics2D cg,Richtung dir,int x1,int y1){
 
                if (animcounter>=8) {
                     animcounter=0;
@@ -516,7 +544,7 @@ public class Fieldpainter extends JPanel implements Observer {
 
           }
      }
-     private void animateAttack(Graphics cg,Richtung dir,int x1,int y1){
+     private void animateAttack(Graphics2D cg,Richtung dir,int x1,int y1){
 
                if (animcounter>=5) {
                     animcounter=0;
@@ -565,6 +593,10 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
      }
+
+   @Override
+   public void update(sounds s, long delta) {
+   }
 
 
 }

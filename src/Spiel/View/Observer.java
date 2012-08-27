@@ -12,10 +12,15 @@ public interface Observer {
     enum transEnum{
         entities,playerstats,fps,fogofwar
     }
+    enum sounds{
+       enemyhit,playerhit,enemydead,dooropen,levelup,chestopen,walkingon,walkingoff
+
+    }
 
     void update (transEnum enu,MainModel mm);
 
 
     void update (char[][] map);
+    void update (sounds s, long delta);
 
 }

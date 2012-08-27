@@ -27,7 +27,7 @@ public final class Player extends NPC {
     public Player(MainModel main) {
         super(0, 0, 'P', main);
         setName("Held");
-        setBasedamage(20);
+        setBasedamage(3);
         setDmg(0);
         updateDmg();
         setMaxhp(100);
@@ -52,8 +52,10 @@ public final class Player extends NPC {
 
         if (up || down || left || right) {
             setWalking(true);
+            getMain().notifyObserver(Observer.sounds.walkingon );
         } else {
             setWalking(false);
+            getMain().notifyObserver(Observer.sounds.walkingoff );
         }
 
         if (up) {
@@ -133,6 +135,7 @@ public final class Player extends NPC {
     }
     public void increaseLevel(){
         setLvl(getLvl()+1);
+        getMain().notifyObserver(Observer.sounds.levelup );
          setBasedamage(getBasedamage()+1);
         updateDmg();
         setMaxhp(maxhp+10);
@@ -265,7 +268,11 @@ public final class Player extends NPC {
 
 
         }
-
+@Override
+public void setHit(boolean t){
+   super.setHit(t);
+   getMain().notifyObserver(Observer.sounds.playerhit);
+}
      public int getBasedamage() {
           return basedamage;
      }

@@ -4,6 +4,7 @@
  */
 package Spiel.model.Entities;
 
+import Spiel.View.Observer;
 import Spiel.model.Entities.Items.Heiltrank;
 import Spiel.model.Entities.Items.Item;
 import Spiel.model.Entities.Items.Trank;
@@ -103,6 +104,7 @@ private MainModel main;
             if (isOpened()) {
 
             } else {
+               getMain().notifyObserver(Observer.sounds.chestopen);
             setOpened(true);
             LinkedList<Item> inhalt = getItems();
                     for (Item item : inhalt) {
@@ -123,7 +125,7 @@ private MainModel main;
                                p.getInventar().add(item);
 
                             }
-                             getMain().effects.add(new Effect(getX()/getFIELDSIZE(), getY()/getFIELDSIZE()+inhalt.indexOf(item)*10, getMain(),item.getName()+" gefunden", Color.GREEN,3000));
+                             getMain().effects.add(new Effect(getX()/getFIELDSIZE(), getY()/getFIELDSIZE()+inhalt.indexOf(item), getMain(),item.getName()+" gefunden", Color.GREEN,3000));
                              System.out.println("Du hast: " + item.getName() + " gefunden");
 
                     }

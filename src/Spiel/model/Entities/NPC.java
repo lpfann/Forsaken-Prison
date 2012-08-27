@@ -4,6 +4,7 @@
  */
 package Spiel.model.Entities;
 
+import Spiel.View.Observer;
 import Spiel.model.MainModel;
 import Spiel.model.MainModel.Richtung;
 import Spiel.model.Room;
@@ -410,6 +411,7 @@ public abstract class NPC implements Movable, Serializable {
                main.effects.add(new Effect(d.getX() / FIELDSIZE, d.getY() / FIELDSIZE, main, String.valueOf(schaden), Color.RED,300));
                d.setHit(true);
 
+
             }
          }
 
@@ -480,6 +482,7 @@ public abstract class NPC implements Movable, Serializable {
       this.hp = hp;
       if (hp < 1) {
          this.removethis = true;
+         getMain().notifyObserver(Observer.sounds.enemydead);
          this.room.getEntities().remove(this);
       }
    }

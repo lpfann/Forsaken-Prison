@@ -4,6 +4,7 @@
  */
 package Spiel.model.Entities;
 
+import Spiel.View.Observer;
 import Spiel.model.MainModel;
 import Spiel.model.Utilites;
 /**
@@ -108,5 +109,9 @@ public abstract class Monster extends NPC {
     public void setXp(int xp) {
         this.xp = xp;
     }
-
+@Override
+public void setHit(boolean t){
+   super.setHit(t);
+   getMain().notifyObserver(Observer.sounds.enemyhit);
+}
 }

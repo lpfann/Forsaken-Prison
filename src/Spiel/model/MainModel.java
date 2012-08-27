@@ -5,6 +5,7 @@ package Spiel.model;
  * the editor.
  */
 import Spiel.View.Observer;
+import Spiel.View.Observer.sounds;
 import Spiel.View.Observer.transEnum;
 import Spiel.model.Entities.Effect;
 import Spiel.model.Entities.NPC;
@@ -154,43 +155,47 @@ public class MainModel implements Subject, Serializable, Cloneable {
         /**
          * Ausführung der Spiellogik für alle Objekte und Funktionen. Bei jedem Durchlauf eines Threads
          */
-        public void doSpiellogik() {
-            if (!gameover) {
-                LinkedList<NPC> toberemoved = new LinkedList<>(); //Liste der Objekte die gelöscht werden
-                for (NPC e : entities) { //Durchlauf aller Objekte und ausführung der Spiellogik
-                        e.doLogic(delta);
-                        //Markieren zum Löschen
-                        if (e.isRemovethis()) {
-                                toberemoved.add(e);
-                        }
-                }
-                entities.addAll(effects);
-                effects.clear();
-                for (NPC e : toberemoved) {  //Löschen der "toten" Objekte
-                        //GAME OVER
-                        if (e instanceof Player) {
-                                this.gameover = true;
-                        }
+   public void doSpiellogik() {
+      if (!gameover) {
+         LinkedList<NPC> toberemoved = new LinkedList<>(); //Liste der Objekte die gelöscht werden
+         for (NPC e : entities) { //Durchlauf aller Objekte und ausführung der Spiellogik
+            e.doLogic(delta);
+            //Markieren zum Löschen
+            if (e.isRemovethis()) {
+               toberemoved.add(e);
+            }
+         }
+         for (Effect e : effects) {
+            e.doLogic(delta);
+            //Markieren zum Löschen
+            if (e.isRemovethis()) {
+               toberemoved.add(e);
+            }
+         }
+         for (NPC e : toberemoved) {  //Löschen der "toten" Objekte
+            //GAME OVER
+            if (e instanceof Player) {
+               this.gameover = true;
+            }
 
-                       entities.remove(e);
-                       if (e instanceof Effect) {
-                       } else {
+            if (e instanceof Effect) {
+               effects.remove(e);
+            } else {
+               entities.remove(e);
+               map[e.getY() / FIELDSIZE][e.getX() / FIELDSIZE] = ' ';
+            }
+         }
+         //Neuzeichnen des Fog-of-War wenn Flag auf True gesetzt ist
+         if (fogofwarrepaint) {
+            updateFogofWar();
 
-                           map[e.getY() / FIELDSIZE][e.getX() / FIELDSIZE] = ' ';
-                       }
-                   }
-
-                //Neuzeichnen des Fog-of-War wenn Flag auf True gesetzt ist
-                if (fogofwarrepaint) {
-                            updateFogofWar();
-
-                }
-                //Benachrichtigen aller Observer
-                if (!observer.isEmpty()) {
-                    notifyAllObservers();
-                }
-               }
-        }
+         }
+         //Benachrichtigen aller Observer
+         if (!observer.isEmpty()) {
+            notifyAllObservers();
+         }
+      }
+   }
 
         /**
          *       Bewegen der Objekte auf der Karte
@@ -202,6 +207,9 @@ public class MainModel implements Subject, Serializable, Cloneable {
                         e.move();
 
                 }
+                for (Effect ef : effects) {
+                   ef.move();
+           }
 
         }
 
@@ -263,6 +271,14 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
                 for (Observer ob : observer) {
                         ob.update(enu, maincopy);
+                }
+        }
+        @Override
+        public void notifyObserver(sounds s) {
+
+
+                for (Observer ob : observer) {
+                        ob.update(s, delta);
                 }
         }
 
@@ -471,5 +487,9 @@ public class MainModel implements Subject, Serializable, Cloneable {
     public void setWait(boolean wait) {
         this.wait = wait;
     }
+
+   public LinkedList<Effect> getEffects() {
+      return effects;
+   }
 
 }

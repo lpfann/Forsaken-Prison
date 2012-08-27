@@ -4,6 +4,7 @@
  */
 package Spiel.model.Entities;
 
+import Spiel.View.Observer;
 import Spiel.model.MainModel;
 import Spiel.model.Room;
 
@@ -35,6 +36,7 @@ public class Door extends NPC implements Usable {
             this.open=true;
             setIcon(' ');
         }
+        getMain().notifyObserver(Observer.sounds.dooropen);
     }
          @Override
      public void move() {

@@ -440,4 +440,8 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
                 return weaponLabel;
         }
 
+   @Override
+   public void update(sounds s, long delta) {
+   }
+
 }

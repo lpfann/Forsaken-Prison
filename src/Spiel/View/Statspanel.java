@@ -175,5 +175,9 @@ private void redirectSystemStreams() {
 
     }
 
+   @Override
+   public void update(sounds s, long delta) {
+   }
+
 
 }
