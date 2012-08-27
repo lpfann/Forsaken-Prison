@@ -118,6 +118,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
       headLineLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
       headLineLabel.setForeground(new java.awt.Color(255, 255, 255));
       headLineLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+      headLineLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/backpack.png"))); // NOI18N
       headLineLabel.setText("Ausrüstung");
       headLineLabel.setFocusable(false);
 
@@ -319,8 +320,8 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
       layout.setVerticalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(layout.createSequentialGroup()
-            .addComponent(headLineLabel)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(headLineLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(18, 18, 18)
             .addComponent(jLabel2)
             .addGap(18, 18, 18)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)

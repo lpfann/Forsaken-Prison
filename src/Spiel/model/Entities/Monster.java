@@ -18,6 +18,8 @@ public abstract class Monster extends NPC {
     private double walkdelay=0;
     private double statmultiplier=0.2;
     private int xp;
+    private int monsterlvl;
+    private double spawnrate;
 
     public Monster(int x, int y, int hp, int dmg, String name, char icon, MainModel main) {
         super(x, y, icon, main);
@@ -114,4 +116,21 @@ public void setHit(boolean t){
    super.setHit(t);
    getMain().notifyObserver(Observer.sounds.enemyhit);
 }
+
+   public int getMonsterlvl() {
+      return monsterlvl;
+   }
+
+   public void setMonsterlvl(int monsterlvl) {
+      this.monsterlvl = monsterlvl;
+   }
+
+   public double getSpawnrate() {
+      return spawnrate;
+   }
+
+   public void setSpawnrate(double spawnrate) {
+      this.spawnrate = spawnrate;
+   }
+
 }
