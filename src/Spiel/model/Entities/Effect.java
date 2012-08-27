@@ -5,6 +5,7 @@
 package Spiel.model.Entities;
 
 import Spiel.model.MainModel;
+import java.awt.Color;
 
 /**
  *
@@ -15,10 +16,16 @@ public class Effect extends NPC {
 
     private String content;
     private double deletetimer;
-    public Effect(int x, int y, MainModel main,String cont){
+    private Color color;
+    private double lifetime;
+    private int maxy=20;
+    private int ytimer;
+    public Effect(int x, int y, MainModel main,String cont,Color c,double lifetime){
         super(x, y, ' ', main);
         this.content=cont;
-        
+        this.color=c;
+        this.lifetime=lifetime;
+
     }
 
     public String getContent() {
@@ -33,11 +40,18 @@ public class Effect extends NPC {
     @Override
     public void doLogic(long delay){
         deletetimer+=delay/1e6;
-        setY(getY()-1);
-        if (deletetimer>300) {
+        if (ytimer<maxy) {
+           setY(getY()-1);
+           ytimer++;
+       }
+        if (deletetimer>lifetime) {
             this.setRemovethis(true);
         }
-        
+
     }
-    
+
+   public Color getColor() {
+      return color;
+   }
+
 }

@@ -69,6 +69,7 @@ public class Fieldpainter extends JPanel implements Observer {
           this.FIELDSIZE=fieldsize;
           player = p;
           updateViewportCoord(p);
+
           try {
                groundimage = ImageIO.read(getClass().getResource("/resources/groundDun.png"));
                wallimage = ImageIO.read(getClass().getResource("/resources/HBlockDun.png"));
@@ -130,8 +131,8 @@ public class Fieldpainter extends JPanel implements Observer {
           if (map!=null) {
 
           g.setColor(Color.red);
-
           compoImage = createImage(VIEWPORTWIDTH * FIELDSIZE, VIEWPORTHEIGHT * FIELDSIZE);
+
             Graphics cg = compoImage.getGraphics();
 
           //Dungeon Zeichnen
@@ -350,7 +351,8 @@ public class Fieldpainter extends JPanel implements Observer {
                                         break;
                                    case "Effect":
                                              cg.setFont(new Font("Monospaced", Font.BOLD, 20));
-                                             cg.setColor(Color.RED);
+                                             cg.setColor(((Effect)e).getColor());
+
                                              cg.drawString(((Effect) e).getContent(), x1+FIELDSIZE/2, y1);
 
 

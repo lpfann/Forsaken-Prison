@@ -9,6 +9,7 @@ import Spiel.model.Entities.Items.Item;
 import Spiel.model.Entities.Items.Trank;
 import Spiel.model.MainModel;
 import Spiel.model.Utilites;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -30,12 +31,12 @@ private MainModel main;
             this.main=main;
             this.items=generatecontent();
             this.opened=false;
-            
 
-            
-            
+
+
+
      }
-      
+
 //Zufällige Erstellung von Inhalt für die Chest
 
       private LinkedList generatecontent() {
@@ -47,12 +48,12 @@ private MainModel main;
                 maxitems=1;
            } else if (randmax >=80 && randmax < 98) {
                 maxitems=2;
-                
+
            } else if (randmax >=98 && randmax <=100) {
                 maxitems=3;
-                
+
            }
-            
+
             //Würfeln vom seltensten bis zum häufigsten Item bis maximale Anzahl erreicht ist
            while (loot.size() < maxitems) {
                 for (int i = 0; i < allitems.size(); i++) {
@@ -66,16 +67,16 @@ private MainModel main;
                               break;
 
                          }
-                        
+
                     }
 
                 }
-            
-                
+
+
            }
 
-            
-         return loot;  
+
+         return loot;
       }
 
     public LinkedList getItems() {
@@ -86,7 +87,7 @@ private MainModel main;
         this.items = items;
     }
 
-    
+
 
     public void setOpened(boolean opened) {
         this.opened = opened;
@@ -122,6 +123,7 @@ private MainModel main;
                                p.getInventar().add(item);
 
                             }
+                             getMain().effects.add(new Effect(getX()/getFIELDSIZE(), getY()/getFIELDSIZE()+inhalt.indexOf(item)*10, getMain(),item.getName()+" gefunden", Color.GREEN,3000));
                              System.out.println("Du hast: " + item.getName() + " gefunden");
 
                     }
@@ -129,6 +131,6 @@ private MainModel main;
             }
 
     }
-    
-        
+
+
 }

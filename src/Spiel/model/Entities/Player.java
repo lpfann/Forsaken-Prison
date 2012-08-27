@@ -6,6 +6,7 @@ import Spiel.model.MainModel;
 import java.util.LinkedList;
 import Spiel.model.Entities.Items.Armor.Armor;
 import Spiel.model.Entities.Items.Armor.Armor.Armortype;
+import java.awt.Color;
 
 public final class Player extends NPC {
 
@@ -26,7 +27,7 @@ public final class Player extends NPC {
     public Player(MainModel main) {
         super(0, 0, 'P', main);
         setName("Held");
-        setBasedamage(3);
+        setBasedamage(20);
         setDmg(0);
         updateDmg();
         setMaxhp(100);
@@ -89,7 +90,7 @@ public final class Player extends NPC {
 
                 if (monster.getHp() <= 0) {
                     setXp(getXp() + monster.getXp());
-                    getMain().effects.add(new Effect(getX()/getFIELDSIZE(), getY()/getFIELDSIZE(), getMain(), "+"+monster.getXp()+" XP"));
+                    getMain().effects.add(new Effect(getX()/getFIELDSIZE(), getY()/getFIELDSIZE(), getMain(), "+"+monster.getXp()+" XP", Color.YELLOW,1000));
                     }
                 setDelay(0);
             }
@@ -135,6 +136,7 @@ public final class Player extends NPC {
          setBasedamage(getBasedamage()+1);
         updateDmg();
         setMaxhp(maxhp+10);
+        getMain().effects.add(new Effect(getX()/getFIELDSIZE(), getY()/getFIELDSIZE(), getMain(),"LEVEL UP!", Color.CYAN,4000));
          System.out.println("Du bist ein Level aufgestiegen! Dein Schaden und deine max. Lebenspunkte haben sich erhöht!");
 
 
@@ -211,7 +213,7 @@ public final class Player extends NPC {
 
         public void setWeapon(Waffe weapon) {
                 this.weapon = weapon;
-                setDmg(weapon.getDamage());
+                updateDmg();
         }
 
         public void useItem(Item selected) {

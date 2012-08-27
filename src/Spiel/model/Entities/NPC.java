@@ -7,6 +7,7 @@ package Spiel.model.Entities;
 import Spiel.model.MainModel;
 import Spiel.model.MainModel.Richtung;
 import Spiel.model.Room;
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -405,8 +406,8 @@ public abstract class NPC implements Movable, Serializable {
                System.out.println(d.getName() + " hat den Angriff abgeblockt");
             } else {
                d.setHp(d.getHp() - schaden);
-               System.out.println(a.getName() + " hat dem " + d.getName() + " " + schaden + " Schaden zugefügt");
-               main.effects.add(new Effect(d.getX() / FIELDSIZE, d.getY() / FIELDSIZE, main, String.valueOf(schaden)));
+               //System.out.println(a.getName() + " hat dem " + d.getName() + " " + schaden + " Schaden zugefügt");
+               main.effects.add(new Effect(d.getX() / FIELDSIZE, d.getY() / FIELDSIZE, main, String.valueOf(schaden), Color.RED,300));
                d.setHit(true);
 
             }

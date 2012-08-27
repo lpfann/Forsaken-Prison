@@ -96,11 +96,21 @@ public class ChestFactory {
 
         for (Room room : rooms) {
             int size = room.getBreite() * room.getHoehe();
-            int max = Utilites.randomizer(1, 3);
+           int max = 0;
+           int randmax = Utilites.randomizer(1, 100);
+           if (randmax < 80) {
+              max = 1;
+           } else if (randmax >= 80 && randmax < 98) {
+              max = 2;
+
+           } else if (randmax >= 98 && randmax <= 100) {
+              max = 3;
+
+           }
 
             for (int i = 0; i <= max; i++) {
                 //  Chance das Chest gespawnt wird.
-                if (Spiel.model.Utilites.randomizer(1, 10) < 3) {
+                if (Spiel.model.Utilites.randomizer(1, 10) < 5) {
 
                     Chest chest = new Chest(0, 0, 'C', main,items);
 

@@ -5,69 +5,68 @@
 package Spiel.model.Entities;
 
 import Spiel.model.MainModel;
+import Spiel.model.Utilites;
 /**
  *
  * @author lpfannschmidt
  */
 public abstract class Monster extends NPC {
 
-    
-    private int abstand=0;
-    private int counter1=0;
-    private int counter2=0;
+
+    private double attackdelay=0;
+    private double walkdelay=0;
     private double statmultiplier=0.2;
     private int xp;
-    
+
     public Monster(int x, int y, int hp, int dmg, String name, char icon, MainModel main) {
         super(x, y, icon, main);
         setHp((int)(hp+(hp*main.getCurrentDungeonLevel()*statmultiplier)));
         setDmg((int)(dmg+(dmg*main.getCurrentDungeonLevel()*statmultiplier)));
         setName(name);
-        
+
 
     }
 
 
-    
+
         @Override
     public void doLogic(long delta) {
             super.doLogic(delta);
-            
-          
-            
-        counter1++;
-        if (Spiel.model.Utilites.inthesameRoom(this, getMain().getPlayer())) {
-            if (counter1 >=50) {
-                Player pl = getMain().getPlayer();
-                    if (Spiel.model.Utilites.distance(this, pl)==1 && objectinFront() instanceof Player) {
-                            setWalking(false);
-                            attack(objectinFront());
-                    } else
-                                if (Spiel.model.Utilites.distance(this, pl) < 6) {
+            attackdelay+=getDelay()/1e3;
+            walkdelay+=getDelay()/1e3;
 
-                                if (pl.getX() < this.getX()) {
-                                        setOrientierung(MainModel.Richtung.LEFT);
-                                        setWalking(true);
-                                } else if (pl.getX() > this.getX()) {
-                                        setOrientierung(MainModel.Richtung.RIGHT);
-                                        setWalking(true);
-                                } else {}
-                                
-                                if (pl.getY() < this.getY()) {
-                                        setWalking(true);
-                                        setOrientierung(MainModel.Richtung.UP);
-                                } else if (pl.getY() > this.getY()) {
-                                        setWalking(true);
-                                        setOrientierung(MainModel.Richtung.DOWN);
-                                } else {
-                                }
 
-                                }
-                                counter1=0;
-                }
+           if (Spiel.model.Utilites.inthesameRoom(this, getMain().getPlayer())) {
+                 Player pl = getMain().getPlayer();
 
-        } else {
-        
+                 if (attackdelay > 2500 &&  Spiel.model.Utilites.distance(this, pl) == 1 && objectinFront() instanceof Player) {
+                    setWalking(false);
+                    attack(objectinFront());
+                    attackdelay=0;
+                 } else {
+                 double rand= (double)Utilites.randomizer(70, 100)/100;
+                 if (walkdelay*rand>900 && Spiel.model.Utilites.distance(this, pl) < 6) {
+
+                    if (pl.getX() < this.getX()) {
+                       setOrientierung(MainModel.Richtung.LEFT);
+                       setWalking(true);
+                    } else if (pl.getX() > this.getX()) {
+                       setOrientierung(MainModel.Richtung.RIGHT);
+                       setWalking(true);
+
+                       if (pl.getY() < this.getY()) {
+                          setOrientierung(MainModel.Richtung.UP);
+                          setWalking(true);
+                       } else if (pl.getY() > this.getY()) {
+                          setOrientierung(MainModel.Richtung.DOWN);
+                          setWalking(true);
+
+                       }
+                    }
+                    walkdelay=0;
+                 }
+                 }
+
 //        if (counter1>=100) {
 //            int rand2 = Spiel.model.Utilites.randomizer(0, 3);
 //            switch (rand2) {
@@ -90,10 +89,10 @@ public abstract class Monster extends NPC {
 
 
     }
-        
-        
 
-        
+
+
+
 }
         @Override
      public void move() {
@@ -109,5 +108,5 @@ public abstract class Monster extends NPC {
     public void setXp(int xp) {
         this.xp = xp;
     }
-      
+
 }
