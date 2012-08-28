@@ -11,6 +11,8 @@ import Spiel.model.Entities.monsterpack.Skelett;
 import Spiel.model.Entities.monsterpack.Troll;
 import Spiel.model.MainModel;
 import Spiel.model.Room;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -20,10 +22,11 @@ import java.util.LinkedList;
 public class MonsterFactory {
       private MainModel main;
       private Monster monster;
-      private LinkedList<Monster> monsterlist;
+      private ArrayList<Class> monsterlist=new ArrayList<>();
 
       public MonsterFactory(MainModel main) {
            this.main=main;
+
 
 
 
@@ -33,31 +36,29 @@ public class MonsterFactory {
             LinkedList monsters= new LinkedList<>();
             for (Room room : rooms) {
                   int size = room.getBreite()*room.getHoehe();
-                  int anzahl= (int)(size*0.04);
+                  int anzahl= (int)(Math.ceil(size*0.01*main.getCurrentDungeonLevel()));
 
-                  while (monsters.size()< anzahl) {
+                  for (int i = 0; i < anzahl;) {
                       double random=(double) Spiel.model.Utilites.randomizer(1, 100)/100;
-                      System.err.println(random);
-                      for (Monster e : monsterlist) {
-                         if (e.getSpawnrate()*main.getCurrentDungeonLevel() <= random) {
-                            monster = e;
-                            monster.setstartposition(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2);
-                         }
+                      monster=null;
+                      if (random < EvilMonk.spawnrate) {
+                        monster=  new EvilMonk(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
+                       } else if (random < Knight.spawnrate) {
+                           monster= new Knight(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
+                       } else if (random < Ork.spawnrate) {
+                           monster= new Ork(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
+                       } else if (random < Skelett.spawnrate) {
+                           monster= new Skelett(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
+                       } else if (random < Troll.spawnrate) {
+                           monster= new Troll(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
+                       }
+                      if (monster!=null) {
+                       room.getEntities().add(monster);
+                       monster.setRoom(room);
+                       monsters.add(monster);
+                       i++;
+
                      }
-
-
-
-//                          if (random>=0 && random <=8) {
-//                                    monster= new Troll(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
-//                          } else if (random >8 && random<10) {
-//                                    monster= new Ork(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
-//
-//                          } else if (random ==10) {
-//                                    monster= new Knight(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
-//                      }
-                    room.getEntities().add(monster);
-                    monster.setRoom(room);
-                    monsters.add(monster);
 
                   }
 

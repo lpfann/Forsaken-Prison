@@ -12,6 +12,7 @@ import Spiel.model.MainModel;
  * @author Lukas
  */
 public class EvilMonk extends Monster {
+   public static double spawnrate=0.05;
 
 
    public EvilMonk(int x1, int y1, int w, int h, MainModel main) {
@@ -19,7 +20,6 @@ public class EvilMonk extends Monster {
       this.setstartposition(x1, y1, w, h);
       setXp(30);
       setMonsterlvl(4);
-      setSpawnrate(0.05);
    }
 }
 

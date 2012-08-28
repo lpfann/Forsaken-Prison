@@ -6,8 +6,10 @@
 import Main.Main;
 import Spiel.model.DungeonGenerator;
 import Spiel.model.Entities.Door;
-import java.util.LinkedList;
 import org.junit.*;
+
+import java.util.LinkedList;
+
 import static org.junit.Assert.*;
 
 /**

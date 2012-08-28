@@ -19,7 +19,7 @@ public abstract class Monster extends NPC {
     private double statmultiplier=0.2;
     private int xp;
     private int monsterlvl;
-    private double spawnrate;
+
 
     public Monster(int x, int y, int hp, int dmg, String name, char icon, MainModel main) {
         super(x, y, icon, main);
@@ -39,36 +39,38 @@ public abstract class Monster extends NPC {
             walkdelay+=getDelay()/1e3;
 
 
-           if (Spiel.model.Utilites.inthesameRoom(this, getMain().getPlayer())) {
+//           if (Spiel.model.Utilites.inthesameRoom(this, getMain().getPlayer())) {
                  Player pl = getMain().getPlayer();
 
                  if (attackdelay > 2500 &&  Spiel.model.Utilites.distance(this, pl) == 1 && objectinFront() instanceof Player) {
                     setWalking(false);
+                    setAttacking(true);
                     attack(objectinFront());
                     attackdelay=0;
                  } else {
-                 double rand= (double)Utilites.randomizer(70, 100)/100;
-                 if (walkdelay*rand>900 && Spiel.model.Utilites.distance(this, pl) < 6) {
+                 double rand= (double)Utilites.randomizer(85, 100)/100;
+                 if (walkdelay*rand>700 && Spiel.model.Utilites.distance(this, pl) < 6) {
 
-                    if (pl.getX() < this.getX()) {
-                       setOrientierung(MainModel.Richtung.LEFT);
-                       setWalking(true);
-                    } else if (pl.getX() > this.getX()) {
-                       setOrientierung(MainModel.Richtung.RIGHT);
-                       setWalking(true);
-
-                       if (pl.getY() < this.getY()) {
-                          setOrientierung(MainModel.Richtung.UP);
+                       int random = Utilites.randomizer(1, 2);
+                       if (pl.getX() < this.getX() && random == 1) {
+                          setOrientierung(MainModel.Richtung.LEFT);
                           setWalking(true);
-                       } else if (pl.getY() > this.getY()) {
-                          setOrientierung(MainModel.Richtung.DOWN);
+                       } else if (pl.getX() > this.getX()) {
+                          setOrientierung(MainModel.Richtung.RIGHT);
                           setWalking(true);
-
                        }
+                          if (pl.getY() < this.getY() && random == 2) {
+                             setOrientierung(MainModel.Richtung.UP);
+                             setWalking(true);
+                          } else if (pl.getY() > this.getY()) {
+                             setOrientierung(MainModel.Richtung.DOWN);
+                             setWalking(true);
+
+                          }
+
+                       walkdelay = 0;
                     }
-                    walkdelay=0;
-                 }
-                 }
+//                 }
 
 //        if (counter1>=100) {
 //            int rand2 = Spiel.model.Utilites.randomizer(0, 3);
@@ -104,6 +106,8 @@ public abstract class Monster extends NPC {
 
      }
 
+
+
     public int getXp() {
         return xp;
     }
@@ -125,12 +129,6 @@ public void setHit(boolean t){
       this.monsterlvl = monsterlvl;
    }
 
-   public double getSpawnrate() {
-      return spawnrate;
-   }
 
-   public void setSpawnrate(double spawnrate) {
-      this.spawnrate = spawnrate;
-   }
 
 }

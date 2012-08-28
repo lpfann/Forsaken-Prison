@@ -15,6 +15,7 @@ import Spiel.model.MainModel;
 
 
 public class Ork extends Monster{
+   public static double spawnrate=0.1;
 
 
     public Ork(int x1,int y1,int w, int h,MainModel main){
@@ -22,7 +23,6 @@ public class Ork extends Monster{
         this.setstartposition(x1, y1, w, h);
         setXp(15);
         setMonsterlvl(3);
-        setSpawnrate(0.1);
     }
 
 

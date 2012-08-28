@@ -4,22 +4,20 @@
  */
 package Spiel.View;
 
-import Spiel.model.Entities.NPC;
 import Spiel.model.MainModel;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.Vector;
-import sun.org.mozilla.javascript.internal.ast.SwitchCase;
 
 /**
  *
  * @author Lukas
  */
 public class Sounds implements Observer {
-private Hashtable<String, AudioClip> sounds;
+private HashMap<String, AudioClip> sounds;
 private Vector<AudioClip> loopingsounds;
 private int counter=1;
 private long delay;
@@ -28,7 +26,7 @@ private long delay;
 
 
 public Sounds(){
-   sounds = new Hashtable<String, AudioClip>();
+   sounds = new HashMap<String, AudioClip>();
    loopingsounds = new Vector<AudioClip>();
 
    loadSound("enemyhit", "/resources/sounds/enemyhit.wav");
@@ -45,7 +43,7 @@ public Sounds(){
 
 
 public void loadSound(String name, String path){
-   if (sounds.contains(name)) {
+   if (sounds.containsKey(name)) {
    return;
    }
 
@@ -54,7 +52,7 @@ public void loadSound(String name, String path){
 
 }
 public void loadWalkingSound(String name, String path){
-   if (sounds.contains(name)) {
+   if (sounds.containsKey(name)) {
    return;
    }
    for (int i = 1; i <= 4; i++) {

@@ -16,10 +16,9 @@ public final class Player extends NPC {
     private Waffe weapon;
     private LinkedList<Item> inventar = new LinkedList<>();
     boolean walking;
-    boolean attacking;
+
     private final int[] levelups= { 100,200,300,400,500,650,850,1100,1300,1500,1800,2100};
     private boolean up,down,left,right;
-    private int attackanim=0;
 
 
 
@@ -44,11 +43,7 @@ public final class Player extends NPC {
     @Override
     public void doLogic(long delta) {
         super.doLogic(delta);
-        attackanim += delta / 1e6;
-        if (attackanim > 500) {
-            setAttacking(false);
-            attackanim=0;
-        }
+
 
         if (up || down || left || right) {
             setWalking(true);
@@ -147,13 +142,6 @@ public final class Player extends NPC {
 
     }
 
-    public boolean isAttacking() {
-        return attacking;
-    }
-
-    public void setAttacking(boolean attacking) {
-        this.attacking = attacking;
-    }
 
     public int getMana() {
         return mana;

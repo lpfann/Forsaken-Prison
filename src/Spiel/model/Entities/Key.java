@@ -4,6 +4,7 @@
  */
 package Spiel.model.Entities;
 
+import Spiel.View.Observer;
 import Spiel.model.MainModel;
 
 /**
@@ -21,5 +22,7 @@ public class Key extends NPC implements Usable{
         this.setRemovethis(true);
         getMain().getDungeon().getStairs().setLocked(false);
         System.out.println("Du hast den Schlüssel zur Treppe gefunden!");
+        getMain().notifyObserver(Observer.sounds.chestopen );
+
     }
 }

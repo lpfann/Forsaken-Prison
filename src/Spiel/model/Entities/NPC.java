@@ -44,6 +44,8 @@ public abstract class NPC implements Movable, Serializable {
    private String filename;
    private Richtung orientierung = Richtung.DOWN;
    private boolean removethis = false;
+   private boolean attacking=false;
+   private int attackanim=0;
 
    /**
     * Konstrukor für abstrake Klasse NPC, wird von den Subklassen aufgerufen
@@ -142,7 +144,11 @@ public abstract class NPC implements Movable, Serializable {
    @Override
    public void doLogic(long delta) {
       delay += main.getDelta() / 1e6;
-
+        attackanim += delta / 1e6;
+        if (attackanim > 500) {
+            setAttacking(false);
+            attackanim=0;
+        }
       if (hit) {
          if (internalCounter > 9) {
             internalCounter = 0;
@@ -432,8 +438,11 @@ public abstract class NPC implements Movable, Serializable {
          }
       }
 
+      if (findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]) instanceof Monster ||
+              findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]) instanceof Player) {
+         return findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]);
+      }
       return null;
-
    }
 
    //
@@ -636,4 +645,13 @@ public abstract class NPC implements Movable, Serializable {
    public int getFIELDSIZE() {
       return FIELDSIZE;
    }
+
+   public boolean isAttacking() {
+      return attacking;
+   }
+
+   public void setAttacking(boolean attacking) {
+      this.attacking = attacking;
+   }
+
 }

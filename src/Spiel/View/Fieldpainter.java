@@ -17,7 +17,11 @@ import javax.swing.JPanel;
 public class Fieldpainter extends JPanel implements Observer {
 
     private static BufferedImage[][] playerimage;
-    private static BufferedImage[][] attackingplayerimage;
+    private static BufferedImage[][] playerattackingimage;
+    private static BufferedImage[][] skelettimage;
+    private static BufferedImage[][] skelettattackingimage;
+    private static BufferedImage[][] monkimage;
+    private static BufferedImage[][] monkattackingimage;
     private static BufferedImage[] orkimage;
     private static BufferedImage[] trollimage;
     private static BufferedImage[] chestimage;
@@ -76,7 +80,11 @@ public class Fieldpainter extends JPanel implements Observer {
                wallimage = ImageIO.read(getClass().getResource("/resources/HBlockDun.png"));
                keyimage = ImageIO.read(getClass().getResource("/resources/key.png"));
                playerimage= enlargePic(loadPic("/resources/new-player.png", 64, 64),10,15);
-               attackingplayerimage= enlargePic(loadPic("/resources/new-player-attack.png", 64, 64),10,15);
+               playerattackingimage= enlargePic(loadPic("/resources/new-player-attack.png", 64, 64),10,15);
+               skelettimage= enlargePic(loadPic("/resources/skeleton-walking.png", 64, 64),10,15);
+               skelettattackingimage= enlargePic(loadPic("/resources/skeleton-attacking.png", 64, 64),10,15);
+               monkimage= enlargePic(loadPic("/resources/evil-monk-walking.png", 64, 64),10,15);
+               monkattackingimage= enlargePic(loadPic("/resources/evil-monk-attacking.png", 64, 64),10,15);
                orkimage = loadPic("/resources/ork.png", 38);
                trollimage = loadPic("/resources/troll.png", 20);
                doorimage = loadPic("/resources/new-door.png", 24);
@@ -260,156 +268,234 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
      //Zeichnen der Entities
-     private void paintallEntities(Graphics2D cg) {
+   private void paintallEntities(Graphics2D cg) {
 
-          if (!entities.isEmpty()) {
+      if (!entities.isEmpty()) {
 
-               for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
-                    NPC e = it.next();
-                    try {
-                         if (e.getX() < viewportx-FIELDSIZE || e.getX()> viewportx+FIELDSIZE + VIEWPORTWIDTH*FIELDSIZE ||
-                                 e.getY() < viewporty-FIELDSIZE || e.getY()> viewporty+FIELDSIZE + VIEWPORTHEIGHT*FIELDSIZE)
-                         {
-
-                         } else {
-                              int x1 = e.getX() - viewportx;
-                              int y1 = e.getY() - viewporty;
-                              switch (e.getClass().getSimpleName()) {
-                                   case "Player":
-                                        switch (e.getOrientierung()) {
-                                             case DOWN:
-                                                  if (player.isWalking()) {
-                                                      animateWalking(cg,Richtung.DOWN,x1,y1);
-                                                  } else if (player.isAttacking()){
-                                                      animateAttack(cg, Richtung.DOWN, x1, y1);
-                                                  }else {
-                                                  cg.drawImage(playerimage[0][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  }
-                                                  break;
-                                             case LEFT:
-                                                  if (player.isWalking()) {
-                                                      animateWalking(cg,Richtung.LEFT,x1,y1);
-                                                  } else if (player.isAttacking()){
-                                                      animateAttack(cg, Richtung.LEFT, x1, y1);
-                                                  }else {
-                                                  cg.drawImage(playerimage[0][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  }
-                                                  break;
-                                             case UP:
-                                                  if (player.isWalking()) {
-                                                      animateWalking(cg,Richtung.UP,x1,y1);
-                                                  } else if (player.isAttacking()){
-                                                      animateAttack(cg, Richtung.UP, x1, y1);
-                                                  }else {
-                                                  cg.drawImage(playerimage[0][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  }
-                                                  break;
-                                             case RIGHT:
-                                                  if (player.isWalking()) {
-                                                      animateWalking(cg,Richtung.RIGHT,x1,y1);
-                                                  } else if (player.isAttacking()){
-                                                      animateAttack(cg, Richtung.RIGHT, x1, y1);
-                                                  }else {
-                                                  cg.drawImage(playerimage[0][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  }
-                                                  break;
-                                        }
-                                        break;
-                                   case "Door":
-                                        if (((Door) e).getOpen()) {
-                                             cg.drawImage(doorimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
-
-                                        } else {
-                                             cg.drawImage(doorimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
-
-                                        }
-                                        break;
-                                   case "Chest":
-                                        if (((Chest) e).isOpened()) {
-                                             cg.drawImage(chestimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
-
-                                        } else {
-                                             cg.drawImage(chestimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
-
-                                        }
-                                        break;
-                                   case "Ork":
-                                        switch (e.getOrientierung()) {
-                                             case DOWN:
-                                                  cg.drawImage(orkimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  break;
-                                             case LEFT:
-                                                  cg.drawImage(orkimage[3], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  break;
-                                             case UP:
-                                                  cg.drawImage(orkimage[2], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  break;
-                                             case RIGHT:
-                                                  cg.drawImage(orkimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  break;
-                                        }
-                                        break;
-                                   case "Knight":
-                                        switch (e.getOrientierung()) {
-                                             case DOWN:
-                                                  cg.drawImage(knightimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  break;
-                                             case LEFT:
-                                                  cg.drawImage(knightimage[3], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  break;
-                                             case UP:
-                                                  cg.drawImage(knightimage[2], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  break;
-                                             case RIGHT:
-                                                  cg.drawImage(knightimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
-                                                  break;
-                                        }
-                                        break;
-                                   case "Troll":
-                                        if (((Monster) e).isHit()) {
-                                             cg.drawImage(trollimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
-
-                                        } else {
-                                             cg.drawImage(trollimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
-
-                                        }
-                                        break;
-                                   case "Stairs":
-                                             cg.drawImage(stairsimage[0], x1 , y1, FIELDSIZE, FIELDSIZE, this);
-
-
-                                        break;
-                                   case "Key":
-                                             cg.drawImage(keyimage, x1 , y1, FIELDSIZE, FIELDSIZE, this);
-
-
-                                        break;
-
-
-
-
+         for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
+            NPC e = it.next();
+            try {
+               if (e.getX() < viewportx - FIELDSIZE || e.getX() > viewportx + FIELDSIZE + VIEWPORTWIDTH * FIELDSIZE
+                       || e.getY() < viewporty - FIELDSIZE || e.getY() > viewporty + FIELDSIZE + VIEWPORTHEIGHT * FIELDSIZE) {
+               } else {
+                  int x1 = e.getX() - viewportx;
+                  int y1 = e.getY() - viewporty;
+                  switch (e.getClass().getSimpleName()) {
+                     case "Player":
+                        switch (e.getOrientierung()) {
+                           case DOWN:
+                              if (player.isWalking()) {
+                                 animateWalking(cg, Richtung.DOWN, x1, y1, playerimage);
+                              } else if (player.isAttacking()) {
+                                 animateAttack(cg, Richtung.DOWN, x1, y1, playerattackingimage);
+                              } else {
+                                 cg.drawImage(playerimage[0][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
                               }
-
-
-                              if (e.isHit()) {
-
-                                   cg.drawImage(bloodimage[e.getCounter()], x1, y1, FIELDSIZE, FIELDSIZE, this);
-
+                              break;
+                           case LEFT:
+                              if (player.isWalking()) {
+                                 animateWalking(cg, Richtung.LEFT, x1, y1, playerimage);
+                              } else if (player.isAttacking()) {
+                                 animateAttack(cg, Richtung.LEFT, x1, y1, playerattackingimage);
+                              } else {
+                                 cg.drawImage(playerimage[0][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                               }
+                              break;
+                           case UP:
+                              if (player.isWalking()) {
+                                 animateWalking(cg, Richtung.UP, x1, y1, playerimage);
+                              } else if (player.isAttacking()) {
+                                 animateAttack(cg, Richtung.UP, x1, y1, playerattackingimage);
+                              } else {
+                                 cg.drawImage(playerimage[0][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              }
+                              break;
+                           case RIGHT:
+                              if (player.isWalking()) {
+                                 animateWalking(cg, Richtung.RIGHT, x1, y1, playerimage);
+                              } else if (player.isAttacking()) {
+                                 animateAttack(cg, Richtung.RIGHT, x1, y1, playerattackingimage);
+                              } else {
+                                 cg.drawImage(playerimage[0][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              }
+                              break;
+                        }
+                        break;
+                     case "EvilMonk":
+                        switch (e.getOrientierung()) {
+                           case DOWN:
+                              if (e.isWalking()) {
+                                 animateWalking(cg, Richtung.DOWN, x1, y1, monkimage);
+                              } else if (e.isAttacking()) {
+                                 animateAttack(cg, Richtung.DOWN, x1, y1, monkattackingimage);
+                              } else {
+                                 cg.drawImage(monkimage[0][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              }
+                              break;
+                           case LEFT:
+                              if (e.isWalking()) {
+                                 animateWalking(cg, Richtung.LEFT, x1, y1, monkimage);
+                              } else if (e.isAttacking()) {
+                                 animateAttack(cg, Richtung.LEFT, x1, y1, monkattackingimage);
+                              } else {
+                                 cg.drawImage(monkimage[0][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              }
+                              break;
+                           case UP:
+                              if (e.isWalking()) {
+                                 animateWalking(cg, Richtung.UP, x1, y1, monkimage);
+                              } else if (e.isAttacking()) {
+                                 animateAttack(cg, Richtung.UP, x1, y1, monkattackingimage);
+                              } else {
+                                 cg.drawImage(monkimage[0][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              }
+                              break;
+                           case RIGHT:
+                              if (e.isWalking()) {
+                                 animateWalking(cg, Richtung.RIGHT, x1, y1, monkimage);
+                              } else if (e.isAttacking()) {
+                                 animateAttack(cg, Richtung.RIGHT, x1, y1, monkattackingimage);
+                              } else {
+                                 cg.drawImage(monkimage[0][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              }
+                              break;
+                        }
+                        break;
+                     case "Skelett":
+                        switch (e.getOrientierung()) {
+                           case DOWN:
+                              if (e.isWalking()) {
+                                 animateWalking(cg, Richtung.DOWN, x1, y1, skelettimage);
+                              } else if (e.isAttacking()) {
+                                 animateAttack(cg, Richtung.DOWN, x1, y1, skelettattackingimage);
+                              } else {
+                                 cg.drawImage(skelettimage[0][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              }
+                              break;
+                           case LEFT:
+                              if (e.isWalking()) {
+                                 animateWalking(cg, Richtung.LEFT, x1, y1, skelettimage);
+                              } else if (e.isAttacking()) {
+                                 animateAttack(cg, Richtung.LEFT, x1, y1, skelettattackingimage);
+                              } else {
+                                 cg.drawImage(skelettimage[0][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              }
+                              break;
+                           case UP:
+                              if (e.isWalking()) {
+                                 animateWalking(cg, Richtung.UP, x1, y1, skelettimage);
+                              } else if (e.isAttacking()) {
+                                 animateAttack(cg, Richtung.UP, x1, y1, skelettattackingimage);
+                              } else {
+                                 cg.drawImage(skelettimage[0][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              }
+                              break;
+                           case RIGHT:
+                              if (e.isWalking()) {
+                                 animateWalking(cg, Richtung.RIGHT, x1, y1, skelettimage);
+                              } else if (e.isAttacking()) {
+                                 animateAttack(cg, Richtung.RIGHT, x1, y1, skelettattackingimage);
+                              } else {
+                                 cg.drawImage(skelettimage[0][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              }
+                              break;
+                        }
+                        break;
+                     case "Door":
+                        if (((Door) e).getOpen()) {
+                           cg.drawImage(doorimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+
+                        } else {
+                           cg.drawImage(doorimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+
+                        }
+                        break;
+                     case "Chest":
+                        if (((Chest) e).isOpened()) {
+                           cg.drawImage(chestimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+
+                        } else {
+                           cg.drawImage(chestimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+
+                        }
+                        break;
+                     case "Ork":
+                        switch (e.getOrientierung()) {
+                           case DOWN:
+                              cg.drawImage(orkimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              break;
+                           case LEFT:
+                              cg.drawImage(orkimage[3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              break;
+                           case UP:
+                              cg.drawImage(orkimage[2], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              break;
+                           case RIGHT:
+                              cg.drawImage(orkimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              break;
+                        }
+                        break;
+                     case "Knight":
+                        switch (e.getOrientierung()) {
+                           case DOWN:
+                              cg.drawImage(knightimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              break;
+                           case LEFT:
+                              cg.drawImage(knightimage[3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              break;
+                           case UP:
+                              cg.drawImage(knightimage[2], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              break;
+                           case RIGHT:
+                              cg.drawImage(knightimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                              break;
+                        }
+                        break;
+                     case "Troll":
+                        if (((Monster) e).isHit()) {
+                           cg.drawImage(trollimage[1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+
+                        } else {
+                           cg.drawImage(trollimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+
+                        }
+                        break;
+                     case "Stairs":
+                        cg.drawImage(stairsimage[0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+
+
+                        break;
+                     case "Key":
+                        cg.drawImage(keyimage, x1, y1, FIELDSIZE, FIELDSIZE, this);
+
+
+                        break;
 
 
 
-                         }
-                    } catch (Exception ex) {
-                         ex.printStackTrace();
-                    }
+
+                  }
+
+
+                  if (e.isHit()) {
+
+                     cg.drawImage(bloodimage[e.getCounter()], x1, y1, FIELDSIZE, FIELDSIZE, this);
+
+                  }
+
+
+
                }
-          }
+            } catch (Exception ex) {
+               ex.printStackTrace();
+            }
+         }
+      }
 
 
 
 
-     }
+   }
 
 
 
@@ -517,55 +603,55 @@ public class Fieldpainter extends JPanel implements Observer {
      public void setFogofwarrepaint(boolean fogofwarrepaint) {
           this.fogofwarrepaint = fogofwarrepaint;
      }
-     private void animateWalking(Graphics2D cg,Richtung dir,int x1,int y1){
+     private void animateWalking(Graphics2D cg,Richtung dir,int x1,int y1,BufferedImage[][] i){
 
                if (animcounter>=8) {
                     animcounter=0;
                }
           switch (dir) {
                case DOWN:
-                    cg.drawImage(playerimage[animcounter][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(i[animcounter][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
 
                     break;
                case LEFT:
 
-                    cg.drawImage(playerimage[animcounter][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(i[animcounter][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
                case UP:
 
-                    cg.drawImage(playerimage[animcounter][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(i[animcounter][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
                case RIGHT:
 
-                    cg.drawImage(playerimage[animcounter][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(i[animcounter][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
 
 
           }
      }
-     private void animateAttack(Graphics2D cg,Richtung dir,int x1,int y1){
+     private void animateAttack(Graphics2D cg,Richtung dir,int x1,int y1,BufferedImage[][] i){
 
                if (animcounter>=5) {
                     animcounter=0;
                }
           switch (dir) {
                case DOWN:
-                    cg.drawImage(attackingplayerimage[animcounter][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(i[animcounter][2], x1, y1, FIELDSIZE, FIELDSIZE, this);
 
 
                     break;
                case LEFT:
 
-                    cg.drawImage(attackingplayerimage[animcounter][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(i[animcounter][1], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
                case UP:
 
-                    cg.drawImage(attackingplayerimage[animcounter][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(i[animcounter][0], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
                case RIGHT:
 
-                    cg.drawImage(attackingplayerimage[animcounter][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
+                    cg.drawImage(i[animcounter][3], x1, y1, FIELDSIZE, FIELDSIZE, this);
                     break;
 
 
