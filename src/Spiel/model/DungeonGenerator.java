@@ -40,11 +40,11 @@ public class DungeonGenerator implements Serializable {
         }
         public void addEntities(){
                 entitiesinLevel.addAll(doorEntities);
-                entitiesinLevel.addAll(new MonsterFactory(main).populateDungeon(rooms));
-                entitiesinLevel.addAll(new ChestFactory(main).populateDungeon(rooms));
                 generateStairsAndKey();
                 entitiesinLevel.add(stairs);
                 entitiesinLevel.add(key);
+                entitiesinLevel.addAll(new MonsterFactory(main).populateDungeon(rooms));
+                entitiesinLevel.addAll(new ChestFactory(main).populateDungeon(rooms));
 
 
 
@@ -56,7 +56,7 @@ public class DungeonGenerator implements Serializable {
 
                 int rand1 = UtilFunctions.randomizer(0, rooms.size()-1);
                 Room stairRoom =(Room)rooms.get(rand1);
-                stairs = new Stairs(stairRoom.getX1()+1, stairRoom.getY1()+1, stairRoom.getBreite()-2, stairRoom.getHoehe()-2, main);
+                stairs = new Stairs(stairRoom.getX1()+1, stairRoom.getY1()+1, stairRoom.getBreite()-2, stairRoom.getHoehe()-2, main,entitiesinLevel);
 
                 int rand2 = UtilFunctions.randomizer(0, rooms.size()-1);
                 while (rand2==rand1) {

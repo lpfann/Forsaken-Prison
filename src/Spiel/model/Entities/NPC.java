@@ -191,8 +191,6 @@ public abstract class NPC implements Movable, Serializable {
       while (!fertig) {
          int xx = Spiel.model.UtilFunctions.randomizer(x1, (x1 + w - 1));
          int yy = Spiel.model.UtilFunctions.randomizer(y1, (y1 + h - 1));
-         try {
-            //TODO OutofBound Exception Fixens
             if (main.map[yy][xx] == ' ' ) {
                this.x = xx * FIELDSIZE;
                this.y = yy * FIELDSIZE;
@@ -203,9 +201,7 @@ public abstract class NPC implements Movable, Serializable {
                fertig = true;
             }
 
-         } catch (Exception ex) {
-            ex.printStackTrace();
-         }
+
       }
 
 
@@ -215,11 +211,10 @@ public abstract class NPC implements Movable, Serializable {
       boolean fertig = false;
       for (int i = 0; i < x1*y1; i++) {
 
-
+      while (!fertig) {
          int xx = Spiel.model.UtilFunctions.randomizer(x1, (x1 + w - 1));
          int yy = Spiel.model.UtilFunctions.randomizer(y1, (y1 + h - 1));
-         try {
-            //TODO OutofBound Exception Fixens
+
             if (main.map[yy][xx] == ' ' && notinFrontofDoor(xx,yy) && noOtheNpcs(xx*FIELDSIZE,yy*FIELDSIZE,ent)) {
                this.x = xx * FIELDSIZE;
                this.y = yy * FIELDSIZE;
@@ -231,12 +226,7 @@ public abstract class NPC implements Movable, Serializable {
                break;
             }
 
-         } catch (Exception ex) {
-            ex.printStackTrace();
-         }
       }
-      if (!fertig) {
-         System.err.println("Konnte keine Startposition ermitteln");
       }
 
 
@@ -442,6 +432,16 @@ public abstract class NPC implements Movable, Serializable {
       if (findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]) instanceof Monster ||
               findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]) instanceof Player) {
          return findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]);
+
+      } else if(findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]) instanceof Door) {
+         for (NPC n : main.entities) {
+            if (n.getX()/FIELDSIZE == fieldinFront(1)[0]
+                    && n.getY()/FIELDSIZE == fieldinFront(1)[1] && !(n instanceof Door) )
+               {
+                  return n;
+               }
+         }
+
       }
       return null;
    }
@@ -497,7 +497,7 @@ public abstract class NPC implements Movable, Serializable {
 
    private void death(){
 
-         if (UtilFunctions.gambler(50)) {
+         if (UtilFunctions.gambler(30)) {
             main.getTempEntities().add(new Heart(x/FIELDSIZE, y/FIELDSIZE, main));
          }
          this.removethis = true;

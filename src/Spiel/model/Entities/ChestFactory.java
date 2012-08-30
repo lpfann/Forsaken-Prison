@@ -110,7 +110,7 @@ public class ChestFactory {
 
             for (int i = 0; i <= max; i++) {
                 //  Chance das Chest gespawnt wird.
-                if (Spiel.model.UtilFunctions.randomizer(1, 10) < 5) {
+                if (Spiel.model.UtilFunctions.randomizer(1, 10) < 3) {
 
                     Chest chest = new Chest(0, 0, 'C', main,items);
 

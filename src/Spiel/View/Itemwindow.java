@@ -381,23 +381,23 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
 
 
                         if (player.getArmor(Armortype.BodyArmor)!=null) {
-                        this.bodyArmorLabel.setText(player.getArmor(Armortype.BodyArmor).getName());
+                        this.bodyArmorLabel.setText(player.getArmor(Armortype.BodyArmor).showStat()+" Def");
                         this.bodyArmorLabel.setIcon(armoritem[Armortype.BodyArmor.getValue()] [player.getArmor(Armortype.BodyArmor).getItemlvl()]);
                      }
                         if (player.getArmor(Armortype.Shoes)!=null) {
-                        this.shoesLabel.setText(player.getArmor(Armortype.Shoes).getName());
+                        this.shoesLabel.setText(player.getArmor(Armortype.Shoes).showStat()+" Def");
                         this.shoesLabel.setIcon(armoritem[Armortype.Shoes.getValue()] [player.getArmor(Armortype.Shoes).getItemlvl()]);
                      }
                         if (player.getArmor(Armortype.Gloves)!=null) {
-                        this.glovesLabel.setText(player.getArmor(Armortype.Gloves).getName());
+                        this.glovesLabel.setText(player.getArmor(Armortype.Gloves).showStat()+" Def");
                         this.glovesLabel.setIcon(armoritem[Armortype.Gloves.getValue()] [player.getArmor(Armortype.Gloves).getItemlvl()]);
                      }
                         if (player.getArmor(Armortype.Shield)!=null) {
-                        this.shieldLabel.setText(player.getArmor(Armortype.Shield).getName());
+                        this.shieldLabel.setText(player.getArmor(Armortype.Shield).showStat()+" Def");
                         this.shieldLabel.setIcon(armoritem[Armortype.Shield.getValue()] [player.getArmor(Armortype.Shield).getItemlvl()]);
                      }
                         if (player.getArmor(Armortype.Helmet)!=null) {
-                        this.helmetLabel.setText(player.getArmor(Armortype.Helmet).getName());
+                        this.helmetLabel.setText(player.getArmor(Armortype.Helmet).showStat()+" Def");
                         this.helmetLabel.setIcon(armoritem[Armortype.Helmet.getValue()] [player.getArmor(Armortype.Helmet).getItemlvl()]);
                      }
 

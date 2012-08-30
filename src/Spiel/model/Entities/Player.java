@@ -134,6 +134,7 @@ public final class Player extends NPC {
          setBasedamage(getBasedamage()+1);
         updateDmg();
         setMaxhp(maxhp+10);
+        setHp(maxhp);
         getMain().effects.add(new Effect(getX()/getFIELDSIZE(), getY()/getFIELDSIZE(), getMain(),"LEVEL UP!", Color.CYAN,4000));
          System.out.println("Du bist ein Level aufgestiegen! Dein Schaden und deine max. Lebenspunkte haben sich erhöht!");
 

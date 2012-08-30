@@ -35,17 +35,17 @@ public abstract class Monster extends NPC {
         @Override
     public void doLogic(long delta) {
             super.doLogic(delta);
-            attackdelay+=getDelay()/1e3;
-            walkdelay+=getDelay()/1e3;
+            attackdelay+=delta/1e6;
+            walkdelay+=delta/1e6;
 
 
 //           if (Spiel.model.UtilFunctions.inthesameRoom(this, getMain().getPlayer())) {
                  Player pl = getMain().getPlayer();
 
-                 if (attackdelay > 3500 &&  Spiel.model.UtilFunctions.distance(this, pl) == 1 && objectinFront() instanceof Player) {
+                 if (attackdelay > 2500 &&  Spiel.model.UtilFunctions.distance(this, pl) == 1 && enemyInFront() instanceof Player) {
                     setWalking(false);
                     setAttacking(true);
-                    attack(objectinFront());
+                    attack(enemyInFront());
                     attackdelay=0;
                  } else {
                  double rand= (double)UtilFunctions.randomizer(85, 100)/100;

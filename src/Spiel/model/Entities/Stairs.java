@@ -5,6 +5,7 @@
 package Spiel.model.Entities;
 
 import Spiel.model.MainModel;
+import java.util.LinkedList;
 
 /**
  *
@@ -13,9 +14,9 @@ import Spiel.model.MainModel;
 public class Stairs extends NPC implements Usable{
     private boolean locked=true;
 
-    public Stairs(int x1,int y1,int w, int h,MainModel main){
+    public Stairs(int x1,int y1,int w, int h,MainModel main,LinkedList<NPC> list){
      super(0, 0, 'S', main);
-     this.setstartposition(x1, y1, w, h);
+     this.setstartpositionWithNPCcheck(x1, y1, w, h, list);
     }
 
     public boolean isLocked() {
@@ -35,5 +36,5 @@ public class Stairs extends NPC implements Usable{
 
         }
     }
-    
+
 }

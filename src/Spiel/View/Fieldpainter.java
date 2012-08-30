@@ -175,6 +175,7 @@ public class Fieldpainter extends JPanel implements Observer {
           //Hilfe text zeichnen
           g.setColor(Color.white);
           g.drawString("ESC - Menü", 10, 10);
+          g.drawString("i - Inventar", this.getPreferredSize().width-90, 10);
 
           //GAME OVER Text
           if (gameover) {
@@ -218,7 +219,6 @@ public class Fieldpainter extends JPanel implements Observer {
 
          if (MainModel.dungeonrepaint) {
              MainModel.dungeonrepaint=false;
-             System.err.println("repaint");
              dungeonoffscreenImage = createImage(map[0].length*FIELDSIZE, map.length*FIELDSIZE);
               offscreenGraph = dungeonoffscreenImage.getGraphics();
 

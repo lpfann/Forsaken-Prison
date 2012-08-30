@@ -36,7 +36,7 @@ public class Controller implements EventListener,Runnable{
         thread = new Thread(this);
         thread.start();
 
-        
+
 
 
 
@@ -78,8 +78,9 @@ public MainModel getMain() {
             model.addObserver(view.getSpielfeld());
             model.addObserver(view.getStatusbar());
             model.addObserver(view.getItemwindow());
-            
-            
+            model.addObserver(view.getSounds());
+
+
             model.notifyAllObservers();
 
             resumeGame();

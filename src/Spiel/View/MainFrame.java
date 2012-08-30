@@ -207,4 +207,8 @@ public class MainFrame extends JFrame {
 
 }
 
+   public Sounds getSounds() {
+      return sounds;
+   }
+
 }

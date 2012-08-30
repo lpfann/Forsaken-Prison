@@ -42,6 +42,7 @@ private String health;
     public static ImageIcon tome;
     public static ImageIcon dagger;
     public static ImageIcon shield;
+    public static ImageIcon lvlicon;
 
 
 //TODO Statspanel vereinfachen mit for schleife etc...
@@ -51,6 +52,7 @@ private String health;
             tome =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/tome.png")));
             dagger =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/dagger.png")));
             shield =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/shield.png")));
+            lvlicon =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/lvl.png")));
 
 
         } catch (IllegalArgumentException | IOException e) {
@@ -95,6 +97,7 @@ private String health;
     xplabel.setIcon(tome);
     damagelabel.setIcon(dagger);
     defencelabel.setIcon(shield);
+    lvllabel.setIcon(lvlicon);
     stats.add(healthlabel);
     //stats.add(manalabel);
     stats.add(healthlabel);
@@ -156,7 +159,7 @@ private void redirectSystemStreams() {
             playername = "Name: " + String.valueOf(main.getPlayer().getName());
             //mana = "Mana: " + String.valueOf(main.player.getMana());
             xp = "XP: " + String.valueOf(main.getPlayer().getXp());
-            level = "LVL: " + String.valueOf(main.getPlayer().getLvl());
+            level = ": " + String.valueOf(main.getPlayer().getLvl());
             damage = "DMG: " + String.valueOf(main.getPlayer().getDmg());
             defence = "DEF: " + String.valueOf(main.getPlayer().getDefence());
 
