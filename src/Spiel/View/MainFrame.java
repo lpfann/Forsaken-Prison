@@ -32,6 +32,7 @@ public class MainFrame extends JFrame {
     private boolean open = false;
     private Controller controller;
     private Sounds sounds;
+   private Story storywindow;
 
 
 
@@ -47,6 +48,7 @@ public class MainFrame extends JFrame {
         itemwindow= new Itemwindow(this);
         helpwindow = new Help(this);
         sounds= new Sounds();
+        storywindow= new Story(this);
         model.addObserver(itemwindow);
         model.addObserver(sounds);
 
@@ -65,8 +67,10 @@ public class MainFrame extends JFrame {
         menu.setBounds(this.getPreferredSize().width/2-menu.getPreferredSize().width/2,0,menu.getPreferredSize().width,menu.getPreferredSize().height);
         itemwindow.setBounds(this.getPreferredSize().width/2-itemwindow.getPreferredSize().width/2,0,itemwindow.getPreferredSize().width,itemwindow.getPreferredSize().height);
         helpwindow.setBounds(this.getPreferredSize().width/2-helpwindow.getPreferredSize().width/2,0,helpwindow.getPreferredSize().width,helpwindow.getPreferredSize().height);
+        storywindow.setBounds(this.getPreferredSize().width/2-storywindow.getPreferredSize().width/2,0,storywindow.getPreferredSize().width,storywindow.getPreferredSize().height);
 
         itemwindow.setOpaque(true);
+        storywindow.setOpaque(true);
         menu.setOpaque(true);
         helpwindow.setOpaque(true);
         helpwindow.setVisible(false);
@@ -74,6 +78,7 @@ public class MainFrame extends JFrame {
         lpanel.add(menu, new Integer(10));
         lpanel.add(itemwindow, new Integer(10));
         lpanel.add(helpwindow,new Integer(11));
+        lpanel.add(storywindow, new Integer(11));
         pack();
         menu.requestFocus();
         setVisible(true);
@@ -194,7 +199,12 @@ public class MainFrame extends JFrame {
     }
 
 
+    void openStoryMenu(){
+       storywindow.setVisible(true);
 
 
+
+
+}
 
 }
