@@ -89,7 +89,9 @@ public class Controller implements EventListener,Runnable{
              }
           }
             model.setDungeonrepaint(true);
+            MainModel.fogofwarrepaint=true;
             model.setObserver(new ArrayList<Observer>());
+            view.setModel(model);
             model.addObserver(view.getSpielfeld());
             model.addObserver(view.getStatusbar());
             model.addObserver(view.getItemwindow());
