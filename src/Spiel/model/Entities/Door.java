@@ -47,7 +47,7 @@ public class Door extends NPC implements Usable {
     public void use(Player p) {
 
           opencloseDoorSwitch();
-          changeMapforObject(this);
+          changeMapforObject();
           Room r = findRoomLocationatXY(p.fieldinFront(2)[0],p.fieldinFront(2)[1]);
 
           p.getMain().getVisitedRooms().add(r);

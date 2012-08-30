@@ -12,7 +12,6 @@ import Spiel.model.Entities.monsterpack.Troll;
 import Spiel.model.MainModel;
 import Spiel.model.Room;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -24,7 +23,11 @@ public class MonsterFactory {
       private Monster monster;
       private ArrayList<Class> monsterlist=new ArrayList<>();
 
-      public MonsterFactory(MainModel main) {
+      /**
+    *
+    * @param main
+    */
+   public MonsterFactory(MainModel main) {
            this.main=main;
 
 
@@ -32,7 +35,12 @@ public class MonsterFactory {
 
       }
 
-      public LinkedList populateDungeon(LinkedList<Room> rooms) {
+      /**
+    * Füllt den Dungeon mit Gegnern
+    * @param rooms Liste die  befüllt werden sollen
+    * @return Liste von Gegnern
+    */
+   public LinkedList populateDungeon(LinkedList<Room> rooms) {
             LinkedList monsters= new LinkedList<>();
             for (Room room : rooms) {
                   int size = room.getBreite()*room.getHoehe();

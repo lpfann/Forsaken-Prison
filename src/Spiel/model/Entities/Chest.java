@@ -25,7 +25,6 @@ private MainModel main;
 
       public Chest(int x, int y,char icon,MainModel main,List<Item> allitems) {
             super(x,y,icon,main);
-            setFilename("chest.png");
             this.allitems=(ArrayList<Item>) allitems;
             //Nach Seltenheit sortieren
             Collections.sort(allitems);

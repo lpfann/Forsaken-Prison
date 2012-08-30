@@ -19,7 +19,10 @@ public class Main {
 
 
 
-public Main (){
+   /**
+    * Initalisierung der drei verschiedenen Bereiche
+    */
+   public Main (){
 
        MainModel model=new MainModel();
        MainFrame view = new MainFrame(model);
@@ -28,7 +31,11 @@ public Main (){
 }
 
 
-    public static void main(String[] args) {
+    /**
+    *
+    * @param args
+    */
+   public static void main(String[] args) {
         new Main();
     }
 

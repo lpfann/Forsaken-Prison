@@ -30,7 +30,6 @@ public abstract class NPC implements Movable, Serializable {
    private int internalCounter = 0;
    private long delay;
    private long gametick = 0;
-   private int currentimg;
    private int dmg;
    private int hp;
    private int defence;
@@ -42,11 +41,10 @@ public abstract class NPC implements Movable, Serializable {
    private boolean walking;
    private final int FIELDSIZE;
    private boolean hit = false;
-   private String filename;
    private Richtung orientierung = Richtung.DOWN;
    private boolean removethis = false;
-   private boolean attacking=false;
-   private int attackanim=0;
+   private boolean attacking = false;
+   private int attackanim = 0;
 
    /**
     * Konstrukor für abstrake Klasse NPC, wird von den Subklassen aufgerufen
@@ -54,7 +52,7 @@ public abstract class NPC implements Movable, Serializable {
     * @param x X-Koord
     * @param y Y-Koord
     * @param icon Char Icon zur Identifizierung auf Map
-    * @param main MainModel-Methode wird übergeben
+    * @param main MainModel wird übergeben
     */
    public NPC(int x, int y, char icon, MainModel main) {
       this.FIELDSIZE = main.getFIELDSIZE();
@@ -66,6 +64,9 @@ public abstract class NPC implements Movable, Serializable {
       this.main = main;
    }
 
+   /**
+    * Bewegung des Objekts auf dem Spielfeld
+    */
    @Override
    public void move() {
 
@@ -142,14 +143,19 @@ public abstract class NPC implements Movable, Serializable {
 
    }
 
+   /**
+    * Ausführung der Spiellogik
+    *
+    * @param delta Zeit seit dem letzten GameLoop-Durchlauf
+    */
    @Override
    public void doLogic(long delta) {
       delay += main.getDelta() / 1e6;
-        attackanim += delta / 1e6;
-        if (attackanim > 500) {
-            setAttacking(false);
-            attackanim=0;
-        }
+      attackanim += delta / 1e6;
+      if (attackanim > 500) {
+         setAttacking(false);
+         attackanim = 0;
+      }
       if (hit) {
          if (internalCounter > 9) {
             internalCounter = 0;
@@ -173,13 +179,16 @@ public abstract class NPC implements Movable, Serializable {
 
    }
 
-   public void changeMapforObject(NPC e) {
-      main.map[e.getY() / FIELDSIZE][e.getX() / FIELDSIZE] = e.getIcon();
+   /**
+    * Map im Model für das Objekt ändern
+    */
+   public void changeMapforObject() {
+      main.map[getY() / FIELDSIZE][getX() / FIELDSIZE] = getIcon();
 
    }
 
-   //Platzieren einer NPC im Bereich von x bis y
    /**
+    * Platzieren des NPC im Bereich von xy bis xy+breite/hoehe
     *
     * @param x1 Obere Linke Ecke x-Wert
     * @param y1 Obere Linke Ecke y-Wert
@@ -191,15 +200,15 @@ public abstract class NPC implements Movable, Serializable {
       while (!fertig) {
          int xx = Spiel.model.UtilFunctions.randomizer(x1, (x1 + w - 1));
          int yy = Spiel.model.UtilFunctions.randomizer(y1, (y1 + h - 1));
-            if (main.map[yy][xx] == ' ' ) {
-               this.x = xx * FIELDSIZE;
-               this.y = yy * FIELDSIZE;
-               this.targetx = this.x;
-               this.targety = this.y;
+         if (main.map[yy][xx] == ' ') {
+            this.x = xx * FIELDSIZE;
+            this.y = yy * FIELDSIZE;
+            this.targetx = this.x;
+            this.targety = this.y;
 
-               main.map[yy][xx] = this.icon;
-               fertig = true;
-            }
+            main.map[yy][xx] = this.icon;
+            fertig = true;
+         }
 
 
       }
@@ -207,15 +216,25 @@ public abstract class NPC implements Movable, Serializable {
 
    }
 
+   /**
+    * Platzieren des NPC im Bereich von xy bis xy+breite/hoehe , mit Abfrage ob
+    * NPC andere Objekte blockiert
+    *
+    * @param x1 Obere Linke Ecke x-Wert
+    * @param y1 Obere Linke Ecke y-Wert
+    * @param w Breite des Bereichs wo NPC platziert werden soll
+    * @param h Höhe des Bereichs wo NPC platziert werden soll
+    * @param ent Liste von Objekten die nicht blockiert werden sollen
+    */
    public void setstartpositionWithNPCcheck(int x1, int y1, int w, int h, LinkedList<NPC> ent) {
       boolean fertig = false;
-      for (int i = 0; i < x1*y1; i++) {
+      for (int i = 0; i < x1 * y1; i++) {
 
-      while (!fertig) {
-         int xx = Spiel.model.UtilFunctions.randomizer(x1, (x1 + w - 1));
-         int yy = Spiel.model.UtilFunctions.randomizer(y1, (y1 + h - 1));
+         while (!fertig) {
+            int xx = Spiel.model.UtilFunctions.randomizer(x1, (x1 + w - 1));
+            int yy = Spiel.model.UtilFunctions.randomizer(y1, (y1 + h - 1));
 
-            if (main.map[yy][xx] == ' ' && notinFrontofDoor(xx,yy) && noOtheNpcs(xx*FIELDSIZE,yy*FIELDSIZE,ent)) {
+            if (main.map[yy][xx] == ' ' && notinFrontofDoor(xx, yy) && noOtheNpcs(xx * FIELDSIZE, yy * FIELDSIZE, ent)) {
                this.x = xx * FIELDSIZE;
                this.y = yy * FIELDSIZE;
                this.targetx = this.x;
@@ -226,13 +245,21 @@ public abstract class NPC implements Movable, Serializable {
                break;
             }
 
-      }
+         }
       }
 
 
    }
 
-   private boolean noOtheNpcs(int x, int y,LinkedList<NPC> ent) {
+   /**
+    * Prüfen ob neben der Koordinate andere Objekte sind
+    *
+    * @param x Koordinate
+    * @param y Koordinate
+    * @param ent Liste von Objekten
+    * @return Keine anderen Objekte -> True
+    */
+   private boolean noOtheNpcs(int x, int y, LinkedList<NPC> ent) {
 
       if (findEntitieonMap(x / FIELDSIZE - 1, y / FIELDSIZE - 1, ent) == null && findEntitieonMap(x / FIELDSIZE, y / FIELDSIZE - 1, ent) == null && findEntitieonMap(x / FIELDSIZE - 1, y / FIELDSIZE, ent) == null
               && findEntitieonMap(x / FIELDSIZE + 1, y / FIELDSIZE - 1, ent) == null && findEntitieonMap(x / FIELDSIZE + 1, y / FIELDSIZE, ent) == null && findEntitieonMap(x / FIELDSIZE + 1, y / FIELDSIZE + 1, ent) == null
@@ -246,6 +273,11 @@ public abstract class NPC implements Movable, Serializable {
 
    }
 
+   /**
+    * Suche in welchem Raum das Objekt ist
+    *
+    * @return Raum in dem sich Objekt befindet
+    */
    public Room findRoomLocation() {
       LinkedList<Room> rooms = this.main.getDungeon().getRooms();
 
@@ -259,6 +291,13 @@ public abstract class NPC implements Movable, Serializable {
       return room;
    }
 
+   /**
+    * Raum an Koordinate XY
+    *
+    * @param x
+    * @param y
+    * @return Raum
+    */
    public Room findRoomLocationatXY(int x, int y) {
       LinkedList<Room> rooms = this.main.getDungeon().getRooms();
       Room foundroom = null;
@@ -274,6 +313,10 @@ public abstract class NPC implements Movable, Serializable {
       return foundroom;
    }
 
+   /**
+    *
+    * @return Objekt vor dem NPC
+    */
    public NPC objectinFront() {
       switch (getOrientierung()) {
          case RIGHT:
@@ -292,6 +335,12 @@ public abstract class NPC implements Movable, Serializable {
 
    }
 
+   /**
+    *
+    * @param x
+    * @param y
+    * @return NPC NPC an der Stelle XY
+    */
    private NPC findEntitieonMap(int x, int y) {
       if (main.getEntities() != null) {
 
@@ -312,6 +361,13 @@ public abstract class NPC implements Movable, Serializable {
 
    }
 
+   /**
+    *
+    * @param x
+    * @param y
+    * @param ents Eingabeliste
+    * @return Objekt aus der Eingabeliste an der Stelle XY
+    */
    private NPC findEntitieonMap(int x, int y, LinkedList<NPC> ents) {
       if (ents != null) {
 
@@ -332,6 +388,11 @@ public abstract class NPC implements Movable, Serializable {
 
    }
 
+   /**
+    *
+    * @param n Zahl der Felder vor dem NPC
+    * @return Koordinaten vor dem NPC
+    */
    public int[] fieldinFront(int n) {
       int[] coord = new int[2];
       switch (getOrientierung()) {
@@ -360,23 +421,30 @@ public abstract class NPC implements Movable, Serializable {
 
    }
 
-   public boolean notinFrontofDoor(int x,int y) {
-      if (main.map[y-1][x]=='D') {
+   /**
+    * Prüft ob NPC vor Tür steht
+    *
+    * @param x
+    * @param y
+    * @return
+    */
+   public boolean notinFrontofDoor(int x, int y) {
+      if (main.map[y - 1][x] == 'D') {
          return false;
 
       }
 
-      if (main.map[y+1][x]=='D') {
+      if (main.map[y + 1][x] == 'D') {
          return false;
 
       }
 
-      if (main.map[y][x+1]=='D') {
+      if (main.map[y][x + 1] == 'D') {
          return false;
 
       }
 
-      if (main.map[y][x-1]=='D') {
+      if (main.map[y][x - 1] == 'D') {
          return false;
 
       }
@@ -387,6 +455,11 @@ public abstract class NPC implements Movable, Serializable {
 
    }
 
+   /**
+    * Angriffsfunktion
+    *
+    * @param d Das anzugreifende Ziel
+    */
    public void attack(NPC d) {
       NPC a = this;
 
@@ -405,7 +478,7 @@ public abstract class NPC implements Movable, Serializable {
             } else {
                d.setHp(d.getHp() - schaden);
                //System.out.println(a.getName() + " hat dem " + d.getName() + " " + schaden + " Schaden zugefügt");
-               main.effects.add(new Effect(d.getX() / FIELDSIZE, d.getY() / FIELDSIZE, main, String.valueOf(schaden), Color.RED,300));
+               main.effects.add(new Effect(d.getX() / FIELDSIZE, d.getY() / FIELDSIZE, main, String.valueOf(schaden), Color.RED, 300));
                d.setHit(true);
 
 
@@ -420,6 +493,10 @@ public abstract class NPC implements Movable, Serializable {
 
    }
 
+   /**
+    *
+    * @return NPC der vor Objekt steht
+    */
    public NPC enemyInFront() {
 
       for (int i = 0; i < getRoom().getEntities().size(); i++) {
@@ -429,17 +506,16 @@ public abstract class NPC implements Movable, Serializable {
          }
       }
 
-      if (findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]) instanceof Monster ||
-              findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]) instanceof Player) {
+      if (findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]) instanceof Monster
+              || findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]) instanceof Player) {
          return findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]);
 
-      } else if(findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]) instanceof Door) {
+      } else if (findEntitieonMap(fieldinFront(1)[0], fieldinFront(1)[1]) instanceof Door) {
          for (NPC n : main.entities) {
-            if (n.getX()/FIELDSIZE == fieldinFront(1)[0]
-                    && n.getY()/FIELDSIZE == fieldinFront(1)[1] && !(n instanceof Door) )
-               {
-                  return n;
-               }
+            if (n.getX() / FIELDSIZE == fieldinFront(1)[0]
+                    && n.getY() / FIELDSIZE == fieldinFront(1)[1] && !(n instanceof Door)) {
+               return n;
+            }
          }
 
       }
@@ -452,42 +528,66 @@ public abstract class NPC implements Movable, Serializable {
    //
    //
    //Getter und Setter:
-   public String getFilename() {
-      return filename;
-   }
-
-   public void setFilename(String filename) {
-      this.filename = filename;
-   }
-
+   /**
+    *
+    * @return
+    */
    public int getDefence() {
       return defence;
    }
 
+   /**
+    *
+    * @param defence
+    */
    public void setDefence(int defence) {
       this.defence = defence;
    }
 
+   /**
+    *
+    * @return
+    */
    public int getCounter() {
       return animationCounter;
    }
 
+   /**
+    *
+    * @param counter
+    */
    public void setCounter(int counter) {
       this.animationCounter = counter;
    }
 
+   /**
+    *
+    * @return
+    */
    public int getDmg() {
       return dmg;
    }
 
+   /**
+    *
+    * @param dmg
+    */
    public void setDmg(int dmg) {
       this.dmg = dmg;
    }
 
+   /**
+    *
+    * @return
+    */
    public int getHp() {
       return hp;
    }
 
+   /**
+    *
+    * @param hp
+    */
    public void setHp(int hp) {
       this.hp = hp;
       if (hp < 1) {
@@ -495,175 +595,325 @@ public abstract class NPC implements Movable, Serializable {
       }
    }
 
-   private void death(){
+   /**
+    * Todesfunktion markiert NPC zum löschen vor
+    *
+    */
+   private void death() {
+      //Droppen eines Herzens
+      if (UtilFunctions.gambler(30)) {
+         main.getTempEntities().add(new Heart(x / FIELDSIZE, y / FIELDSIZE, main));
+      }
+      //markieren
+      this.removethis = true;
+      //Sound
+      getMain().notifyObserver(Observer.sounds.enemydead);
 
-         if (UtilFunctions.gambler(30)) {
-            main.getTempEntities().add(new Heart(x/FIELDSIZE, y/FIELDSIZE, main));
-         }
-         this.removethis = true;
-         getMain().notifyObserver(Observer.sounds.enemydead);
+      //Aus Raum löschen
+      try {
          this.room.getEntities().remove(this);
-
+      } catch (NullPointerException e) {
+         e.printStackTrace();
+      }
 
 
    }
 
+   /**
+    *
+    * @return
+    */
    public char getIcon() {
       return icon;
    }
 
+   /**
+    *
+    * @param icon
+    */
    public void setIcon(char icon) {
       this.icon = icon;
    }
 
+   /**
+    *
+    * @return
+    */
    public MainModel getMain() {
       return main;
    }
 
+   /**
+    *
+    * @param main
+    */
    public void setMain(MainModel main) {
       this.main = main;
    }
 
+   /**
+    *
+    * @return
+    */
    public String getName() {
       return name;
    }
 
+   /**
+    *
+    * @param name
+    */
    public void setName(String name) {
       this.name = name;
    }
 
+   /**
+    *
+    * @return
+    */
    public Richtung getOrientierung() {
       return orientierung;
    }
 
+   /**
+    *
+    * @param orientierung
+    */
    public void setOrientierung(Richtung orientierung) {
       this.orientierung = orientierung;
 
    }
 
+   /**
+    *
+    * @return
+    */
    public Room getRoom() {
       return room;
    }
 
+   /**
+    *
+    * @param room
+    */
    public void setRoom(Room room) {
       this.room = room;
    }
 
+   /**
+    *
+    * @return
+    */
    public int getX() {
       return x;
    }
 
+   /**
+    *
+    * @param x
+    */
    public void setX(int x) {
       this.x = x;
    }
 
+   /**
+    *
+    * @return
+    */
    public int getY() {
       return y;
    }
 
+   /**
+    *
+    * @param y
+    */
    public void setY(int y) {
       this.y = y;
    }
 
-   public int getCurrentimg() {
-      return currentimg;
-   }
-
-   public void setCurrentimg(int currentimg) {
-      this.currentimg = currentimg;
-   }
-
+   /**
+    *
+    * @return
+    */
    public int getMovex() {
       return movex;
    }
 
+   /**
+    *
+    * @param movex
+    */
    public void setMovex(int movex) {
       this.movex = movex;
    }
 
+   /**
+    *
+    * @return
+    */
    public int getMovey() {
       return movey;
    }
 
+   /**
+    *
+    * @param movey
+    */
    public void setMovey(int movey) {
       this.movey = movey;
    }
 
+   /**
+    *
+    * @return
+    */
    public long getAnimation() {
       return gametick;
    }
 
+   /**
+    *
+    * @param animation
+    */
    public void setAnimation(long animation) {
       this.gametick = animation;
    }
 
+   /**
+    *
+    * @return
+    */
    public long getDelay() {
       return delay;
    }
 
+   /**
+    *
+    * @param delay
+    */
    public void setDelay(long delay) {
       this.delay = delay;
    }
 
+   /**
+    *
+    * @return
+    */
    public boolean isHit() {
       return hit;
    }
 
+   /**
+    *
+    * @param hit
+    */
    public void setHit(boolean hit) {
       this.hit = hit;
       this.animationCounter = 0;
    }
 
+   /**
+    *
+    * @return
+    */
    public boolean isRemovethis() {
       return removethis;
    }
 
+   /**
+    *
+    * @param removethis
+    */
    public void setRemovethis(boolean removethis) {
       this.removethis = removethis;
    }
 
+   /**
+    *
+    * @return
+    */
    public boolean isWalking() {
       return walking;
    }
 
+   /**
+    *
+    * @param walking
+    */
    public void setWalking(boolean walking) {
       this.walking = walking;
    }
 
+   /**
+    *
+    * @return
+    */
    public int getTargetx() {
       return targetx;
    }
 
+   /**
+    *
+    * @param targetx
+    */
    public void setTargetx(int targetx) {
       this.targetx = targetx;
    }
 
+   /**
+    *
+    * @return
+    */
    public int getTargety() {
       return targety;
    }
 
+   /**
+    *
+    * @param targety
+    */
    public void setTargety(int targety) {
       this.targety = targety;
    }
 
+   /**
+    *
+    * @return
+    */
    public double getWalkspeed() {
       return walkspeed;
    }
 
+   /**
+    *
+    * @param walkspeed
+    */
    public void setWalkspeed(double walkspeed) {
       this.walkspeed = walkspeed;
    }
 
+   /**
+    *
+    * @return
+    */
    public int getFIELDSIZE() {
       return FIELDSIZE;
    }
 
+   /**
+    *
+    * @return
+    */
    public boolean isAttacking() {
       return attacking;
    }
 
+   /**
+    *
+    * @param attacking
+    */
    public void setAttacking(boolean attacking) {
       this.attacking = attacking;
    }
-
 }

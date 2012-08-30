@@ -2,11 +2,11 @@ package Spiel.model.Entities;
 
 import Spiel.View.Observer;
 import Spiel.model.Entities.Items.*;
-import Spiel.model.MainModel;
-import java.util.LinkedList;
 import Spiel.model.Entities.Items.Armor.Armor;
 import Spiel.model.Entities.Items.Armor.Armor.Armortype;
+import Spiel.model.MainModel;
 import java.awt.Color;
+import java.util.LinkedList;
 
 public final class Player extends NPC {
 

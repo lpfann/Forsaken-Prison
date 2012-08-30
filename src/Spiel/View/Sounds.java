@@ -9,7 +9,6 @@ import java.applet.Applet;
 import java.applet.AudioClip;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Vector;
 
 /**
@@ -26,8 +25,8 @@ private long delay;
 
 
 public Sounds(){
-   sounds = new HashMap<String, AudioClip>();
-   loopingsounds = new Vector<AudioClip>();
+   sounds = new HashMap<>();
+   loopingsounds = new Vector<>();
 
    loadSound("enemyhit", "/resources/sounds/enemyhit.wav");
    loadSound("dooropen", "/resources/sounds/dooropen.wav");

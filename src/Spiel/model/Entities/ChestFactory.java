@@ -28,7 +28,11 @@ public class ChestFactory {
        private MainModel main;
        private ArrayList items= new ArrayList();
 
-      public ChestFactory(MainModel main) {
+      /**
+    * Initalisiert die Truhen Erstellung. Bereitet alle existierenden Items vor.
+    * @param main
+    */
+   public ChestFactory(MainModel main) {
         this.main = main;
             for (Armortype t: Armortype.values()) {
                 for (int i = 0; i < 10; i++) {
@@ -91,7 +95,12 @@ public class ChestFactory {
 
 
 
-    public LinkedList populateDungeon(LinkedList<Room> rooms) {
+    /**
+    * Den Dungeon mit Truhen füllen
+    * @param rooms Liste mit Räumen welche gefüllt werden
+    * @return Liste mit Truhen
+    */
+   public LinkedList populateDungeon(LinkedList<Room> rooms) {
         LinkedList chests = new LinkedList<>();
 
         for (Room room : rooms) {
@@ -124,11 +133,19 @@ public class ChestFactory {
         return chests;
     }
 
-      public LinkedList getChestlist() {
+      /**
+    *
+    * @return
+    */
+   public LinkedList getChestlist() {
             return chestlist;
       }
 
-      public void setChestlist(LinkedList chestlist) {
+      /**
+    *
+    * @param chestlist
+    */
+   public void setChestlist(LinkedList chestlist) {
             this.chestlist = chestlist;
       }
 }

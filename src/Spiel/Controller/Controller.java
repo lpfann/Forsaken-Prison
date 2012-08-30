@@ -28,7 +28,12 @@ public class Controller implements EventListener,Runnable{
     private Keys keylistener;
     private Thread thread;
 
-    public Controller(MainModel model, MainFrame view){
+    /**
+    *
+    * @param model Die Spiellogik
+    * @param view Die Ausgabe
+    */
+   public Controller(MainModel model, MainFrame view){
         keylistener = new Keys(this);
         this.model=model;
         this.view=view;
@@ -42,17 +47,24 @@ public class Controller implements EventListener,Runnable{
 
     }
 
-public MainModel getMain() {
+   /**
+    *
+    * @return Main-Model
+    */
+   public MainModel getMain() {
         return model;
     }
 
-    public void save(){
+    /**
+    * Speichern des Models durch Serialiserung
+    */
+   public void save(){
         FileOutputStream fileOut;
         try {
             fileOut = new FileOutputStream("save.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(model);
-            out.close();
+          try (ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+             out.writeObject(model);
+          }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -61,18 +73,21 @@ public MainModel getMain() {
 
     }
 
-    public void load() {
+    /**
+    * Laden des Models aus Speicherstand.
+    */
+   public void load() {
         pauseGame();
         FileInputStream fileIn;
         try {
             fileIn = new FileInputStream("save.ser");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            try {
+          try (ObjectInputStream in = new ObjectInputStream(fileIn)) {
+             try {
                 model = (MainModel) in.readObject();
-            } catch (Exception ex) {
+             } catch (IOException | ClassNotFoundException ex) {
                 ex.printStackTrace();
-            }
-            in.close();
+             }
+          }
             model.setDungeonrepaint(true);
             model.setObserver(new ArrayList<Observer>());
             model.addObserver(view.getSpielfeld());
@@ -92,17 +107,28 @@ public MainModel getMain() {
 
 
 
-    public MainFrame getMainFr() {
+    /**
+    *
+    * @return Gibt die View zurück
+    */
+   public MainFrame getMainFr() {
         return view;
     }
 
-    public Keys getKeylistener() {
+    /**
+    *
+    * @return gibt den Keylistener zurück
+    */
+   public Keys getKeylistener() {
         return keylistener;
     }
 
 
 
-//Gameloop
+    /**
+    * Run-Methode der GameLoop
+    * Führt Spiellogik aus. Kann pausiert werden.
+    */
  @Override
     public void run() {
 
@@ -144,13 +170,19 @@ public MainModel getMain() {
     }
 
 
-    public synchronized void pauseGame() {
+    /**
+    * Gameloop pausieren
+    */
+   public synchronized void pauseGame() {
         model.setWait(true);
 
 
     }
 
-    public synchronized void resumeGame() {
+    /**
+    * Gameloop weiterlaufen lassen
+    */
+   public synchronized void resumeGame() {
         model.setWait(false);
         notifyAll();
 

@@ -164,12 +164,10 @@ public class Fieldpainter extends JPanel implements Observer {
           cg.dispose();
 
 
-          try {
+
                g.drawImage(compoImage, 0, 0, VIEWPORTWIDTH * BLOCKSIZE, VIEWPORTHEIGHT * BLOCKSIZE, this);
 
-          } catch (Exception e) {
-               e.printStackTrace();
-          }
+
 
 
           //Hilfe text zeichnen
@@ -494,7 +492,7 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
                }
-            } catch (Exception ex) {
+            } catch (NullPointerException ex) {
                ex.printStackTrace();
             }
          }
@@ -566,6 +564,7 @@ public class Fieldpainter extends JPanel implements Observer {
                pic = ImageIO.read(pathtopic);
 
           } catch (IOException e) {
+             e.printStackTrace();
           }
           int anzahl = pic.getWidth() / width;
           BufferedImage[] pics = new BufferedImage[anzahl];
@@ -588,6 +587,7 @@ public class Fieldpainter extends JPanel implements Observer {
                pic = ImageIO.read(pathtopic);
 
           } catch (IOException e) {
+             e.printStackTrace();
           }
           int anzahlx = pic.getWidth() / width;
           int anzahly = pic.getHeight() / height;
