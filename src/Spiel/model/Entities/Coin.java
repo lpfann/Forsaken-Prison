@@ -6,25 +6,26 @@ package Spiel.model.Entities;
 
 import Spiel.View.Observer;
 import Spiel.model.MainModel;
+import Spiel.model.UtilFunctions;
 import java.awt.Color;
 
 /**
  *
  * @author Lukas
  */
-public class Heart extends NPC implements Usable{
+public class Coin extends NPC implements Usable{
 
-     public Heart(int x1,int y1,MainModel main){
-     super(x1, y1, 'H', main);
-     
+     public Coin(int x1,int y1,MainModel main){
+     super(x1, y1, 'Z', main);
     }
 
     @Override
     public void use(Player p) {
         this.setRemovethis(true);
         getMain().notifyObserver(Observer.sounds.chestopen );
-        p.setHp(p.getHp()+10);
-        getMain().effects.add(new Effect(getX()/getFIELDSIZE(), getY()/getFIELDSIZE(), getMain(), "+10HP", Color.GREEN, 1000));
+        int rand = UtilFunctions.randomizer(1, 10*getMain().getCurrentDungeonLevel());
+        p.setCoins(p.getCoins()+rand);
+        getMain().effects.add(new Effect(getX()/getFIELDSIZE(), getY()/getFIELDSIZE(), getMain(), "+"+rand+" Münzen", Color.YELLOW, 1000));
     }
 
    @Override
@@ -37,6 +38,5 @@ public class Heart extends NPC implements Usable{
 
 
    }
-
 
 }

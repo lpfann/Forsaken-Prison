@@ -48,8 +48,11 @@ private Item selected;
 
                                 selected=(Item)this.getSelectedValue();
                                 if (selected!=null) {
-                                gameframe.getModel().getPlayer().useItem(selected);
+                                   if (this.getSelectedIndex()>1) {
+                                   this.setSelectedIndex(this.getSelectedIndex()-1);
 
+                                   }
+                                gameframe.getModel().getPlayer().useItem(selected);
                                 }
                                 break;
                         case KeyEvent.VK_R:

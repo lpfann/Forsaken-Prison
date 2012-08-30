@@ -601,8 +601,11 @@ public abstract class NPC implements Movable, Serializable {
     */
    private void death() {
       //Droppen eines Herzens
-      if (UtilFunctions.gambler(30)) {
+      if (UtilFunctions.gambler(20)) {
          main.getTempEntities().add(new Heart(x / FIELDSIZE, y / FIELDSIZE, main));
+      } else if(UtilFunctions.gambler(70) ) {
+
+         main.getTempEntities().add(new Coin(x / FIELDSIZE, y / FIELDSIZE, main));
       }
       //markieren
       this.removethis = true;

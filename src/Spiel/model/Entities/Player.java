@@ -8,9 +8,9 @@ import Spiel.model.MainModel;
 import java.awt.Color;
 import java.util.LinkedList;
 
-public final class Player extends NPC {
+public final class Player extends NPC implements Attacker {
 
-    private int xp, lvl, mana,smallpotions,mediumpotions,bigpotions,basedamage,maxhp;
+    private int xp, lvl, mana,smallpotions,mediumpotions,bigpotions,basedamage,maxhp,coins;
 
     private Armor[] armor= new Armor[5];
     private Waffe weapon;
@@ -77,7 +77,7 @@ public final class Player extends NPC {
 
     public void attackmonster() {
 
-        if (enemyInFront()!= null) {
+        if (enemyInFront() instanceof Attacker) {
             Monster monster = (Monster)enemyInFront();
             double attackspeed= (getWeapon()!=null) ? getWeapon().getAttackspeed() : 1;
 
@@ -350,5 +350,13 @@ public void setHit(boolean t){
     public void setRight(boolean right) {
         this.right = right;
     }
+
+   public int getCoins() {
+      return coins;
+   }
+
+   public void setCoins(int coins) {
+      this.coins = coins;
+   }
 
 }

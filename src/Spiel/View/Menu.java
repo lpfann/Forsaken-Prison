@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  * @author lukas
  */
 public class Menu extends javax.swing.JPanel implements KeyListener {
-MainFrame mainfr;
+private MainFrame mainfr;
 private BufferedImage logo;
 private boolean firststart=true;
     public Menu(MainFrame mainfr) {

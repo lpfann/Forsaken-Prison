@@ -52,11 +52,11 @@ private String health;
             tome =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/tome.png")));
             dagger =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/dagger.png")));
             shield =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/shield.png")));
-            lvlicon =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/lvl.png")));
+            lvlicon =     new ImageIcon(ImageIO.read(getClass().getResource("/resources/LVL.png")));
 
 
         } catch (IllegalArgumentException | IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 0);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Image Input Error ", 0);
         }
     health = "0";
     playername ="0";

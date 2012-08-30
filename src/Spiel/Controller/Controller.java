@@ -88,7 +88,7 @@ public class Controller implements EventListener,Runnable{
                 ex.printStackTrace();
              }
           }
-            model.setDungeonrepaint(true);
+            MainModel.dungeonrepaint=true;
             MainModel.fogofwarrepaint=true;
             model.setObserver(new ArrayList<Observer>());
             view.setModel(model);
