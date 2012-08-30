@@ -54,13 +54,13 @@ public class DungeonGenerator implements Serializable {
 
 
 
-                int rand1 = Utilites.randomizer(0, rooms.size()-1);
+                int rand1 = UtilFunctions.randomizer(0, rooms.size()-1);
                 Room stairRoom =(Room)rooms.get(rand1);
                 stairs = new Stairs(stairRoom.getX1()+1, stairRoom.getY1()+1, stairRoom.getBreite()-2, stairRoom.getHoehe()-2, main);
 
-                int rand2 = Utilites.randomizer(0, rooms.size()-1);
+                int rand2 = UtilFunctions.randomizer(0, rooms.size()-1);
                 while (rand2==rand1) {
-                rand2= Utilites.randomizer(0, rooms.size()-1);
+                rand2= UtilFunctions.randomizer(0, rooms.size()-1);
                 }
                 Room keyRoom =(Room)rooms.get(rand2);
                 key= new Key(keyRoom.getX1(), keyRoom.getY1(), keyRoom.getBreite(), keyRoom.getHoehe(), main);

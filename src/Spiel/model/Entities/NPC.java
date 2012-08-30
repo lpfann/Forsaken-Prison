@@ -8,6 +8,7 @@ import Spiel.View.Observer;
 import Spiel.model.MainModel;
 import Spiel.model.MainModel.Richtung;
 import Spiel.model.Room;
+import Spiel.model.UtilFunctions;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -188,8 +189,8 @@ public abstract class NPC implements Movable, Serializable {
    public void setstartposition(int x1, int y1, int w, int h) {
       boolean fertig = false;
       while (!fertig) {
-         int xx = Spiel.model.Utilites.randomizer(x1, (x1 + w - 1));
-         int yy = Spiel.model.Utilites.randomizer(y1, (y1 + h - 1));
+         int xx = Spiel.model.UtilFunctions.randomizer(x1, (x1 + w - 1));
+         int yy = Spiel.model.UtilFunctions.randomizer(y1, (y1 + h - 1));
          try {
             //TODO OutofBound Exception Fixens
             if (main.map[yy][xx] == ' ' ) {
@@ -215,8 +216,8 @@ public abstract class NPC implements Movable, Serializable {
       for (int i = 0; i < x1*y1; i++) {
 
 
-         int xx = Spiel.model.Utilites.randomizer(x1, (x1 + w - 1));
-         int yy = Spiel.model.Utilites.randomizer(y1, (y1 + h - 1));
+         int xx = Spiel.model.UtilFunctions.randomizer(x1, (x1 + w - 1));
+         int yy = Spiel.model.UtilFunctions.randomizer(y1, (y1 + h - 1));
          try {
             //TODO OutofBound Exception Fixens
             if (main.map[yy][xx] == ' ' && notinFrontofDoor(xx,yy) && noOtheNpcs(xx*FIELDSIZE,yy*FIELDSIZE,ent)) {
@@ -403,7 +404,7 @@ public abstract class NPC implements Movable, Serializable {
       int def = d.getDefence();
       int schaden = dmg - def;
 
-      if (Spiel.model.Utilites.distance(a, d) > 3) {
+      if (Spiel.model.UtilFunctions.distance(a, d) > 3) {
          System.out.println("Ausser Reichweite");
       } else {
 
@@ -490,10 +491,21 @@ public abstract class NPC implements Movable, Serializable {
    public void setHp(int hp) {
       this.hp = hp;
       if (hp < 1) {
+         death();
+      }
+   }
+
+   private void death(){
+
+         if (UtilFunctions.gambler(50)) {
+            main.getTempEntities().add(new Heart(x/FIELDSIZE, y/FIELDSIZE, main));
+         }
          this.removethis = true;
          getMain().notifyObserver(Observer.sounds.enemydead);
          this.room.getEntities().remove(this);
-      }
+
+
+
    }
 
    public char getIcon() {

@@ -6,7 +6,7 @@ package Spiel.model.Entities;
 
 import Spiel.View.Observer;
 import Spiel.model.MainModel;
-import Spiel.model.Utilites;
+import Spiel.model.UtilFunctions;
 /**
  *
  * @author lpfannschmidt
@@ -39,19 +39,19 @@ public abstract class Monster extends NPC {
             walkdelay+=getDelay()/1e3;
 
 
-//           if (Spiel.model.Utilites.inthesameRoom(this, getMain().getPlayer())) {
+//           if (Spiel.model.UtilFunctions.inthesameRoom(this, getMain().getPlayer())) {
                  Player pl = getMain().getPlayer();
 
-                 if (attackdelay > 2500 &&  Spiel.model.Utilites.distance(this, pl) == 1 && objectinFront() instanceof Player) {
+                 if (attackdelay > 3500 &&  Spiel.model.UtilFunctions.distance(this, pl) == 1 && objectinFront() instanceof Player) {
                     setWalking(false);
                     setAttacking(true);
                     attack(objectinFront());
                     attackdelay=0;
                  } else {
-                 double rand= (double)Utilites.randomizer(85, 100)/100;
-                 if (walkdelay*rand>700 && Spiel.model.Utilites.distance(this, pl) < 6) {
+                 double rand= (double)UtilFunctions.randomizer(85, 100)/100;
+                 if (walkdelay*rand>700 && Spiel.model.UtilFunctions.distance(this, pl) < 6) {
 
-                       int random = Utilites.randomizer(1, 2);
+                       int random = UtilFunctions.randomizer(1, 2);
                        if (pl.getX() < this.getX() && random == 1) {
                           setOrientierung(MainModel.Richtung.LEFT);
                           setWalking(true);
@@ -73,7 +73,7 @@ public abstract class Monster extends NPC {
 //                 }
 
 //        if (counter1>=100) {
-//            int rand2 = Spiel.model.Utilites.randomizer(0, 3);
+//            int rand2 = Spiel.model.UtilFunctions.randomizer(0, 3);
 //            switch (rand2) {
 //                case 0:
 //                     setOrientierung(MainModel.Richtung.LEFT);

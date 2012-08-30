@@ -39,7 +39,7 @@ public class MonsterFactory {
                   int anzahl= (int)(Math.ceil(size*0.01*main.getCurrentDungeonLevel()));
 
                   for (int i = 0; i < anzahl;) {
-                      double random=(double) Spiel.model.Utilites.randomizer(1, 100)/100;
+                      double random=(double) Spiel.model.UtilFunctions.randomizer(1, 100)/100;
                       monster=null;
                       if (random < EvilMonk.spawnrate) {
                         monster=  new EvilMonk(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);

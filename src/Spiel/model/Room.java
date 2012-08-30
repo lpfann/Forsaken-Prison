@@ -32,8 +32,8 @@ public class Room implements Serializable {
 
 
     private void split(Room room, boolean vert) {
-        int nbreite = Spiel.model.Utilites.randomizer(3, breite - 3);
-        int nhoehe = Spiel.model.Utilites.randomizer(3, hoehe - 3);
+        int nbreite = Spiel.model.UtilFunctions.randomizer(3, breite - 3);
+        int nhoehe = Spiel.model.UtilFunctions.randomizer(3, hoehe - 3);
 
         if (vert) {
             //Verschiebung der Wand um +1 damit Türen nicht verdeckt werden
@@ -45,13 +45,13 @@ public class Room implements Serializable {
                 lchild = new Room(x1, y1, nbreite, hoehe,dg);
                 rchild = new Room(x1 + nbreite, y1, breite - nbreite, hoehe,dg);
             }
-            
-            int randomdoor= Spiel.model.Utilites.randomizer(1, lchild.hoehe - 1);
+
+            int randomdoor= Spiel.model.UtilFunctions.randomizer(1, lchild.hoehe - 1);
             lchild.doorx = lchild.x1 + lchild.breite;
             lchild.doory = lchild.y1 + randomdoor;
             lchild.parent = this;
 
-            
+
             rchild.doorx = rchild.x1;
             rchild.doory = rchild.y1 + randomdoor;
             rchild.parent = this;
@@ -65,7 +65,7 @@ public class Room implements Serializable {
                 lchild = new Room(x1, y1, breite, nhoehe,dg);
                 rchild = new Room(x1, y1 + nhoehe, breite, hoehe - nhoehe,dg);
             }
-            int randomdoor= Spiel.model.Utilites.randomizer(1, lchild.breite - 1);
+            int randomdoor= Spiel.model.UtilFunctions.randomizer(1, lchild.breite - 1);
             lchild.doorx = lchild.x1 + randomdoor;
             lchild.doory = lchild.y1 + lchild.hoehe;
             lchild.parent = this;
@@ -89,14 +89,14 @@ public class Room implements Serializable {
             split(this,true);
             } else {
             split(this,false);
-                
+
             }
 
         } else {
 
             dg.getTree().add(this);
         }
-        
+
     }
 
     public int getDoorx() {
@@ -165,8 +165,8 @@ public class Room implements Serializable {
     public Room getotherchild(Room r) {
         if (r==lchild) {
         return rchild;
-                       
-        } else 
+
+        } else
         return lchild;
     }
         public Room getParent() {

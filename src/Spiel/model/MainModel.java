@@ -34,6 +34,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
     private Player player;
     private DungeonGenerator dungeon;
     public LinkedList<NPC> entities = new LinkedList<>();
+    private LinkedList<NPC> tempEntities = new LinkedList<>();
     public LinkedList<Effect> effects = new LinkedList<>();
     private Stack<Room> visitedRooms = new Stack<>();
     private transient ArrayList<Observer> observer = new ArrayList<>();
@@ -165,6 +166,10 @@ public class MainModel implements Subject, Serializable, Cloneable {
                toberemoved.add(e);
             }
          }
+
+         entities.addAll(tempEntities);
+         tempEntities.clear();
+
          for (Effect e : effects) {
             e.doLogic(delta);
             //Markieren zum Löschen
@@ -190,6 +195,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
             updateFogofWar();
 
          }
+
          //Benachrichtigen aller Observer
          if (!observer.isEmpty()) {
             notifyAllObservers();
@@ -490,6 +496,10 @@ public class MainModel implements Subject, Serializable, Cloneable {
 
    public LinkedList<Effect> getEffects() {
       return effects;
+   }
+
+   public LinkedList<NPC> getTempEntities() {
+      return tempEntities;
    }
 
 }

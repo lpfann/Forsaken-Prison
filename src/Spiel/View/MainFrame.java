@@ -37,7 +37,7 @@ public class MainFrame extends JFrame {
 
 
     public MainFrame(MainModel model) {
-        super("Spiel");
+        super("Forsaken Prison");
         this.model = model;
 
 

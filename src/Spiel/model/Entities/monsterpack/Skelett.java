@@ -12,7 +12,7 @@ import Spiel.model.MainModel;
  * @author Lukas
  */
 public class Skelett extends Monster {
-   public static double spawnrate=0.3;
+   public static double spawnrate=0.1;
 
 
    public Skelett(int x1, int y1, int w, int h, MainModel main) {

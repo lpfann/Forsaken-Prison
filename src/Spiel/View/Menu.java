@@ -146,10 +146,7 @@ MainFrame mainfr;
     }//GEN-LAST:event_newGameButtonActionPerformed
 
     private void newGameButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newGameButtonKeyPressed
-        if (evt.getKeyCode()== KeyEvent.VK_ENTER) {
-            mainfr.openGameFrame();
 
-        }
 
     }//GEN-LAST:event_newGameButtonKeyPressed
 

@@ -9,7 +9,7 @@ import Spiel.model.Entities.Items.Heiltrank;
 import Spiel.model.Entities.Items.Item;
 import Spiel.model.Entities.Items.Trank;
 import Spiel.model.MainModel;
-import Spiel.model.Utilites;
+import Spiel.model.UtilFunctions;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +44,7 @@ private MainModel main;
             int maxitems=0;
             LinkedList loot = new LinkedList();
             //Maximale Anzahl von Items in einer Kiste
-            int randmax = Utilites.randomizer(1, 100);
+            int randmax = UtilFunctions.randomizer(1, 100);
             if (randmax <80) {
                 maxitems=1;
            } else if (randmax >=80 && randmax < 98) {
@@ -62,7 +62,7 @@ private MainModel main;
                      Item item = allitems.get(i);
                      if (item.getItemlvl()<=main.getCurrentDungeonLevel()) {
                          double d = item.getDroprate();
-                         int rand = Utilites.randomizer(1, 100000);
+                         int rand = UtilFunctions.randomizer(1, 100000);
                          if (rand < d) {
                               loot.add(item);
                               break;

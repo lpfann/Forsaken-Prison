@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Lukas
  */
-public class Utilites {
+public class UtilFunctions {
 
         public static int randomizer(int min, int max) {
         Random rand = new Random();
@@ -92,11 +92,31 @@ public class Utilites {
    }
 
 
-        public static Boolean inthesameRoom(NPC a, NPC b){
+        public static boolean inthesameRoom(NPC a, NPC b){
         if (a.getRoom() == b.getRoom()) {
             return true;
         } else {
             return false;
         }
     }
+
+
+        /**
+    *
+    * @param x Die Wahrscheinlichkeit das etwas passiert
+    * @return true oder false je nach Ausgang des Wüfelns
+    */
+   public static boolean gambler(int x){
+           int rand= randomizer(1, 100);
+           if (rand <= x) {
+              return true;
+           } else {
+              return false;
+           }
+
+
+
+
+
+        }
 }

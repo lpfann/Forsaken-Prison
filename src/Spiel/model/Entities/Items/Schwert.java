@@ -23,7 +23,7 @@ public abstract class Schwert extends Waffe {
 
                 public Dolch() {
                         super("Dolch", 1, 7, 7,500);
-                        setAttackspeed(1.25);
+                        setAttackspeed(1.1);
                 }
         }
         public static class Kurzschwert extends Schwert {
@@ -66,7 +66,7 @@ public abstract class Schwert extends Waffe {
 
                 public Zweihänder() {
                         super("Zweihänder", 8, 6, 7,10);
-                        setAttackspeed(0.8);
+                        setAttackspeed(0.9);
                 }
         }
 

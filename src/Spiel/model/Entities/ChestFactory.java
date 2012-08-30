@@ -15,7 +15,7 @@ import Spiel.model.Entities.Items.Schwert;
 import Spiel.model.Entities.Items.Trank;
 import Spiel.model.MainModel;
 import Spiel.model.Room;
-import Spiel.model.Utilites;
+import Spiel.model.UtilFunctions;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -97,7 +97,7 @@ public class ChestFactory {
         for (Room room : rooms) {
             int size = room.getBreite() * room.getHoehe();
            int max = 0;
-           int randmax = Utilites.randomizer(1, 100);
+           int randmax = UtilFunctions.randomizer(1, 100);
            if (randmax < 80) {
               max = 1;
            } else if (randmax >= 80 && randmax < 98) {
@@ -110,7 +110,7 @@ public class ChestFactory {
 
             for (int i = 0; i <= max; i++) {
                 //  Chance das Chest gespawnt wird.
-                if (Spiel.model.Utilites.randomizer(1, 10) < 5) {
+                if (Spiel.model.UtilFunctions.randomizer(1, 10) < 5) {
 
                     Chest chest = new Chest(0, 0, 'C', main,items);
 

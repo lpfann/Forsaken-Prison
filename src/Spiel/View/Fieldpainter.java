@@ -30,6 +30,7 @@ public class Fieldpainter extends JPanel implements Observer {
     private static BufferedImage groundimage;
     private static BufferedImage wallimage;
     private static BufferedImage keyimage;
+    private static BufferedImage heartimage;
     private static BufferedImage[] knightimage;
     private static BufferedImage[] stairsimage;
     private static Image dungeonoffscreenImage;
@@ -79,6 +80,7 @@ public class Fieldpainter extends JPanel implements Observer {
                groundimage = ImageIO.read(getClass().getResource("/resources/groundDun.png"));
                wallimage = ImageIO.read(getClass().getResource("/resources/HBlockDun.png"));
                keyimage = ImageIO.read(getClass().getResource("/resources/key.png"));
+               heartimage = ImageIO.read(getClass().getResource("/resources/heart.png"));
                playerimage= enlargePic(loadPic("/resources/new-player.png", 64, 64),10,15);
                playerattackingimage= enlargePic(loadPic("/resources/new-player-attack.png", 64, 64),10,15);
                skelettimage= enlargePic(loadPic("/resources/skeleton-walking.png", 64, 64),10,15);
@@ -92,6 +94,7 @@ public class Fieldpainter extends JPanel implements Observer {
                bloodimage = loadPic("/resources/bloodsplatter.png", 20);
                knightimage = loadPic("/resources/knight.png", 40);
                stairsimage = loadPic("/resources/stairs.png", 40);
+
 
           } catch (IOException e) {
                JOptionPane.showMessageDialog(null, e.getMessage(), "Bild konnte nicht eingelesen werden", 0);
@@ -467,6 +470,11 @@ public class Fieldpainter extends JPanel implements Observer {
                         break;
                      case "Key":
                         cg.drawImage(keyimage, x1, y1, FIELDSIZE, FIELDSIZE, this);
+
+
+                        break;
+                     case "Heart":
+                        cg.drawImage(heartimage, x1, y1, FIELDSIZE, FIELDSIZE, this);
 
 
                         break;
