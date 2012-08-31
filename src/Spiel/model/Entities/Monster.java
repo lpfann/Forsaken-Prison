@@ -11,7 +11,7 @@ import Spiel.model.UtilFunctions;
  *
  * @author lpfannschmidt
  */
-public abstract class Monster extends NPC implements Attacker {
+public abstract class Monster extends NPC implements Attackble {
 
 
     private double attackdelay=0;

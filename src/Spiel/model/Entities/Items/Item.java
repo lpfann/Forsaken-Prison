@@ -140,4 +140,5 @@ public abstract class Item implements UsableItem, Serializable, Comparable<Item>
    public void setItemlvl(int itemlvl) {
       this.itemlvl = itemlvl;
    }
+
 }

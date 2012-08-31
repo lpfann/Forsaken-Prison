@@ -8,6 +8,6 @@ package Spiel.model.Entities;
  *
  * @author Lukas
  */
-public interface Attacker {
+public interface Attackble {
 
 }

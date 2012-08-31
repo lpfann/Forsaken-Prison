@@ -9,6 +9,7 @@ package Spiel.model.Entities.Items.Armor;
  * @author Lukas
  */
 public abstract class BodyArmor extends Armor {
+   private final int BODYARMORBASEPRICE=25;
     public BodyArmor(String name,int def,double droprate,int lvl){
         super(name,def,droprate);
         setType(Armortype.BodyArmor);
@@ -16,7 +17,13 @@ public abstract class BodyArmor extends Armor {
         setSubimagey(lvl);
         setSubimagex(getType().getValue());
     }
+   @Override
+   public int itemPrice(){
+      return getItemlvl()*BODYARMORBASEPRICE;
 
+
+
+   }
 
       public static class LHemd extends BodyArmor {
            public LHemd(){

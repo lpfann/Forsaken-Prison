@@ -9,6 +9,8 @@ package Spiel.model.Entities.Items.Armor;
  * @author Lukas
  */
 public abstract class Gloves extends Armor {
+   private final int GLOVEBASEPRICE=20;
+   
     public Gloves(String name,int def,double droprate,int lvl){
         super(name,def,droprate);
         setType(Armortype.Gloves);
@@ -16,7 +18,13 @@ public abstract class Gloves extends Armor {
         setSubimagey(lvl);
         setSubimagex(getType().getValue());
     }
+   @Override
+   public int itemPrice(){
+      return getItemlvl()*GLOVEBASEPRICE;
 
+
+
+   }
       public static class Lederhandschuhe extends Gloves {
            public Lederhandschuhe(){
                    super("Lederhandschuhe", 1,500,1);

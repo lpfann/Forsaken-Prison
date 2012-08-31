@@ -9,6 +9,7 @@ package Spiel.model.Entities.Items.Armor;
  * @author Lukas
  */
 public abstract class Shield extends Armor {
+   private final int SHIELDARMORBASEPRICE=20;
     public Shield(String name,int def,double droprate,int lvl){
         super(name,def,droprate);
         setType(Armortype.Shield);
@@ -16,7 +17,13 @@ public abstract class Shield extends Armor {
         setSubimagey(lvl);
         setSubimagex(getType().getValue());
     }
+   @Override
+   public int itemPrice(){
+      return getItemlvl()*SHIELDARMORBASEPRICE;
 
+
+
+   }
       public static class Holzschild extends Shield {
            public Holzschild(){
                    super("Holzschild", 1,500,1);

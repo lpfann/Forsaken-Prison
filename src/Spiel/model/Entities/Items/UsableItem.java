@@ -6,12 +6,14 @@ package Spiel.model.Entities.Items;
 
 /**
  *
- * @author Gamer
+ * @author Lukas
  */
 public interface UsableItem {
-        
-        
+
+
    void useItem();
-        
-        
+
+   int itemPrice();
+
+
 }

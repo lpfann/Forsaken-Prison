@@ -134,7 +134,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
       jLabel1.setFont(new java.awt.Font("Georgia", 2, 14)); // NOI18N
       jLabel1.setForeground(new java.awt.Color(255, 255, 255));
       jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-      jLabel1.setText("Mit Pfeiltasten navigieren. Drücke \"E\" um ein Item auszurüsten oder zu benutzen!");
+      jLabel1.setText("Pfeiltasten -  navigieren ;  E - Gegenstand ausrüsten ; V - Gegenstand verkaufen");
       jLabel1.setToolTipText("");
 
       jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tränke", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Georgia", 1, 18), java.awt.Color.white)); // NOI18N
@@ -289,8 +289,9 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
       damageLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Schaden", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 14), java.awt.Color.white)); // NOI18N
       damageLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-      moneyLable.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+      moneyLable.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
       moneyLable.setForeground(new java.awt.Color(255, 255, 255));
+      moneyLable.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
       moneyLable.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Münzen", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Georgia", 0, 14), java.awt.Color.white)); // NOI18N
       moneyLable.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 

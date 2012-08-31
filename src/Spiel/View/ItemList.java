@@ -55,6 +55,17 @@ private Item selected;
                                 gameframe.getModel().getPlayer().useItem(selected);
                                 }
                                 break;
+                        case KeyEvent.VK_V:
+
+                                selected=(Item)this.getSelectedValue();
+                                if (selected!=null) {
+                                   if (this.getSelectedIndex()>1) {
+                                   this.setSelectedIndex(this.getSelectedIndex()-1);
+
+                                   }
+                                gameframe.getModel().getPlayer().sellItem(selected);
+                                }
+                                break;
                         case KeyEvent.VK_R:
                                 gameframe.getModel().getPlayer().usePotion();
                                 break;
