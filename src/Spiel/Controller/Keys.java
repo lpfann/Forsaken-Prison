@@ -8,8 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- *
- * @author Gamer
+ * Haupt-KeyListener
+ * @author Lukas
  */
 public class Keys implements KeyListener {
 

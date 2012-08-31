@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- *
+ * Klasse zur Truhen-Erstellung
  * @author Lukas
  */
 public class ChestFactory {

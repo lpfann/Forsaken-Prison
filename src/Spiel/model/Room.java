@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
- *
+ * Baumstrukur für die DungeonGenerierung
  * @author Lukas
  */
 public class Room implements Serializable {

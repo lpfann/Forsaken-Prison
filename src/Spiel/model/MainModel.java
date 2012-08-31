@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Die Haupt-Model Klasse. Hier wird alles zusammengehalten
  * @author Lukas
  */
 public class MainModel implements Subject, Serializable, Cloneable {

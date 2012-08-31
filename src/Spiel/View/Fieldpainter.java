@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- *
+ * Zeichen-Klasse für Spielfeld
  * @author Lukas
  */
 public class Fieldpainter extends JPanel implements Observer {

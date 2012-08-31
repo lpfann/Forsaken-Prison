@@ -8,7 +8,7 @@ import Spiel.Controller.Controller;
 import Spiel.model.MainModel;
 
 /**
- *
+ * Game-Over Panel
  * @author Lukas
  */
 public class GameOverScreen extends javax.swing.JPanel implements Observer {

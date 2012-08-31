@@ -7,7 +7,7 @@ package Spiel.View;
 import javax.swing.text.AbstractDocument;
 
 /**
- *
+ * Credits Fenster
  * @author Lukas
  */
 public class Credits extends javax.swing.JPanel {
