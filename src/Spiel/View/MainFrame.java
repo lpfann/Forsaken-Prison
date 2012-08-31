@@ -28,6 +28,7 @@ public class MainFrame extends JFrame  implements Observer{
    private JPanel gamepanel = new JPanel();
    private Itemwindow itemwindow;
    private Help helpwindow;
+   private Credits creditswindow;
    private boolean open = false;
    private Controller controller;
    private Sounds sounds;
@@ -48,6 +49,7 @@ public class MainFrame extends JFrame  implements Observer{
       menu = new Menu(this);
       itemwindow = new Itemwindow(this);
       helpwindow = new Help(this);
+      creditswindow = new Credits(this);
       sounds = new Sounds();
       storywindow = new Story(this);
       model.addObserver(itemwindow);
@@ -68,6 +70,7 @@ public class MainFrame extends JFrame  implements Observer{
       menu.setBounds(this.getPreferredSize().width / 2 - menu.getPreferredSize().width / 2, 0, menu.getPreferredSize().width, menu.getPreferredSize().height);
       itemwindow.setBounds(this.getPreferredSize().width / 2 - itemwindow.getPreferredSize().width / 2, 0, itemwindow.getPreferredSize().width, itemwindow.getPreferredSize().height);
       helpwindow.setBounds(this.getPreferredSize().width / 2 - helpwindow.getPreferredSize().width / 2, 0, helpwindow.getPreferredSize().width, helpwindow.getPreferredSize().height);
+      creditswindow.setBounds(this.getPreferredSize().width / 2 - creditswindow.getPreferredSize().width / 2, 0, creditswindow.getPreferredSize().width, creditswindow.getPreferredSize().height);
       storywindow.setBounds(this.getPreferredSize().width / 2 - storywindow.getPreferredSize().width / 2, 0, storywindow.getPreferredSize().width, storywindow.getPreferredSize().height);
 
       itemwindow.setOpaque(true);
@@ -79,6 +82,7 @@ public class MainFrame extends JFrame  implements Observer{
       lpanel.add(menu, new Integer(10));
       lpanel.add(itemwindow, new Integer(10));
       lpanel.add(helpwindow, new Integer(11));
+      lpanel.add(creditswindow, new Integer(11));
       lpanel.add(storywindow, new Integer(11));
       pack();
       menu.requestFocus();
@@ -181,6 +185,14 @@ public class MainFrame extends JFrame  implements Observer{
     */
    public void openHelp() {
       helpwindow.setVisible(true);
+
+
+
+
+   }
+
+   public void openCredits() {
+      creditswindow.setVisible(true);
 
 
 

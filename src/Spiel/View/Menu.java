@@ -55,6 +55,7 @@ private boolean firststart=true;
       helpButton = new javax.swing.JButton();
       saveGameButton = new javax.swing.JButton();
       exitButton = new javax.swing.JButton();
+      creditsButton = new javax.swing.JButton();
 
       setBackground(new java.awt.Color(39, 39, 39));
       setForeground(new java.awt.Color(255, 255, 255));
@@ -127,6 +128,18 @@ private boolean firststart=true;
          }
       });
 
+      creditsButton.setFont(new java.awt.Font("Georgia", 1, 18)); // NOI18N
+      creditsButton.setForeground(new java.awt.Color(255, 255, 255));
+      creditsButton.setText("Credits");
+      creditsButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+      buttonGroup1.add(creditsButton);
+      creditsButton.setContentAreaFilled(false);
+      creditsButton.addActionListener(new java.awt.event.ActionListener() {
+         public void actionPerformed(java.awt.event.ActionEvent evt) {
+            creditsButtonActionPerformed(evt);
+         }
+      });
+
       javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
       this.setLayout(layout);
       layout.setHorizontalGroup(
@@ -138,13 +151,14 @@ private boolean firststart=true;
                .addComponent(newGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                .addComponent(saveGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-               .addComponent(helpButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+               .addComponent(helpButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+               .addComponent(creditsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGap(256, 256, 256))
       );
       layout.setVerticalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-            .addContainerGap(154, Short.MAX_VALUE)
+            .addContainerGap(156, Short.MAX_VALUE)
             .addComponent(newGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(loadButton)
@@ -153,8 +167,10 @@ private boolean firststart=true;
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(helpButton)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(creditsButton)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(exitButton)
-            .addContainerGap())
+            .addGap(7, 7, 7))
       );
    }// </editor-fold>//GEN-END:initComponents
 
@@ -193,6 +209,10 @@ private boolean firststart=true;
                 mainfr.openHelp();
         }//GEN-LAST:event_helpButtonActionPerformed
 
+   private void creditsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creditsButtonActionPerformed
+      mainfr.openCredits();
+   }//GEN-LAST:event_creditsButtonActionPerformed
+
 
    public void setNewGameButtonText(String text) {
         this.newGameButton.setText(text);
@@ -200,6 +220,7 @@ private boolean firststart=true;
 
    // Variables declaration - do not modify//GEN-BEGIN:variables
    private javax.swing.ButtonGroup buttonGroup1;
+   private javax.swing.JButton creditsButton;
    private javax.swing.JButton exitButton;
    private javax.swing.JButton helpButton;
    private javax.swing.JButton loadButton;
