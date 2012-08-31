@@ -176,12 +176,7 @@ public class Fieldpainter extends JPanel implements Observer {
          g.drawString("ESC - Menü", 10, 10);
          g.drawString("i - Inventar", this.getPreferredSize().width - 90, 10);
 
-         //GAME OVER Text
-         if (gameover) {
-            g.setColor(Color.red);
-            g.setFont(new Font("Monospaced", Font.BOLD, 100));
-            g.drawString("GAME OVER", VIEWPORTWIDTH * BLOCKSIZE / 2 - 300, VIEWPORTHEIGHT * BLOCKSIZE / 2);
-         }
+
 
       }
    }

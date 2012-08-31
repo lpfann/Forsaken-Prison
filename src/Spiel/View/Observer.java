@@ -10,7 +10,7 @@ import Spiel.model.MainModel;
 public interface Observer {
 
     enum transEnum{
-        entities,playerstats,fps,fogofwar
+        entities,playerstats,fps,fogofwar,gameover
     }
     enum sounds{
        enemyhit,playerhit,enemydead,dooropen,levelup,chestopen,walkingon,walkingoff

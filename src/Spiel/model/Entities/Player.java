@@ -25,7 +25,7 @@ public final class Player extends NPC implements Attackble {
       setDmg(0);
       updateDmg();
       setMaxhp(100);
-      setHp(100);
+      setHp(10);
       setDefence(0);
       lvl = 1;
       setXp(0);

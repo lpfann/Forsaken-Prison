@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  *
  * @author Lukas
  */
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame  implements Observer{
 
    private Fieldpainter spielfeld;
    private Statspanel statusbar;
@@ -40,7 +40,7 @@ public class MainFrame extends JFrame {
    public MainFrame(MainModel model) {
       super("Forsaken Prison");
       this.model = model;
-
+      model.addObserver(this);
 
       spielfeld = new Fieldpainter(model.getBreite(), model.getHoehe(), model.getPlayer(), model.getFIELDSIZE());
       statusbar = new Statspanel();
@@ -266,5 +266,23 @@ public class MainFrame extends JFrame {
     */
    public Sounds getSounds() {
       return sounds;
+   }
+
+   @Override
+   public void update(transEnum enu, MainModel mm) {
+      if (enu == transEnum.gameover) {
+         GameOverScreen gos = new GameOverScreen(mm.getCurrentDungeonLevel(),mm.getPlayer().getCoins(),controller);
+         gos.setBounds(this.getPreferredSize().width / 2 - gos.getPreferredSize().width / 2, 0, gos.getPreferredSize().width, gos.getPreferredSize().height);
+
+         lpanel.add(gos,new Integer(20));
+      }
+   }
+
+   @Override
+   public void update(char[][] map) {
+   }
+
+   @Override
+   public void update(sounds s, long delta) {
    }
 }

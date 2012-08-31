@@ -191,4 +191,25 @@ public class Controller implements EventListener,Runnable{
 
 
     }
+
+   public void restartGame() {
+            pauseGame();
+            model = new MainModel();
+            MainModel.dungeonrepaint=true;
+            MainModel.fogofwarrepaint=true;
+            model.setObserver(new ArrayList<Observer>());
+            view.setModel(model);
+            view.getGamepanel().requestFocus();
+            model.addObserver(view);
+            model.addObserver(view.getSpielfeld());
+            model.addObserver(view.getStatusbar());
+            model.addObserver(view.getItemwindow());
+            model.addObserver(view.getSounds());
+
+
+            model.notifyAllObservers();
+
+            resumeGame();
+
+   }
 }

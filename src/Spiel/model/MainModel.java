@@ -181,6 +181,7 @@ public class MainModel implements Subject, Serializable, Cloneable {
             //GAME OVER
             if (e instanceof Player) {
                this.gameover = true;
+               notifyObserver(transEnum.gameover);
             }
 
             if (e instanceof Effect) {
