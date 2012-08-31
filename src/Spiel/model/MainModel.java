@@ -23,8 +23,8 @@ import java.util.logging.Logger;
  */
 public class MainModel implements Subject, Serializable, Cloneable {
 
-    int breite = 100;
-    int hoehe = 100;
+    int breite = 40;
+    int hoehe = 40;
     long delta = 0;
     long last = 0;
     long fps = 0;

@@ -464,7 +464,9 @@ public abstract class NPC implements Movable, Serializable {
 
       int dmg = a.getDmg();
       int def = d.getDefence();
-      int schaden = dmg - def;
+      //Auswürfeln wieviel Schaden abgeblockt wird
+      int blockedDamage= UtilFunctions.randomizer(0, def);
+      int schaden= dmg - blockedDamage;
 
       if (Spiel.model.UtilFunctions.distance(a, d) > 3) {
          System.out.println("Ausser Reichweite");
@@ -473,11 +475,11 @@ public abstract class NPC implements Movable, Serializable {
          if (d.getHp() < 1) {
          } else {
             if (schaden <= 0) {
-               System.out.println(d.getName() + " hat den Angriff abgeblockt");
+               System.out.println(d.getName() + " hat den Angriff komplett abgeblockt");
+               main.effects.add(new Effect(d.getX() / FIELDSIZE, d.getY() / FIELDSIZE, main, "0", Color.RED, 300));
             } else {
                d.setHp(d.getHp() - schaden);
-               //System.out.println(a.getName() + " hat dem " + d.getName() + " " + schaden + " Schaden zugefügt");
-               main.effects.add(new Effect(d.getX() / FIELDSIZE, d.getY() / FIELDSIZE, main, String.valueOf(schaden), Color.RED, 300));
+               main.effects.add(new Effect(d.getX() / FIELDSIZE, d.getY() / FIELDSIZE, main, Integer.toString(schaden), Color.RED, 300));
                d.setHit(true);
 
 
@@ -600,9 +602,9 @@ public abstract class NPC implements Movable, Serializable {
     */
    private void death() {
       //Droppen eines Herzens
-      if (UtilFunctions.gambler(20)) {
+      if (UtilFunctions.gambler(30)) {
          main.getTempEntities().add(new Heart(x / FIELDSIZE, y / FIELDSIZE, main));
-      } else if(UtilFunctions.gambler(70) ) {
+      } else if(UtilFunctions.gambler(40) ) {
 
          main.getTempEntities().add(new Coin(x / FIELDSIZE, y / FIELDSIZE, main));
       }

@@ -32,6 +32,7 @@ public abstract class Monster extends NPC implements Attackble {
     */
    public Monster(int x, int y, int hp, int dmg, String name, char icon, MainModel main) {
       super(x, y, icon, main);
+      //Monster werden stärker desto Tiefer im Dungeon sie erstellt werden
       setHp((int) (hp + (hp * main.getCurrentDungeonLevel() * statmultiplier)));
       setDmg((int) (dmg + (dmg * main.getCurrentDungeonLevel() * statmultiplier)));
       setName(name);
@@ -48,7 +49,7 @@ public abstract class Monster extends NPC implements Attackble {
 
       Player pl = getMain().getPlayer();
 
-      if (attackdelay > 2500 && Spiel.model.UtilFunctions.distance(this, pl) == 1 && enemyInFront() instanceof Player) {
+      if (attackdelay > 2200 && Spiel.model.UtilFunctions.distance(this, pl) == 1 && enemyInFront() instanceof Player) {
          setWalking(false);
          setAttacking(true);
          attack(enemyInFront());

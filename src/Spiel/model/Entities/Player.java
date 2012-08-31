@@ -19,7 +19,7 @@ public final class Player extends NPC implements Attackble {
    private Waffe weapon;
    private LinkedList<Item> inventar = new LinkedList<>();
    boolean walking;
-   private final int[] levelups = {100, 200, 300, 400, 500, 650, 850, 1100, 1300, 1500, 1800, 2100};
+   private final int[] levelups = {100, 250, 500, 750, 1000, 1300, 1700, 2000, 2500, 3000, 3600, 4500,5500};
    private boolean up, down, left, right;
 
    /**

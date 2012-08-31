@@ -21,7 +21,6 @@ import java.util.LinkedList;
 public class MonsterFactory {
       private MainModel main;
       private Monster monster;
-      private ArrayList<Class> monsterlist=new ArrayList<>();
 
       /**
     *
@@ -44,20 +43,20 @@ public class MonsterFactory {
             LinkedList monsters= new LinkedList<>();
             for (Room room : rooms) {
                   int size = room.getBreite()*room.getHoehe();
-                  int anzahl= (int)(Math.ceil(size*0.01*main.getCurrentDungeonLevel()));
+                  int anzahl= (int)(Math.ceil(size*0.02*main.getCurrentDungeonLevel()));
 
                   for (int i = 0; i < anzahl;) {
                       double random=(double) Spiel.model.UtilFunctions.randomizer(1, 100)/100;
                       monster=null;
-                      if (random < EvilMonk.spawnrate) {
+                      if (random < EvilMonk.spawnrate*main.getCurrentDungeonLevel()) {
                         monster=  new EvilMonk(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
-                       } else if (random < Knight.spawnrate) {
+                       } else if (random < Knight.spawnrate*main.getCurrentDungeonLevel()) {
                            monster= new Knight(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
-                       } else if (random < Ork.spawnrate) {
+                       } else if (random < Ork.spawnrate*main.getCurrentDungeonLevel()) {
                            monster= new Ork(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
-                       } else if (random < Skelett.spawnrate) {
+                       } else if (random < Skelett.spawnrate*main.getCurrentDungeonLevel()) {
                            monster= new Skelett(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
-                       } else if (random < Troll.spawnrate) {
+                       } else if (random < Troll.spawnrate*main.getCurrentDungeonLevel()) {
                            monster= new Troll(room.getX1()+1, room.getY1()+1, room.getBreite()-2, room.getHoehe()-2,main);
                        }
                       if (monster!=null) {

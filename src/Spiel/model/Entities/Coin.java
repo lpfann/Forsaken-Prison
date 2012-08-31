@@ -22,7 +22,7 @@ public class Coin extends NPC implements Usable{
     @Override
     public void use(Player p) {
         this.setRemovethis(true);
-        getMain().notifyObserver(Observer.sounds.chestopen );
+        //getMain().notifyObserver(Observer.sounds.chestopen );
         int rand = UtilFunctions.randomizer(1, 10*getMain().getCurrentDungeonLevel());
         p.setCoins(p.getCoins()+rand);
         getMain().effects.add(new Effect(getX()/getFIELDSIZE(), getY()/getFIELDSIZE(), getMain(), "+"+rand+" Münzen", Color.YELLOW, 1000));
