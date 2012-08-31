@@ -52,6 +52,7 @@ public class Keys implements KeyListener {
                                 break;
                         case KeyEvent.VK_F9:
                                 game.load();
+                                game.resumeGame();
                                 break;
                         case KeyEvent.VK_ESCAPE:
                                 game.getMainFr().openGameMenu();

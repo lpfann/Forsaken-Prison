@@ -59,6 +59,7 @@ public class Controller implements EventListener,Runnable{
     * Speichern des Models durch Serialiserung
     */
    public void save(){
+
         FileOutputStream fileOut;
         try {
             fileOut = new FileOutputStream("save.ser");
@@ -100,7 +101,7 @@ public class Controller implements EventListener,Runnable{
 
             model.notifyAllObservers();
 
-            resumeGame();
+
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -192,7 +192,8 @@ private boolean firststart=true;
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         mainfr.getController().load();
-        mainfr.openGameFrame();
+        //mainfr.openGameFrame();
+        //mainfr.getGamepanel().requestFocus();
 
     }//GEN-LAST:event_loadButtonActionPerformed
 
@@ -234,12 +235,7 @@ private boolean firststart=true;
 
     @Override
     public void keyPressed(KeyEvent e) {
-switch (e.getKeyCode()) {
-            case KeyEvent.VK_ESCAPE:
-                mainfr.openGameMenu();
-                break;
 
-    }
     }
 
     @Override

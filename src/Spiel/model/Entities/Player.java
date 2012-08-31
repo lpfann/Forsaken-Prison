@@ -374,14 +374,18 @@ public final class Player extends NPC implements Attackble {
    @Override
    public void setHp(int hp) {
       if (hp < 1) {
+         super.setHp(0);
          getMain().setGameover(true);
-      }
-      if (hp > maxhp) {
-         super.setHp(maxhp);
 
       } else {
-         super.setHp(hp);
 
+         if (hp > maxhp) {
+            super.setHp(maxhp);
+
+         } else {
+            super.setHp(hp);
+
+         }
       }
    }
 
