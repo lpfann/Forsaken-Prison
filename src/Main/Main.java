@@ -20,7 +20,7 @@ public class Main {
 
 
    /**
-    * Initalisierung der drei verschiedenen Bereiche
+    * Initalisierung des Spiels
     */
    public Main (){
 

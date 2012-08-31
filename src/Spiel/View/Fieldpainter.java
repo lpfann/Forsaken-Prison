@@ -14,8 +14,12 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+/**
+ *
+ * @author Lukas
+ */
 public class Fieldpainter extends JPanel implements Observer {
-
+   //Bilder aller Spielobjekte
    private static BufferedImage[][] playerimage;
    private static BufferedImage[][] playerattackingimage;
    private static BufferedImage[][] skelettimage;
@@ -33,26 +37,31 @@ public class Fieldpainter extends JPanel implements Observer {
    private static BufferedImage heartimage;
    private static BufferedImage[] knightimage;
    private static BufferedImage[] stairsimage;
+   private static BufferedImage coinimage;
+   //Offscreenimage für den Dungeon
    private static Image dungeonoffscreenImage;
+
+   //Image für den FogofWar ausschnitt wo der Spieler schon war
    private static BufferedImage transpImg;
    private static Image fowoffscreenImage;
-   private static Image compoImage;
+   private static Image compoImage;    //Das Image für alle gezeichneten unterabschnitte. wird am Ende auf das Graphics Objekt gepaintet
    private static Graphics offscreenGraph;
-   private int FIELDSIZE;
-   private int viewportx;
-   private int viewporty;
+   private int FIELDSIZE; //Größe der Blöcke in der Spiellogik
+   private int viewportx; // X Punkt in der Oberen linken Ecke der den Viewport bestimmt
+   private int viewporty; //Y Punkt in der Oberen linken Ecke der den Viewport bestimmt
    private final int radiusy = 5;
    private final int radiusx = 8;
    private final int VIEWPORTWIDTH = 2 * radiusx;
    private final int VIEWPORTHEIGHT = 2 * radiusy;
-   private int animcounter = 0;
+   private int animcounter = 0; //Counter für Animationsausführung
    private Player player;
-   private char[][] map;
-   private boolean[][] fogofwar;
-   private LinkedList<NPC> entities = new LinkedList();
-   private LinkedList<NPC> entcopy = new LinkedList();
-   private LinkedList<Effect> effects = new LinkedList();
-   public final int BLOCKSIZE = 50;
+   private char[][] map; //Das Spielfeld
+   private boolean[][] fogofwar; //Das Feld für den Kriegsnebel
+   private LinkedList<NPC> entities = new LinkedList(); //Liste der Objekte auf der Karte
+   private LinkedList<NPC> entcopy = new LinkedList(); //Kopie der Liste ^
+   private LinkedList<Effect> effects = new LinkedList(); //Liste der Effekte
+
+   public final int BLOCKSIZE = 50; // Die Größe der Blöcke in der Grafikausgabe am Ende
    public static final int RESOLUTIONX = 800;
    public static final int RESOLUTIONY = 600;
    private int fps;
@@ -65,8 +74,15 @@ public class Fieldpainter extends JPanel implements Observer {
    int minimumy;
    private boolean dungeonrepaint = true;
    private boolean fogofwarrepaint = true;
-   private BufferedImage coinimage;
 
+
+   /**
+    * Konstrukor der Spielfeld Zeichners
+    * @param breite Breite des Fensters
+    * @param hoehe Höhe des Fensters
+    * @param p Der Spieler. wird nur für Initalisierungszwecke übergeben
+    * @param fieldsize die breite der Blöcke. auch nur für ^
+    */
    public Fieldpainter(int breite, int hoehe, Player p, int fieldsize) {
 
 
@@ -103,12 +119,18 @@ public class Fieldpainter extends JPanel implements Observer {
 
    }
 
+   /**
+    * Die Update Methode des Observers
+    * @param enu Art des Updates
+    * @param mm Kopie des MainModel
+    */
    @Override
    public void update(transEnum enu, MainModel mm) {
       if (enu == transEnum.entities) {
          entities = mm.getEntities();
          entcopy = (LinkedList<NPC>) entities.clone();
          effects = (LinkedList<Effect>) mm.getEffects().clone();
+
       } else if (enu == transEnum.fps) {
          this.fps = (int) mm.getFps();
          this.delta = mm.getDelta();
@@ -117,9 +139,9 @@ public class Fieldpainter extends JPanel implements Observer {
             animationdelay = 0;
             animcounter++;
          }
+
       } else if (enu == transEnum.playerstats) {
          this.player = mm.getPlayer();
-//             this.dungeonrepaint=mm.isDungeonrepaint();
          updateViewportCoord(player);
          this.gameover = mm.isGameover();
 
@@ -132,13 +154,20 @@ public class Fieldpainter extends JPanel implements Observer {
       repaint();
    }
 
+   /**
+    * Spielfeld wird übergeben
+    * @param map Spielfeld
+    */
    @Override
    public void update(char[][] map) {
       this.map = map;
       repaint();
 
    }
-
+/**
+ * Hauptzeichenfunktion. ruft mehrere unter Methoden auf
+ * @param g Graphics Objekt
+ */
    @Override
    protected void paintComponent(Graphics g) {
       super.paintComponent(g);
@@ -148,6 +177,7 @@ public class Fieldpainter extends JPanel implements Observer {
          compoImage = createImage(VIEWPORTWIDTH * FIELDSIZE, VIEWPORTHEIGHT * FIELDSIZE);
 
          Graphics2D cg = (Graphics2D) compoImage.getGraphics();
+         //Qualitätseinstellungen
          cg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
          cg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
          cg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -159,13 +189,13 @@ public class Fieldpainter extends JPanel implements Observer {
          paintallEntities(cg);
          //Fog of War zeichnen
          paintFogofWar(cg);
-
+         //Effekte zeichnen
          paintEffects(cg);
 
          cg.dispose();
 
 
-
+         //Zeichnen des zusammengefügten Objekts
          g.drawImage(compoImage, 0, 0, VIEWPORTWIDTH * BLOCKSIZE, VIEWPORTHEIGHT * BLOCKSIZE, this);
 
 
@@ -180,7 +210,10 @@ public class Fieldpainter extends JPanel implements Observer {
 
       }
    }
-
+/**
+ * Alle Effekte zeichnen
+ * @param cg
+ */
    private void paintEffects(Graphics2D cg) {
       if (!effects.isEmpty()) {
          for (Effect e : effects) {
@@ -208,7 +241,11 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
    }
-
+/**
+ *
+ * Zeichnen des Dungeons. Nur wenn dungeonrepaint=true ist, wird komplett neugezeichnet, ansonsten ein offscreenimage
+ * @param g
+ */
    private void paintDungeon(Graphics2D g) {
 
 
@@ -236,7 +273,11 @@ public class Fieldpainter extends JPanel implements Observer {
       compoImage.getGraphics().drawImage(dungeonoffscreenImage, -viewportx, -viewporty, this);
 
    }
-
+/**
+ * Fog of War wird auf ein transparentes Bild gepaintet.
+ * Der transparente Ausschnitt ist der sichtbare Bereich des Spielers
+ * @param g
+ */
    private void paintFogofWar(Graphics2D g) {
       if (MainModel.fogofwarrepaint) {
          MainModel.fogofwarrepaint = false;
@@ -263,7 +304,10 @@ public class Fieldpainter extends JPanel implements Observer {
 
    }
 
-   //Zeichnen der Entities
+/**
+ * Zeichnen aller Spielobjekte in einem Switch
+ * @param cg
+ */
    private void paintallEntities(Graphics2D cg) {
 
       if (!entities.isEmpty()) {
@@ -271,11 +315,17 @@ public class Fieldpainter extends JPanel implements Observer {
          for (ListIterator<NPC> it = entcopy.listIterator(); it.hasNext();) {
             NPC e = it.next();
             try {
+               //Bestimmt ob Objekt im Viewportbereich liegt
                if (e.getX() < viewportx - FIELDSIZE || e.getX() > viewportx + FIELDSIZE + VIEWPORTWIDTH * FIELDSIZE
-                       || e.getY() < viewporty - FIELDSIZE || e.getY() > viewporty + FIELDSIZE + VIEWPORTHEIGHT * FIELDSIZE) {
+                       || e.getY() < viewporty - FIELDSIZE || e.getY() > viewporty + FIELDSIZE + VIEWPORTHEIGHT * FIELDSIZE)
+               {
+                  //liegt nicht im Viewport-> wird nicht gezeichnet
                } else {
+                  //Koordinate in Relation zum Viewportpunkt
                   int x1 = e.getX() - viewportx;
                   int y1 = e.getY() - viewporty;
+
+
                   switch (e.getClass().getSimpleName()) {
                      case "Player":
                         switch (e.getOrientierung()) {
@@ -502,17 +552,22 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
    }
-
+/**
+ * Berechnen der Viewport-Daten wenn Spieler sich bewegt hat.
+ * @param p Spieler
+ */
    private void updateViewportCoord(Player p) {
 
       if (p != null && map != null) {
          if (p.getX() / FIELDSIZE < radiusx) {
+            //Spieler ist am Rand des Feldes
             this.viewportx = 0;
          } else {
             this.viewportx = p.getX() - radiusx * FIELDSIZE;
 
          }
          if (p.getY() / FIELDSIZE < radiusy) {
+            //Spieler ist am Rand des Feldes
             this.viewporty = 0;
          } else {
             this.viewporty = p.getY() - radiusy * FIELDSIZE;
@@ -550,7 +605,13 @@ public class Fieldpainter extends JPanel implements Observer {
          }
       }
    }
-
+/**
+ * Methode zum einlesen von Bildern
+ * Erstellt Array aus Sub-Bildern
+ * @param path Der Pfad zum Bild
+ * @param width Die Breite eines einzelnen Sub-Bildes
+ * @return  Bild-Array
+ */
    private BufferedImage[] loadPic(String path, int width) {
 
       BufferedImage pic = null;
@@ -573,7 +634,14 @@ public class Fieldpainter extends JPanel implements Observer {
 
 
    }
-
+/**
+ * Methode zum einlesen von Bildern
+ * Erstellt 2 dimensionales Array aus Sub-Bildern
+ * @param path Pfad zur Bilddatei
+ * @param width Breite eines Sub-Bilders
+ * @param height Höhe eines Sub-Bilders
+ * @return 2-dimensionales Array aus Sub-Bildern
+ */
    private BufferedImage[][] loadPic(String path, int width, int height) {
 
       BufferedImage pic = null;
@@ -601,14 +669,30 @@ public class Fieldpainter extends JPanel implements Observer {
 
    }
 
+   /**
+    *
+    * @return
+    */
    public boolean isFogofwarrepaint() {
       return fogofwarrepaint;
    }
 
+   /**
+    *
+    * @param fogofwarrepaint
+    */
    public void setFogofwarrepaint(boolean fogofwarrepaint) {
       this.fogofwarrepaint = fogofwarrepaint;
    }
-
+/**
+ * Animation der Laufbewegung
+ *
+ * @param cg Graphics Object
+ * @param dir Richtung der Laufbewegung
+ * @param x1 Koordinate des Objekts
+ * @param y1 Koordinate des Objekts
+ * @param i Bild-Array mit Bildern der Bewegung
+ */
    private void animateWalking(Graphics2D cg, Richtung dir, int x1, int y1, BufferedImage[][] i) {
 
       if (animcounter >= 8) {
@@ -636,7 +720,15 @@ public class Fieldpainter extends JPanel implements Observer {
 
       }
    }
-
+/**
+ * Animation der Angriffsbewegung
+ *
+ * @param cg Graphics Object
+ * @param dir Richtung des Objekts
+ * @param x1
+ * @param y1
+ * @param i Bild-Arrays
+ */
    private void animateAttack(Graphics2D cg, Richtung dir, int x1, int y1, BufferedImage[][] i) {
 
       if (animcounter >= 5) {
@@ -664,7 +756,14 @@ public class Fieldpainter extends JPanel implements Observer {
 
       }
    }
-
+/**
+ * Vergrößert eingelesenes Bild Array
+ *
+ * @param img Eingabe Bild
+ * @param cropx Teil der vom Eingangsbild abgeschnitten werden soll
+ * @param cropy ^
+ * @return Bild Array mit vergrößterten Sub-Bildern
+ */
    private BufferedImage[][] enlargePic(BufferedImage img[][], int cropx, int cropy) {
       BufferedImage biggerimg[][] = new BufferedImage[img.length][img[0].length];
       for (int i = 0; i < img.length; i++) {

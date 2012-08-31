@@ -62,9 +62,6 @@ public class Keys implements KeyListener {
                         case KeyEvent.VK_R:
                                 game.getMain().getPlayer().usePotion();
                                 break;
-                        case KeyEvent.VK_L:
-                                game.getMain().getPlayer().debugPrintObjectinFront();
-                                break;
                 }
         }
 

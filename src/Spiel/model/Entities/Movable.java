@@ -5,11 +5,11 @@
 package Spiel.model.Entities;
 
 /**
- *
- * @author Gamer
+ * Interface für alle Beweglichen Objekte
+ * @author Lukas
  */
 public interface Movable {
-    
+
 public void doLogic(long delta);
 
 public void move();

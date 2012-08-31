@@ -191,7 +191,10 @@ public class Controller implements EventListener,Runnable{
 
 
     }
-
+/*
+ * Game neustarten
+ *
+ */
    public void restartGame() {
             pauseGame();
             model = new MainModel();

@@ -8,6 +8,10 @@ import Spiel.model.MainModel;
 import java.awt.Color;
 import java.util.LinkedList;
 
+/**
+ * Klasse für den Spieler
+ * @author Lukas
+ */
 public final class Player extends NPC implements Attackble {
 
    private int xp, lvl, mana, smallpotions, mediumpotions, bigpotions, basedamage, maxhp, coins;
@@ -18,6 +22,10 @@ public final class Player extends NPC implements Attackble {
    private final int[] levelups = {100, 200, 300, 400, 500, 650, 850, 1100, 1300, 1500, 1800, 2100};
    private boolean up, down, left, right;
 
+   /**
+    *
+    * @param main
+    */
    public Player(MainModel main) {
       super(0, 0, 'P', main);
       setName("Held");
@@ -25,7 +33,7 @@ public final class Player extends NPC implements Attackble {
       setDmg(0);
       updateDmg();
       setMaxhp(100);
-      setHp(10);
+      setHp(100);
       setDefence(0);
       lvl = 1;
       setXp(0);
@@ -38,7 +46,6 @@ public final class Player extends NPC implements Attackble {
    @Override
    public void doLogic(long delta) {
       super.doLogic(delta);
-
 
       if (up || down || left || right) {
          setWalking(true);
@@ -69,6 +76,9 @@ public final class Player extends NPC implements Attackble {
       setRoom(findRoomLocation());
    }
 
+   /**
+    * Monster vor dem Spieler angreifen
+    */
    public void attackmonster() {
 
       if (enemyInFront() instanceof Attackble) {
@@ -98,6 +108,9 @@ public final class Player extends NPC implements Attackble {
 
    }
 
+   /**
+    * Objekte die vor dem Spieler sind benutzen. Müssen Usable sein
+    */
    public void action() {
       if (objectinFront() instanceof Usable) {
          ((Usable) objectinFront()).use(this);
@@ -105,15 +118,26 @@ public final class Player extends NPC implements Attackble {
    }
 
    //Getter und Setter
+   /**
+    *
+    * @return
+    */
    public int getLvl() {
       return lvl;
    }
 
+   /**
+    *
+    * @param lvl
+    */
    public void setLvl(int lvl) {
 
       this.lvl = lvl;
    }
 
+   /**
+    * Stufe des Spielers erhöhen. Kümmert sich um die Statserhöhung
+    */
    public void increaseLevel() {
       setLvl(getLvl() + 1);
       getMain().notifyObserver(Observer.sounds.levelup);
@@ -129,18 +153,34 @@ public final class Player extends NPC implements Attackble {
 
    }
 
+   /**
+    *
+    * @return
+    */
    public int getMana() {
       return mana;
    }
 
+   /**
+    *
+    * @param mana
+    */
    public void setMana(int mana) {
       this.mana = mana;
    }
 
+   /**
+    *
+    * @return
+    */
    public int getXp() {
       return xp;
    }
 
+   /**
+    *
+    * @param xp
+    */
    public void setXp(int xp) {
       this.xp = xp;
 
@@ -150,24 +190,44 @@ public final class Player extends NPC implements Attackble {
 
    }
 
+   /**
+    *
+    * @return Liste des Inventars
+    */
    public LinkedList<Item> getInventar() {
       return inventar;
    }
 
+   /**
+    *
+    * @param inventar
+    */
    public void setInventar(LinkedList<Item> inventar) {
       this.inventar = inventar;
    }
 
+   /**
+    * Gibt die ausgerüstete Rüstung des Spielers aus
+    * @param a Typ der Rüstung die ausgegeben werden soll
+    * @return Rüstung des Typs a die der Spieler anhat
+    */
    public Armor getArmor(Armortype a) {
       return this.armor[a.getValue()];
    }
 
+   /**
+    * Rüstung setzen
+    * @param a Typ der Rüstung
+    */
    public void setArmor(Armor a) {
 
       this.armor[a.getType().getValue()] = a;
       setDefence(calcDefence());
    }
-
+/**
+ * Zählt die Verteidigungswerte aller Rüstungsgegenstände zusammen
+ * @return gesamter Verteidigungswerte
+ */
    private int calcDefence() {
       int def = 0;
       for (int i = 0; i < armor.length; i++) {
@@ -179,6 +239,10 @@ public final class Player extends NPC implements Attackble {
       return def;
    }
 
+   /**
+    *
+    * @return Die ausgerüstete Waffe
+    */
    public Waffe getWeapon() {
 
       return weapon;
@@ -186,41 +250,77 @@ public final class Player extends NPC implements Attackble {
 
    }
 
+   /**
+    *
+    * @param weapon Die Waffe die  ausgerüstet werden soll
+    */
    public void setWeapon(Waffe weapon) {
       this.weapon = weapon;
       updateDmg();
    }
 
+   /**
+    * Das ausgewählte Item benutzen
+    * @param selected Item
+    */
    public void useItem(Item selected) {
       selected.useItem();
       getMain().notifyObserver(Observer.transEnum.playerstats);
 
    }
 
+   /**
+    *
+    * @return DIe Zahl der großen Tränke
+    */
    public int getBigpotions() {
       return bigpotions;
    }
 
+   /**
+    *
+    * @param bigpotions Die Zahl der großen Tränke
+    */
    public void setBigpotions(int bigpotions) {
       this.bigpotions = bigpotions;
    }
 
+   /**
+    *
+    * @return Die Zahl der mittleren Tränke
+    */
    public int getMediumpotions() {
       return mediumpotions;
    }
 
+   /**
+    *
+    * @param mediumpotions Die Zahl der mittleren Tränke
+    */
    public void setMediumpotions(int mediumpotions) {
       this.mediumpotions = mediumpotions;
    }
 
+   /**
+    *
+    * @return Die Zahl der kleinen Tränke
+    */
    public int getSmallpotions() {
       return smallpotions;
    }
 
+   /**
+    *
+    * @param smallpotions Die Zahl der kleinen Tränke
+    */
    public void setSmallpotions(int smallpotions) {
       this.smallpotions = smallpotions;
    }
 
+   /**
+    * Item verkaufen
+    * @param it Item was verkauft werden soll
+    */
    public void sellItem(Item it) {
       this.coins += it.itemPrice();
       getInventar().remove(it);
@@ -228,6 +328,9 @@ public final class Player extends NPC implements Attackble {
 
    }
 
+   /**
+    * Heiltrank benutzen
+    */
    public void usePotion() {
       if (smallpotions > 0) {
          useItem(new Heiltrank(Trank.Size.KLEIN, this));
@@ -252,10 +355,18 @@ public final class Player extends NPC implements Attackble {
       getMain().notifyObserver(Observer.sounds.playerhit);
    }
 
+   /**
+    *
+    * @return der Grundschaden
+    */
    public int getBasedamage() {
       return basedamage;
    }
 
+   /**
+    *
+    * @param basedamage der Grundschaden
+    */
    public void setBasedamage(int basedamage) {
       this.basedamage = basedamage;
    }
@@ -279,14 +390,25 @@ public final class Player extends NPC implements Attackble {
       super.setDmg(dmg);
    }
 
+   /**
+    *
+    * @return Die obere Grenze der HP
+    */
    public int getMaxhp() {
       return maxhp;
    }
 
+   /**
+    *
+    * @param maxhp Die obere Grenze der HP
+    */
    public void setMaxhp(int maxhp) {
       this.maxhp = maxhp;
    }
 
+   /**
+    * Zählt Basisschaden und Waffenschaden zusammen
+    */
    public void updateDmg() {
       if (getWeapon() != null) {
          setDmg(getWeapon().getDamage() + getBasedamage());
@@ -297,53 +419,84 @@ public final class Player extends NPC implements Attackble {
       }
    }
 
-   public void debugPrintObjectinFront() {
-      NPC n = objectinFront();
-      if (n != null) {
-         System.err.println(n.getClass().getSimpleName());
-
-      }
-      System.err.println(getMain().map[fieldinFront(1)[1]][fieldinFront(1)[0]]);
 
 
-   }
-
+   /**
+    *
+    * @return
+    */
    public boolean isUp() {
       return up;
    }
 
+   /**
+    *
+    * @param up
+    */
    public void setUp(boolean up) {
       this.up = up;
    }
 
+   /**
+    *
+    * @return
+    */
    public boolean isDown() {
       return down;
    }
 
+   /**
+    *
+    * @param down
+    */
    public void setDown(boolean down) {
       this.down = down;
    }
 
+   /**
+    *
+    * @return
+    */
    public boolean isLeft() {
       return left;
    }
 
+   /**
+    *
+    * @param left
+    */
    public void setLeft(boolean left) {
       this.left = left;
    }
 
+   /**
+    *
+    * @return
+    */
    public boolean isRight() {
       return right;
    }
 
+   /**
+    *
+    * @param right
+    */
    public void setRight(boolean right) {
       this.right = right;
    }
 
+   /**
+    *
+    * @return  die Anzahl der Münzen
+    */
    public int getCoins() {
       return coins;
    }
 
+   /**
+    *
+    * @param coins  die Anzahl der Münzen
+    */
    public void setCoins(int coins) {
       this.coins = coins;
    }

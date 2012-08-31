@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- *
+ * Klasse zur Generierung von Monstern für den Dungeon
  * @author Lukas
  */
 public class MonsterFactory {

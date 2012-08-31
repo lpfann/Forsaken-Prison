@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 /**
- *
+ * Superklasse für alle Spielobjekte
  * @author lukas
  */
 public abstract class NPC implements Movable, Serializable {
@@ -178,7 +178,6 @@ public abstract class NPC implements Movable, Serializable {
 
 
    }
-
    /**
     * Map im Model für das Objekt ändern
     */
