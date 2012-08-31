@@ -10,84 +10,82 @@ import Spiel.model.Entities.Items.Waffe;
 import Spiel.model.Entities.Player;
 import Spiel.model.MainModel;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Gamer
  */
-
 public class Itemwindow extends javax.swing.JPanel implements Observer {
 
+   private Player player;
+   private int i;
+   private Item[] items;
+   private BufferedImage allitems;
+   private BufferedImage bg;
+   public static ImageIcon[][] singleitem = new ImageIcon[8][8];
+   public static ImageIcon[][] armoritem = new ImageIcon[5][20];
+   private MainFrame gameframe;
 
-        private Player player;
-        private int i;
-        private Item[] items;
-        private BufferedImage allitems;
-        private BufferedImage bg;
-        public static ImageIcon[][] singleitem= new ImageIcon[8][8];
-        public static ImageIcon[][] armoritem= new ImageIcon[5][20];
-        private MainFrame gameframe;
-        /**
-         * Creates new form Itemwindow
-         */
-        public Itemwindow(MainFrame gameframe) {
-                this.gameframe=gameframe;
-                initComponents();
-                try {
-                     bg= ImageIO.read(getClass().getResource("/resources/inventorybg.png"));
-                      allitems= ImageIO.read(getClass().getResource("/resources/items1.png"));
-                        //Erstellen der Icons für alle Items
-                        for (int j = 0; j < 8; j++) {
-                                for (int k = 0; k < 8; k++) {
-                                Image temp = allitems.getSubimage(j*32,k*32,32,32);
-                                temp = temp.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
-                                singleitem[j][k] = new ImageIcon(temp);
-                                }
-                        }
-                    for (Armortype ar : Armortype.values()) {
-                       boolean nextFile;
-                        String name = ar.name();
-                        int i = 1;
-                        do {
+   /**
+    * Creates new form Itemwindow
+    */
+   public Itemwindow(MainFrame gameframe) {
+      this.gameframe = gameframe;
+      initComponents();
+      try {
+         allitems = ImageIO.read(getClass().getResource("/resources/items1.png"));
+         //Erstellen der Icons für alle Items
+         for (int j = 0; j < 8; j++) {
+            for (int k = 0; k < 8; k++) {
+               Image temp = allitems.getSubimage(j * 32, k * 32, 32, 32);
+               temp = temp.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+               singleitem[j][k] = new ImageIcon(temp);
+            }
+         }
+         for (Armortype ar : Armortype.values()) {
+            boolean nextFile;
+            String name = ar.name();
+            int i = 1;
+            //Solange Bilder einlesen bis Exception kommt
+            do {
+               try {
 
-                            String path = "/resources/items/" + name + " (" + i + ").png";
-                            armoritem[ar.getValue()][i] = new ImageIcon(ImageIO.read(getClass().getResource(path)).getScaledInstance(34, 34, Image.SCALE_DEFAULT));
-                            boolean exists = false;
-                            try {
-                                exists = (new File(getClass().getResource("/resources/items/" + name + " (" + (i + 1) + ").png").toURI())).exists();
+                  String path = "/resources/items/" + name + " (" + i + ").png";
+                  armoritem[ar.getValue()][i] = new ImageIcon(ImageIO.read(getClass().getResource(path)).getScaledInstance(34, 34, Image.SCALE_DEFAULT));
+                  System.out.println(path);
+                  i++;
 
-                            } catch (Exception e) {
-                                exists = false;
-                            }
+               } catch (Exception e) {
+                  //Abbruch
+                  break;
+               }
 
-                            if (exists) {
-                                nextFile = true;
-                                i++;
-                            } else {
-                                nextFile = false;
-                            }
+            } while (true);
 
-                        } while (nextFile);
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
 
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+      setVisible(false);
+   }
 
-                setVisible(false);
-        }
-
-        /**
-         * This method is called from within the constructor to initialize the
-         * form. WARNING: Do NOT modify this code. The content of this method is
-         * always regenerated by the Form Editor.
-         */
-        @SuppressWarnings("unchecked")
+   /**
+    * This method is called from within the constructor to initialize the form.
+    * WARNING: Do NOT modify this code. The content of this method is always
+    * regenerated by the Form Editor.
+    */
+   @SuppressWarnings("unchecked")
    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
    private void initComponents() {
 
@@ -377,88 +375,84 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
    private javax.swing.JLabel weaponLabel;
    // End of variables declaration//GEN-END:variables
 
-        @Override
-        public void update(transEnum enu, MainModel mm) {
-                if (enu==transEnum.playerstats) {
-                        this.player=mm.getPlayer();
+   @Override
+   public void update(transEnum enu, MainModel mm) {
+      if (enu == transEnum.playerstats) {
+         this.player = mm.getPlayer();
 
 
-                        //Aktualisieren der Labels im Fenster
-                        if (player.getWeapon()!=null) {
-                        this.weaponLabel.setText(player.getWeapon().getName()) ;
-                        int weaponx=player.getWeapon().getSubimagex();
-                        int weapony=player.getWeapon().getSubimagey();
-                        this.weaponLabel.setIcon(singleitem[weaponx][weapony]);
-                        this.damageLabel.setText(Integer.toString(((Waffe)player.getWeapon()).getDamage()));
+         //Aktualisieren der Labels im Fenster
+         if (player.getWeapon() != null) {
+            this.weaponLabel.setText(player.getWeapon().getName());
+            int weaponx = player.getWeapon().getSubimagex();
+            int weapony = player.getWeapon().getSubimagey();
+            this.weaponLabel.setIcon(singleitem[weaponx][weapony]);
+            this.damageLabel.setText(Integer.toString(((Waffe) player.getWeapon()).getDamage()));
 
-                     }
-
-
-
-                        if (player.getArmor(Armortype.BodyArmor)!=null) {
-                        this.bodyArmorLabel.setText(player.getArmor(Armortype.BodyArmor).showStat()+" Def");
-                        this.bodyArmorLabel.setIcon(armoritem[Armortype.BodyArmor.getValue()] [player.getArmor(Armortype.BodyArmor).getItemlvl()]);
-                     }
-                        if (player.getArmor(Armortype.Shoes)!=null) {
-                        this.shoesLabel.setText(player.getArmor(Armortype.Shoes).showStat()+" Def");
-                        this.shoesLabel.setIcon(armoritem[Armortype.Shoes.getValue()] [player.getArmor(Armortype.Shoes).getItemlvl()]);
-                     }
-                        if (player.getArmor(Armortype.Gloves)!=null) {
-                        this.glovesLabel.setText(player.getArmor(Armortype.Gloves).showStat()+" Def");
-                        this.glovesLabel.setIcon(armoritem[Armortype.Gloves.getValue()] [player.getArmor(Armortype.Gloves).getItemlvl()]);
-                     }
-                        if (player.getArmor(Armortype.Shield)!=null) {
-                        this.shieldLabel.setText(player.getArmor(Armortype.Shield).showStat()+" Def");
-                        this.shieldLabel.setIcon(armoritem[Armortype.Shield.getValue()] [player.getArmor(Armortype.Shield).getItemlvl()]);
-                     }
-                        if (player.getArmor(Armortype.Helmet)!=null) {
-                        this.helmetLabel.setText(player.getArmor(Armortype.Helmet).showStat()+" Def");
-                        this.helmetLabel.setIcon(armoritem[Armortype.Helmet.getValue()] [player.getArmor(Armortype.Helmet).getItemlvl()]);
-                     }
-
-                        this.defenceLabel.setText(Integer.toString(player.getDefence()));
-                        this.smallhealthPotionLabel.setText(Integer.toString(player.getSmallpotions()));
-                        this.mediumhealthPotionLabel.setText(Integer.toString(player.getMediumpotions()));
-                        this.bighealthPotionLabel.setText(Integer.toString(player.getBigpotions()));
-                        this.moneyLable.setText(Integer.toString(player.getCoins()));
-
-                        //Festlegen des Inhalts für die Inventarliste
-                        i = itemList.getSelectedIndex();
-                        items= (Item[]) player.getInventar().toArray(new Item[player.getInventar().size()]);
-                        this.itemList.setListData(items);
+         }
 
 
 
+         if (player.getArmor(Armortype.BodyArmor) != null) {
+            this.bodyArmorLabel.setText(player.getArmor(Armortype.BodyArmor).showStat() + " Def");
+            this.bodyArmorLabel.setIcon(armoritem[Armortype.BodyArmor.getValue()][player.getArmor(Armortype.BodyArmor).getItemlvl()]);
+         }
+         if (player.getArmor(Armortype.Shoes) != null) {
+            this.shoesLabel.setText(player.getArmor(Armortype.Shoes).showStat() + " Def");
+            this.shoesLabel.setIcon(armoritem[Armortype.Shoes.getValue()][player.getArmor(Armortype.Shoes).getItemlvl()]);
+         }
+         if (player.getArmor(Armortype.Gloves) != null) {
+            this.glovesLabel.setText(player.getArmor(Armortype.Gloves).showStat() + " Def");
+            this.glovesLabel.setIcon(armoritem[Armortype.Gloves.getValue()][player.getArmor(Armortype.Gloves).getItemlvl()]);
+         }
+         if (player.getArmor(Armortype.Shield) != null) {
+            this.shieldLabel.setText(player.getArmor(Armortype.Shield).showStat() + " Def");
+            this.shieldLabel.setIcon(armoritem[Armortype.Shield.getValue()][player.getArmor(Armortype.Shield).getItemlvl()]);
+         }
+         if (player.getArmor(Armortype.Helmet) != null) {
+            this.helmetLabel.setText(player.getArmor(Armortype.Helmet).showStat() + " Def");
+            this.helmetLabel.setIcon(armoritem[Armortype.Helmet.getValue()][player.getArmor(Armortype.Helmet).getItemlvl()]);
+         }
+
+         this.defenceLabel.setText(Integer.toString(player.getDefence()));
+         this.smallhealthPotionLabel.setText(Integer.toString(player.getSmallpotions()));
+         this.mediumhealthPotionLabel.setText(Integer.toString(player.getMediumpotions()));
+         this.bighealthPotionLabel.setText(Integer.toString(player.getBigpotions()));
+         this.moneyLable.setText(Integer.toString(player.getCoins()));
+
+         //Festlegen des Inhalts für die Inventarliste
+         i = itemList.getSelectedIndex();
+         items = (Item[]) player.getInventar().toArray(new Item[player.getInventar().size()]);
+         this.itemList.setListData(items);
 
 
 
 
-                }
-        }
-
-        @Override
-        public void update(char[][] map) {
-        }
 
 
 
+      }
+   }
 
-        public void focustoItemList(){
-                itemList.requestFocus();
+   @Override
+   public void update(char[][] map) {
+   }
+
+   public void focustoItemList() {
+      itemList.requestFocus();
 
 
-        }
+   }
 
-        public Player getPlayer() {
-                return player;
-        }
+   public Player getPlayer() {
+      return player;
+   }
 
-        public JLabel getWeaponLabel() {
-                return weaponLabel;
-        }
+   public JLabel getWeaponLabel() {
+      return weaponLabel;
+   }
 
    @Override
    public void update(sounds s, long delta) {
    }
-
 }
