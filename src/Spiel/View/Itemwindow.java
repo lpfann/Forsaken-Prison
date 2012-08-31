@@ -6,20 +6,13 @@ package Spiel.View;
 
 import Spiel.model.Entities.Items.Armor.Armor.Armortype;
 import Spiel.model.Entities.Items.Item;
-import Spiel.model.Entities.Items.Waffe;
 import Spiel.model.Entities.Player;
 import Spiel.model.MainModel;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
+
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -62,7 +55,6 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
 
                   String path = "/resources/items/" + name + " (" + i + ").png";
                   armoritem[ar.getValue()][i] = new ImageIcon(ImageIO.read(getClass().getResource(path)).getScaledInstance(34, 34, Image.SCALE_DEFAULT));
-                  System.out.println(path);
                   i++;
 
                } catch (Exception e) {
@@ -387,7 +379,7 @@ public class Itemwindow extends javax.swing.JPanel implements Observer {
             int weaponx = player.getWeapon().getSubimagex();
             int weapony = player.getWeapon().getSubimagey();
             this.weaponLabel.setIcon(singleitem[weaponx][weapony]);
-            this.damageLabel.setText(Integer.toString(((Waffe) player.getWeapon()).getDamage()));
+            this.damageLabel.setText(Integer.toString(( player.getWeapon()).getDamage()));
 
          }
 
