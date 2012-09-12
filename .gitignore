@@ -1,3 +1,7 @@
 /dist/*
 /build/*
 save.ser
+/out/*
+Forsaken-Prison.ipr
+Forsaken-Prison.iws
+Spiel.iml
