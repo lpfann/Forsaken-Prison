@@ -7,6 +7,7 @@ package Spiel.View;
 import Spiel.model.Entities.Player;
 import Spiel.model.MainModel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
