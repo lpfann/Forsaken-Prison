@@ -30,8 +30,8 @@ public abstract class Shoes extends Armor {
 
            }
       }
-      public static class WaldläuferSchuhe extends Shoes {
-           public WaldläuferSchuhe(){
+      public static class WaldlaeuferSchuhe extends Shoes {
+           public WaldlaeuferSchuhe(){
                    super("Waldläuferschuhe", 2,350,2);
 
            }

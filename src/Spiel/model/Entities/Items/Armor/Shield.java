@@ -30,8 +30,8 @@ public abstract class Shield extends Armor {
 
            }
       }
-      public static class VerstärktesHolzschild extends Shield {
-           public VerstärktesHolzschild(){
+      public static class VerstaerktesHolzschild extends Shield {
+           public VerstaerktesHolzschild(){
                    super("Verstärktes Holzschild", 2,350,2);
 
            }
@@ -42,8 +42,8 @@ public abstract class Shield extends Armor {
 
            }
       }
-      public static class VerstärktesWappenschild extends Shield {
-           public VerstärktesWappenschild(){
+      public static class VerstaerktesWappenschild extends Shield {
+           public VerstaerktesWappenschild(){
                    super("Verstärktes Wappenschild", 4,100,4);
 
            }
@@ -54,8 +54,8 @@ public abstract class Shield extends Armor {
 
            }
       }
-      public static class GehärtetesRundesEisenschild extends Shield {
-           public GehärtetesRundesEisenschild(){
+      public static class GehaertetesRundesEisenschild extends Shield {
+           public GehaertetesRundesEisenschild(){
                    super("Gehärtetes Rundes Eisenschild", 6,50,6);
 
            }

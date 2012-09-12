@@ -37,32 +37,32 @@ public abstract class BodyArmor extends Armor {
 
            }
       }
-      public static class Lederrüstung extends BodyArmor {
-           public Lederrüstung(){
+      public static class Lederruestung extends BodyArmor {
+           public Lederruestung(){
                    super("Lederrüstung", 4,200,3);
 
            }
       }
-      public static class Eisenrüstung extends BodyArmor {
-           public Eisenrüstung(){
+      public static class Eisenruestung extends BodyArmor {
+           public Eisenruestung(){
                    super("Eisenrüstung", 6,100,4);
 
            }
       }
-      public static class Bronzerüstung extends BodyArmor {
-           public Bronzerüstung(){
+      public static class Bronzeruestung extends BodyArmor {
+           public Bronzeruestung(){
                    super("Bronzerüstung", 8,50,5);
 
            }
       }
-      public static class Silberrüstung extends BodyArmor {
-           public Silberrüstung(){
+      public static class Silberruestung extends BodyArmor {
+           public Silberruestung(){
                    super("Silberrüstung", 10,20,6);
 
            }
       }
-      public static class Goldrüstung extends BodyArmor {
-           public Goldrüstung(){
+      public static class Goldruestung extends BodyArmor {
+           public Goldruestung(){
                    super("Goldrüstung", 12,10,7);
 
            }
