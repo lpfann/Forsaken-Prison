@@ -39,4 +39,9 @@ public class Coin extends NPC implements Usable{
 
    }
 
+    @Override
+    public int getLevel() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

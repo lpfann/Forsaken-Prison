@@ -54,4 +54,9 @@ public class Effect extends NPC {
       return color;
    }
 
+    @Override
+    public int getLevel() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }
