@@ -19,7 +19,6 @@ public class EvilMonk extends Monster {
       super(0, 0, 40, 6, "Besessener Mönch", 'M', main);
       this.setstartposition(x1, y1, w, h);
       setXp(30);
-      setMonsterlvl(4);
    }
 }
 

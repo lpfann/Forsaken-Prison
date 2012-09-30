@@ -19,7 +19,6 @@ public class Skelett extends Monster {
       super(0, 0, 40, 4, "Skelett", 'S', main);
       this.setstartposition(x1, y1, w, h);
       setXp(10);
-      setMonsterlvl(2);
    }
     }
 

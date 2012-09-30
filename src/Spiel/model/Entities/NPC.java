@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Random;
 
 /**
  * Superklasse für alle Spielobjekte
@@ -453,6 +454,14 @@ public abstract class NPC implements Movable, Serializable {
 
 
    }
+   
+   private int bernoulli(double p) {
+       Random ran = new Random();
+       if (ran.nextDouble() < p) {
+           return 1;
+       }
+       return 0;
+   }
 
    /**
     * Angriffsfunktion
@@ -464,34 +473,34 @@ public abstract class NPC implements Movable, Serializable {
 
       int dmg = a.getDmg();
       int def = d.getDefence();
-      //Auswürfeln wieviel Schaden abgeblockt wird
-      int blockedDamage= UtilFunctions.randomizer(0, def);
-      int schaden= dmg - blockedDamage;
+      
+      // Berechne Schadensreduktion:
+      double dr = def / (3.0 * a.getLevel() + def);
+      double reduceddmg = dmg * (1 - dr);
+      int puredmg = (int) reduceddmg;
+      // Der Rest wird ausgewürfelt:
+      int schaden = puredmg + bernoulli(reduceddmg-puredmg);
 
       if (Spiel.model.UtilFunctions.distance(a, d) > 3) {
          System.out.println("Ausser Reichweite");
       } else {
-
          if (d.getHp() < 1) {
          } else {
             if (schaden <= 0) {
-               System.out.println(d.getName() + " hat den Angriff komplett abgeblockt");
-               main.effects.add(new Effect(d.getX() / FIELDSIZE, d.getY() / FIELDSIZE, main, "0", Color.RED, 300));
+               System.out.println(d.getName() +
+                                  " hat den Angriff komplett abgeblockt");
+               main.effects.add(new Effect(d.getX() / FIELDSIZE,
+                                d.getY() / FIELDSIZE, main, "0",
+                                Color.RED, 300));
             } else {
                d.setHp(d.getHp() - schaden);
-               main.effects.add(new Effect(d.getX() / FIELDSIZE, d.getY() / FIELDSIZE, main, Integer.toString(schaden), Color.RED, 300));
+               main.effects.add(new Effect(d.getX() / FIELDSIZE, d.getY() / FIELDSIZE,
+                                main, Integer.toString(schaden),
+                                Color.RED, 300));
                d.setHit(true);
-
-
             }
          }
-
       }
-
-
-
-
-
    }
 
    /**
@@ -904,6 +913,12 @@ public abstract class NPC implements Movable, Serializable {
    public int getFIELDSIZE() {
       return FIELDSIZE;
    }
+   
+    /**
+     *
+     * @return
+     */
+    public abstract int getLevel();
 
    /**
     *

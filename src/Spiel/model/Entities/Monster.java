@@ -33,8 +33,9 @@ public abstract class Monster extends NPC implements Attackble {
    public Monster(int x, int y, int hp, int dmg, String name, char icon, MainModel main) {
       super(x, y, icon, main);
       //Monster werden stärker desto Tiefer im Dungeon sie erstellt werden
-      setHp((int) (hp + (hp * main.getCurrentDungeonLevel() * statmultiplier)));
-      setDmg((int) (dmg + (dmg * main.getCurrentDungeonLevel() * statmultiplier)));
+      monsterlvl = main.getCurrentDungeonLevel();
+      setHp((int) (hp + (hp * monsterlvl * statmultiplier)));
+      setDmg((int) (dmg + (dmg * monsterlvl * statmultiplier)));
       setName(name);
 
 
@@ -133,4 +134,11 @@ public abstract class Monster extends NPC implements Attackble {
    public void setMonsterlvl(int monsterlvl) {
       this.monsterlvl = monsterlvl;
    }
+
+    @Override
+    public int getLevel() {
+        return getMonsterlvl();
+    }
+   
+   
 }
