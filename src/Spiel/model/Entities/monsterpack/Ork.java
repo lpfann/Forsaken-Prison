@@ -22,7 +22,6 @@ public class Ork extends Monster{
         super(0, 0, 25, 5, "Ork", 'O',main);
         this.setstartposition(x1, y1, w, h);
         setXp(15);
-        setMonsterlvl(3);
     }
 
 

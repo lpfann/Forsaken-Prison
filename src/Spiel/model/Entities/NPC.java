@@ -475,7 +475,7 @@ public abstract class NPC implements Movable, Serializable {
       int def = d.getDefence();
       
       // Berechne Schadensreduktion:
-      double dr = def / (4.0 * a.getLevel() + def);
+      double dr = def / (3.0 * a.getLevel() + def);
       double reduceddmg = dmg * (1 - dr);
       int puredmg = (int) reduceddmg;
       // Der Rest wird ausgewürfelt:

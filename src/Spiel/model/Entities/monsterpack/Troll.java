@@ -23,9 +23,6 @@ public class Troll extends Monster{
         super(0, 0, 15, 2, "Troll", 'T', main);
         this.setstartposition(x1, y1, w, h);
         setXp(5);
-        setMonsterlvl(1);
-
-
 }
 
 
