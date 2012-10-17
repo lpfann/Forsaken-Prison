@@ -135,6 +135,11 @@ public final class Player extends NPC implements Attackble {
       this.lvl = lvl;
    }
 
+    @Override
+    public int getLevel() {
+        return getLvl();
+    }   
+
    /**
     * Stufe des Spielers erhöhen. Kümmert sich um die Statserhöhung
     */

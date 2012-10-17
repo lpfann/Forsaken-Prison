@@ -23,6 +23,11 @@ public class Key extends NPC implements Usable{
         getMain().getDungeon().getStairs().setLocked(false);
         System.out.println("Du hast den Schlüssel zur Treppe gefunden!");
         getMain().notifyObserver(Observer.sounds.chestopen );
-
     }
+
+    @Override
+    public int getLevel() {
+        return 0;
+    }
+    
 }
