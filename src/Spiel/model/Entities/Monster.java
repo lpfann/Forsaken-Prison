@@ -19,6 +19,7 @@ public abstract class Monster extends NPC implements Attackble {
    private double statmultiplier = 0.2;
    private int xp;
    private int monsterlvl;
+   private AStar pathfinder;
 
    /**
     *
@@ -37,7 +38,7 @@ public abstract class Monster extends NPC implements Attackble {
       setHp((int) (hp + (hp * monsterlvl * statmultiplier)));
       setDmg((int) (dmg + (dmg * monsterlvl * statmultiplier)));
       setName(name);
-
+      pathfinder = new AStar(main);
 
    }
 
@@ -59,23 +60,44 @@ public abstract class Monster extends NPC implements Attackble {
          double rand = (double) UtilFunctions.randomizer(85, 100) / 100;
          if (walkdelay * rand > 700 && Spiel.model.UtilFunctions.distance(this, pl) < 6) {
 
-            int random = UtilFunctions.randomizer(1, 2);
-            if (pl.getX() < this.getX() && random == 1) {
-               setOrientierung(MainModel.Richtung.LEFT);
-               setWalking(true);
-            } else if (pl.getX() > this.getX()) {
-               setOrientierung(MainModel.Richtung.RIGHT);
-               setWalking(true);
-            }
-            if (pl.getY() < this.getY() && random == 2) {
-               setOrientierung(MainModel.Richtung.UP);
-               setWalking(true);
-            } else if (pl.getY() > this.getY()) {
-               setOrientierung(MainModel.Richtung.DOWN);
-               setWalking(true);
+//            int random = UtilFunctions.randomizer(1, 2);
+//            if (pl.getX() < this.getX() && random == 1) {
+//               setOrientierung(MainModel.Richtung.LEFT);
+//               setWalking(true);
+//            } else if (pl.getX() > this.getX()) {
+//               setOrientierung(MainModel.Richtung.RIGHT);
+//               setWalking(true);
+//            }
+//            if (pl.getY() < this.getY() && random == 2) {
+//               setOrientierung(MainModel.Richtung.UP);
+//               setWalking(true);
+//            } else if (pl.getY() > this.getY()) {
+//               setOrientierung(MainModel.Richtung.DOWN);
+//               setWalking(true);
+//
+//            }
+           int[] next = pathfinder.getNextWaypoint(this, pl);
+             if (next != null) {
+                 int random = UtilFunctions.randomizer(1, 2);
+                 if (random == 1) {
+                     if (next[0] < this.getX()) {
+                         setOrientierung(MainModel.Richtung.LEFT);
+                         setWalking(true);
+                     } else if (next[0] > this.getX()) {
+                         setOrientierung(MainModel.Richtung.RIGHT);
+                         setWalking(true);
+                     }
+                 }  else {
 
-            }
-
+                     if (next[1] < this.getY()) {
+                         setOrientierung(MainModel.Richtung.UP);
+                         setWalking(true);
+                     } else if (next[1] > this.getY()) {
+                         setOrientierung(MainModel.Richtung.DOWN);
+                         setWalking(true);
+                     }
+                 }
+             }
             walkdelay = 0;
          }
 
@@ -140,5 +162,7 @@ public abstract class Monster extends NPC implements Attackble {
         return getMonsterlvl();
     }
    
-   
+
+
+
 }
