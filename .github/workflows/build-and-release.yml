@@ -3,6 +3,8 @@ name: Build and Release
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build-and-store:
@@ -33,4 +35,4 @@ jobs:
       with:
         name: forsaken-prison-jar
         path: dist/Forsaken_Prison.jar
-        retention-days: 90
+        retention-days: 400
