@@ -1,0 +1,36 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-store:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: Build with Ant
+      run: ant -Dplatforms.JDK_1.7.home="$JAVA_HOME" clean jar
+    
+    - name: Verify JAR was created
+      run: |
+        if [ ! -f dist/Forsaken_Prison.jar ]; then
+          echo "JAR file was not created!"
+          exit 1
+        fi
+        echo "JAR file created successfully: $(ls -lh dist/Forsaken_Prison.jar)"
+    
+    - name: Upload JAR as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: forsaken-prison-jar
+        path: dist/Forsaken_Prison.jar
+        retention-days: 90
